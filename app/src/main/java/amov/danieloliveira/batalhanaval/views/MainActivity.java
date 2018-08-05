@@ -1,8 +1,10 @@
-package amov.danieloliveira.batalhanaval;
+package amov.danieloliveira.batalhanaval.views;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import amov.danieloliveira.batalhanaval.R;
 
 public class MainActivity extends AppCompatActivity {
 

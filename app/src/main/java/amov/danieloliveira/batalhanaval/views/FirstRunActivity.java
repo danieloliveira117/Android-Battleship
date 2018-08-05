@@ -1,7 +1,9 @@
-package amov.danieloliveira.batalhanaval;
+package amov.danieloliveira.batalhanaval.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import amov.danieloliveira.batalhanaval.R;
 
 public class FirstRunActivity extends AppCompatActivity {
 
