@@ -27,8 +27,9 @@ public class Utils {
 
     public static String getLocalIpAddress() {
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+            Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
 
+            while (en.hasMoreElements()) {
                 NetworkInterface intf = en.nextElement();
 
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {

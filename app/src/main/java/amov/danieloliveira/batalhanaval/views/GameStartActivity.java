@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -42,6 +43,7 @@ import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 public class GameStartActivity extends AppCompatActivity {
     private static final String TAG = "GameStartActivity";
 
+    int players = 1;
     int mode = SERVER;
     ServerSocket serverSocket = null;
     Socket socketGame = null;
@@ -164,7 +166,7 @@ public class GameStartActivity extends AppCompatActivity {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        client(edtIP.getText().toString(), PORT_AUX); // to test with emulators: PORTaux);
+                        client(edtIP.getText().toString(), PORT); // to test with emulators: PORT_AUX);
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
@@ -181,7 +183,7 @@ public class GameStartActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Log.d("RPS", "Connecting to the server  " + strIP);
+                    Log.d(TAG, "Connecting to the server  " + strIP);
                     socketGame = new Socket(strIP, Port);
                 } catch (Exception e) {
                     socketGame = null;
@@ -252,12 +254,10 @@ public class GameStartActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mode = intent.getIntExtra("mode", SERVER);
+            players = intent.getIntExtra("players", 1);
         }
 
         procMsg = new Handler();
-
-
-
 
         /*
          * TODO ver o que fazer com isto em baixo

@@ -31,6 +31,8 @@ public class ConfigUserActivity extends AppCompatActivity {
         if (image != null) {
             imageView.setImageBitmap(image);
         }
+
+        // TODO: 06/08/2018 If username exists put it in TextInputEditText and show back button
     }
 
     public void onCreateUser(View view) {
