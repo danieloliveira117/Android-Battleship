@@ -14,8 +14,6 @@ import java.io.File;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class Preferences {
-    public static final String IMAGE_NAME = "/image.jpg";
-
     public static User loadPreferences(Activity activity) {
         User user = null;
 

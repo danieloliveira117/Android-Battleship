@@ -47,7 +47,7 @@ import java.util.List;
 
 import amov.danieloliveira.batalhanaval.R;
 
-import static amov.danieloliveira.batalhanaval.Preferences.IMAGE_NAME;
+import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
 
 public class TakePictureActivity extends AppCompatActivity {
     private static final String TAG = "TakePictureActivity";

@@ -67,5 +67,5 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
         android:onClick="onCreateUser"
-        android:text="@string/create_user" />
+        android:text="@string/save_user" />
 </LinearLayout>
