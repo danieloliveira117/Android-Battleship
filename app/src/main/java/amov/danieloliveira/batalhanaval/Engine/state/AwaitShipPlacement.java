@@ -6,4 +6,6 @@ class AwaitShipPlacement extends StateAdapter {
     public AwaitShipPlacement(GameData gameData) {
         super(gameData);
     }
+
+    // TODO: 05/08/2018
 }

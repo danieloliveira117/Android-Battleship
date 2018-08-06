@@ -3,4 +3,10 @@
     <string name="app_name">Battleship</string>
     <string name="username">Username</string>
     <string name="create_user">Create User</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="permission_denied">You need to grant the permission to use the camera feature</string>
+    <string name="config_changed">Configuration changed</string>
+    <string name="username_min_length">The username needs to be at least 3 characters</string>
+    <string name="error_image">There has been an error getting your picture</string>
+    <string name="image_missing">You need to add an image</string>
 </resources>

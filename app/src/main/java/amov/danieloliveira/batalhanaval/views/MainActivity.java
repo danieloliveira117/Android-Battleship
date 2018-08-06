@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import amov.danieloliveira.batalhanaval.Preferences;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,21 +14,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        checkHasUserAccount();
+        User user = Preferences.loadPreferences(MainActivity.this);
 
-        setContentView(R.layout.activity_main);
-    }
-
-    public void checkHasUserAccount() {
-        String username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", null);
-
-        if (username == null) {
-            startActivity(new Intent(this, FirstRunActivity.class));
-
-            /*getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("isFirstRun", false)
-                    .apply();*/
+        if(user == null) {
+            // Primeira utilização necessita de configurar o utilizador
+            startActivity(new Intent(this, ConfigUserActivity.class));
+            this.finish();
+        } else {
+            setContentView(R.layout.activity_main);
         }
     }
 }
