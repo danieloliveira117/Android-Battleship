@@ -44,6 +44,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import amov.danieloliveira.batalhanaval.R;
 
@@ -64,9 +65,7 @@ public class TakePictureActivity extends AppCompatActivity {
     protected CameraDevice cameraDevice;
     protected CameraCaptureSession cameraCaptureSessions;
     protected CaptureRequest.Builder captureRequestBuilder;
-    private EditText edtUsername;
     private TextureView textureView;
-    private String cameraId;
     private Size imageDimension;
     private File file;
 
@@ -96,7 +95,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
     private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
-        public void onOpened(CameraDevice camera) {
+        public void onOpened(@NonNull CameraDevice camera) {
             //This is called when the camera is open
             Log.e(TAG, "onOpened");
             cameraDevice = camera;
@@ -104,14 +103,16 @@ public class TakePictureActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDisconnected(CameraDevice camera) {
+        public void onDisconnected(@NonNull CameraDevice camera) {
             cameraDevice.close();
         }
 
         @Override
-        public void onError(CameraDevice camera, int error) {
-            cameraDevice.close();
-            cameraDevice = null;
+        public void onError(@NonNull CameraDevice camera, int error) {
+            if(cameraDevice != null) {
+                cameraDevice.close();
+                cameraDevice = null;
+            }
         }
     };
 
@@ -180,7 +181,7 @@ public class TakePictureActivity extends AppCompatActivity {
         try {
             assert manager != null;
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
-            Size[] jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG);
+            Size[] jpegSizes = Objects.requireNonNull(characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)).getOutputSizes(ImageFormat.JPEG);
 
             int width = 640;
             int height = 480;
@@ -221,7 +222,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
             final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
                 @Override
-                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
+                public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
 
                     createCameraPreview();
@@ -230,7 +231,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
             cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback() {
                 @Override
-                public void onConfigured(CameraCaptureSession session) {
+                public void onConfigured(@NonNull CameraCaptureSession session) {
                     try {
                         session.capture(captureBuilder.build(), captureListener, mBackgroundHandler);
                     } catch (CameraAccessException e) {
@@ -239,8 +240,7 @@ public class TakePictureActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onConfigureFailed(CameraCaptureSession session) {
-                }
+                public void onConfigureFailed(@NonNull CameraCaptureSession session) {}
             }, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -302,7 +302,7 @@ public class TakePictureActivity extends AppCompatActivity {
         try {
             assert manager != null;
 
-            cameraId = manager.getCameraIdList()[0];
+            String cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
 
@@ -341,19 +341,19 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     private void closeCamera() {
-        if (null != cameraDevice) {
+        if (cameraDevice != null) {
             cameraDevice.close();
             cameraDevice = null;
         }
 
-        if (null != imageReader) {
+        if (imageReader != null) {
             imageReader.close();
             imageReader = null;
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // close the app

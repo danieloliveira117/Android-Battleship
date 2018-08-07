@@ -9,35 +9,36 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.JsonReader;
-import android.util.JsonWriter;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
+import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
+import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.JsonMessage;
+import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
+import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
+import amov.danieloliveira.batalhanaval.engine.model.User;
+import amov.danieloliveira.batalhanaval.engine.model.UserBase64;
 
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
-import static amov.danieloliveira.batalhanaval.Consts.PORT_AUX;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 
 public class GameStartActivity extends AppCompatActivity {
@@ -59,6 +60,12 @@ public class GameStartActivity extends AppCompatActivity {
                 input = new BufferedReader(new InputStreamReader(socketGame.getInputStream()));
                 output = new PrintWriter(socketGame.getOutputStream());
 
+                // Convert image to base64 string
+                UserBase64 userBase64 = new UserBase64(Utils.getUser(GameStartActivity.this));
+
+                // Send User Data
+                SendMessage(userBase64, MsgType.USER64);
+
                 while (!Thread.currentThread().isInterrupted()) {
                     HandleMessage(input.readLine());
                 }
@@ -77,29 +84,46 @@ public class GameStartActivity extends AppCompatActivity {
         }
     });
 
-    public void HandleMessage(String input) throws IOException {
+    public void HandleMessage(String input) {
         JsonParser parser = new JsonParser();
-        JsonElement mJson =  parser.parse(input);
+        final JsonElement mJson = parser.parse(input);
 
-        Gson gson = new Gson();
-
-        JsonMessage jsonMessage = gson.fromJson(mJson, JsonMessage.class);
-
-        Log.d(TAG, "Received: " + jsonMessage.getObject());
+        final Gson gson = new Gson();
+        final JsonMessage tempMessage = gson.fromJson(mJson, JsonMessage.class);
 
         procMsg.post(new Runnable() {
             @Override
             public void run() {
-                // TODO handle message received
+                GameObservable gameObs = Utils.getObservable(GameStartActivity.this);
+
+                switch (tempMessage.getType()) {
+                    case USER64: {
+                        final Type type = new TypeToken<JsonMessage<UserBase64>>() {}.getType();
+                        final JsonMessage jsonMessage = gson.fromJson(mJson, type);
+
+                        User adversary = ((UserBase64) jsonMessage.getObject()).toUser();
+
+                        // Update Views
+                        CircularImageView civ_adversary_avatar = findViewById(R.id.civ_adversary_avatar);
+                        AppCompatTextView tv_adversary_username = findViewById(R.id.tv_adversary_username);
+
+                        civ_adversary_avatar.setImageBitmap(adversary.getImage());
+                        tv_adversary_username.setText(adversary.getUsername());
+
+                        // Start Game
+                        gameObs.setAdversary(adversary);
+                        gameObs.startGame(GameMode.vsPLAYER, Utils.getUser(GameStartActivity.this));
+                    }
+                }
             }
         });
     }
 
-    // TODO use this class...
-    public <T> void SendMessage(JsonMessage<T> jsonMessage) {
+    public <T> void SendMessage(T obj, MsgType type) {
         Gson gson = new Gson();
 
-        String json = gson.toJson(jsonMessage, jsonMessage.getClass());
+        JsonMessage<T> jsonMessage = new JsonMessage<>(obj, type);
+        String json = gson.toJson(jsonMessage, JsonMessage.class);
 
         output.println(json);
         output.flush();
@@ -119,7 +143,8 @@ public class GameStartActivity extends AppCompatActivity {
                 if (serverSocket != null) {
                     try {
                         serverSocket.close();
-                    } catch (IOException ignored) {}
+                    } catch (IOException ignored) {
+                    }
 
                     serverSocket = null;
                 }
@@ -160,10 +185,9 @@ public class GameStartActivity extends AppCompatActivity {
         final EditText edtIP = new EditText(this);
         edtIP.setText("10.0.2.2"); // emulator's default ip
 
-        // TODO mudar texto...
-        AlertDialog ad = new AlertDialog.Builder(this).setTitle("RPS Client")
-                .setMessage("Server IP").setView(edtIP)
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        AlertDialog ad = new AlertDialog.Builder(this).setTitle(getString(R.string.clientdlg_msg))
+                .setMessage(getString(R.string.serverip)).setView(edtIP)
+                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         client(edtIP.getText().toString(), PORT); // to test with emulators: PORT_AUX);
@@ -178,7 +202,6 @@ public class GameStartActivity extends AppCompatActivity {
     }
 
     void client(final String strIP, final int Port) {
-        // TODO mudar texto...
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -228,7 +251,8 @@ public class GameStartActivity extends AppCompatActivity {
 
             if (input != null)
                 input.close();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         input = null;
         output = null;
@@ -258,21 +282,5 @@ public class GameStartActivity extends AppCompatActivity {
         }
 
         procMsg = new Handler();
-
-        /*
-         * TODO ver o que fazer com isto em baixo
-         */
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 }

@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 public class User {
     private String username;
     private Bitmap image;
-    private String ip;
 
     public User(String username, Bitmap image) {
         this.username = username;
@@ -28,11 +27,8 @@ public class User {
         this.image = image;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

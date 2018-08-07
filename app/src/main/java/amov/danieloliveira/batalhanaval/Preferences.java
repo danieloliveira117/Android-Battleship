@@ -1,15 +1,10 @@
 package amov.danieloliveira.batalhanaval;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
-
-import java.io.File;
 
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
@@ -23,7 +18,7 @@ public class Preferences {
         String username = sharedPref.getString("username", null);
 
         if (username != null) {
-            Bitmap image = Utils.GetUserImage();
+            Bitmap image = Utils.getUserImage();
 
             user = new User(username, image);
 

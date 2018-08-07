@@ -18,4 +18,8 @@
     <string name="play_two_players">Two Players</string>
     <string name="match_history">Match History</string>
     <string name="config_user">Change User</string>
+    <string name="clientdlg_msg">Battleship Client</string>
+    <string name="serverip">Server IP</string>
+    <string name="confirm">Confirm</string>
+    <string name="invaildposition"></string>
 </resources>

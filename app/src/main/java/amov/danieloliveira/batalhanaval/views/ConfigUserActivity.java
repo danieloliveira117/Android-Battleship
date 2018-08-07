@@ -26,7 +26,7 @@ public class ConfigUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_config_user);
 
         AppCompatImageView imageView = findViewById(R.id.user_image);
-        Bitmap image = Utils.GetUserImage();
+        Bitmap image = Utils.getUserImage();
 
         if (image != null) {
             imageView.setImageBitmap(image);
@@ -43,10 +43,11 @@ public class ConfigUserActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getString(R.string.username_min_length), Toast.LENGTH_SHORT).show();
         }
 
-        Bitmap image = Utils.GetUserImage();
+        Bitmap image = Utils.getUserImage();
 
-        if(image != null) {
+        if(image == null) {
             Toast.makeText(this, getResources().getString(R.string.image_missing), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
@@ -70,7 +71,7 @@ public class ConfigUserActivity extends AppCompatActivity {
 
                 // Imagem encontrada a modificar a imagem do utilizador
                 AppCompatImageView imageView = findViewById(R.id.user_image);
-                Bitmap image = Utils.GetUserImage();
+                Bitmap image = Utils.getUserImage();
 
                 if (image != null) {
                     imageView.setImageBitmap(image);
