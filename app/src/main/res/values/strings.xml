@@ -23,4 +23,6 @@
     <string name="confirm">Confirm</string>
     <string name="invaildposition"></string>
     <string name="shipyard">Shipyard</string>
+    <string name="play_join_server">Join Server</string>
+    <string name="play_create_server">Create Server</string>
 </resources>

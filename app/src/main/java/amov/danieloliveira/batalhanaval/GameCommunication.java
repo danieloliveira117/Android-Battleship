@@ -30,6 +30,7 @@ import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.model.UserBase64;
+import amov.danieloliveira.batalhanaval.views.GameStartActivity;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
@@ -38,7 +39,7 @@ import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 public class GameCommunication {
     private static final String TAG = "GameCommunication";
 
-    private Activity activity;
+    private GameStartActivity activity;
     private Handler procMsg;
     private ProgressDialog pd = null;
     private ServerSocket serverSocket = null;
@@ -46,7 +47,7 @@ public class GameCommunication {
     private BufferedReader input;
     private PrintWriter output;
 
-    public GameCommunication(Activity activity, Handler procMsg, int mode) {
+    public GameCommunication(GameStartActivity activity, Handler procMsg, int mode) {
         this.activity = activity;
         this.procMsg = procMsg;
 
@@ -121,7 +122,7 @@ public class GameCommunication {
     });
 
     private void HandleMessage(String input) {
-        JsonParser parser = new JsonParser();
+        final JsonParser parser = new JsonParser();
         final JsonElement mJson = parser.parse(input);
 
         final Gson gson = new Gson();
@@ -134,21 +135,15 @@ public class GameCommunication {
 
                 switch (tempMessage.getType()) {
                     case USER64: {
-                        final Type type = new TypeToken<JsonMessage<UserBase64>>() {
-                        }.getType();
+                        final Type type = new TypeToken<JsonMessage<UserBase64>>() {}.getType();
                         final JsonMessage jsonMessage = gson.fromJson(mJson, type);
 
                         User adversary = ((UserBase64) jsonMessage.getObject()).toUser();
 
-                        // Update Views
-                        CircularImageView civ_adversary_avatar = activity.findViewById(R.id.civ_adversary_avatar);
-                        AppCompatTextView tv_adversary_username = activity.findViewById(R.id.tv_adversary_username);
-
-                        civ_adversary_avatar.setImageBitmap(adversary.getImage());
-                        tv_adversary_username.setText(adversary.getUsername());
+                        // Set adversary
+                        gameObs.setAdversary(adversary);
 
                         // Start Game
-                        gameObs.setAdversary(adversary);
                         gameObs.startGame(GameMode.vsPLAYER, Utils.getUser(activity));
                     }
                 }

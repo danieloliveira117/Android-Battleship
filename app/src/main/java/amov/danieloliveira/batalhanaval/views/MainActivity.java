@@ -11,6 +11,7 @@ import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
+import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         if(user == null) {
             // Primeira utilização necessita de configurar o utilizador
             startActivity(new Intent(this, ConfigUserActivity.class));
-            this.finish();
+            finish();
         } else {
             setContentView(R.layout.activity_main);
         }
@@ -32,18 +33,23 @@ public class MainActivity extends AppCompatActivity {
     public void onOnePlayer(View view) {
         Intent intent = new Intent(this, GameStartActivity.class);
 
-        intent.putExtra("players", 1);
-        intent.putExtra("mode", CLIENT);
+        intent.putExtra("mode", SINGLEPLAYER);
 
         startActivity(intent);
     }
 
-    public void onTwoPlayers(View view) {
+    public void onCreateServer(View view) {
         Intent intent = new Intent(this, GameStartActivity.class);
 
-        intent.putExtra("players", 2);
-        // TODO: 06/08/2018 get server or client
         intent.putExtra("mode", SERVER);
+
+        startActivity(intent);
+    }
+
+    public void onJoinServer(View view) {
+        Intent intent = new Intent(this, GameStartActivity.class);
+
+        intent.putExtra("mode", CLIENT);
 
         startActivity(intent);
     }
@@ -55,4 +61,6 @@ public class MainActivity extends AppCompatActivity {
     public void onChangeUser(View view) {
         startActivity(new Intent(this, ConfigUserActivity.class));
     }
+
+
 }
