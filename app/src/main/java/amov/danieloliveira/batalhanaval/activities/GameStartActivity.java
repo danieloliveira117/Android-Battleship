@@ -1,4 +1,4 @@
-package amov.danieloliveira.batalhanaval.views;
+package amov.danieloliveira.batalhanaval.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +48,10 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
     protected void onPause() {
         super.onPause();
 
-        gameCommunication.onPause();
+        if(gameCommunication != null) {
+            gameCommunication.onPause();
+            gameCommunication = null;
+        }
     }
 
     @Override

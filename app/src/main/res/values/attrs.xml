@@ -4,4 +4,14 @@
         <attr name="position" format="string" />
         <attr name="shipyard" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ShipPartView">
+        <attr name="ship_type" format="enum">
+            <enum name="ship_type_one" value="1" />
+            <enum name="ship_type_two" value="2" />
+            <enum name="ship_type_three" value="3" />
+            <enum name="ship_type_t_shape" value="4" />
+        </attr>
+        <attr name="ship_number" format="integer" />
+    </declare-styleable>
 </resources>

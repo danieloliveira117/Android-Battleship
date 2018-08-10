@@ -14,15 +14,33 @@
     <string name="serverdlg_title">Battleship Server</string>
     <string name="serverdlg_msg">Waiting for a client…</string>
     <string name="game_finished">The game was finished</string>
+
     <string name="play_one_player">One Player</string>
-    <string name="play_two_players">Two Players</string>
+    <string name="play_join_server">Join Server</string>
+    <string name="play_create_server">Create Server</string>
     <string name="match_history">Match History</string>
     <string name="config_user">Change User</string>
+
     <string name="clientdlg_msg">Battleship Client</string>
     <string name="serverip">Server IP</string>
     <string name="confirm">Confirm</string>
-    <string name="invaildposition"></string>
     <string name="shipyard">Shipyard</string>
-    <string name="play_join_server">Join Server</string>
-    <string name="play_create_server">Create Server</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="c">C</string>
+    <string name="d">D</string>
+    <string name="e">E</string>
+    <string name="f">F</string>
+    <string name="g">G</string>
+    <string name="h">H</string>
 </resources>

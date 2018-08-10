@@ -4,58 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
     android:orientation="vertical"
-    tools:context=".views.MainActivity">
+    android:padding="5dp"
+    tools:context=".activities.MainActivity">
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_one_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="@string/play_one_player"
-        android:paddingTop="10dp"
+        android:onClick="onOnePlayer"
         android:paddingBottom="10dp"
-        android:onClick="onOnePlayer" />
+        android:paddingTop="10dp"
+        android:text="@string/play_one_player"
+        android:textColor="@color/colorAccent" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_join_server"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="@string/play_create_server"
-        android:paddingTop="10dp"
+        android:onClick="onJoinServer"
         android:paddingBottom="10dp"
-        android:onClick="onJoinServer" />
+        android:paddingTop="10dp"
+        android:text="@string/play_create_server"
+        android:textColor="@color/colorAccent" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_create_server"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_marginTop="5dp"
+        android:onClick="onCreateServer"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:text="@string/play_join_server"
-        android:onClick="onCreateServer" />
+        android:textColor="@color/colorAccent" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_match_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:layout_marginTop="25dp"
-        android:text="@string/match_history"
-        android:onClick="onMatchHistory" />
+        android:onClick="onMatchHistory"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/match_history" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_config_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:layout_marginTop="5dp"
-        android:text="@string/config_user"
-        android:onClick="onChangeUser" />
+        android:onClick="onChangeUser"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/config_user" />
 
 </LinearLayout>

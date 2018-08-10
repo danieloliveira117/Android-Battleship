@@ -24,6 +24,6 @@ public class GameObservable extends Observable {
         gameData.setAdversary(user);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(user);
     }
 }

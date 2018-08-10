@@ -1,4 +1,4 @@
-package amov.danieloliveira.batalhanaval.views;
+package amov.danieloliveira.batalhanaval.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

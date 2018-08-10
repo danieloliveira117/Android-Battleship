@@ -1,11 +1,9 @@
 package amov.danieloliveira.batalhanaval;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +27,7 @@ import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.model.UserBase64;
-import amov.danieloliveira.batalhanaval.views.GameStartActivity;
+import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;

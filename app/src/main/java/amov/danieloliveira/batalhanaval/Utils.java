@@ -1,13 +1,11 @@
 package amov.danieloliveira.batalhanaval;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Base64;
-import android.view.View;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,7 +17,6 @@ import java.util.Enumeration;
 
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.model.User;
-import amov.danieloliveira.batalhanaval.views.GameStartActivity;
 
 import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
 

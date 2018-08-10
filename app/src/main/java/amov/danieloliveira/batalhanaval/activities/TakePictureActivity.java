@@ -1,4 +1,4 @@
-package amov.danieloliveira.batalhanaval.views;
+package amov.danieloliveira.batalhanaval.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,7 +33,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
