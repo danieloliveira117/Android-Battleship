@@ -1,6 +1,8 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
+import amov.danieloliveira.batalhanaval.Consts;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 
 /**
  * Posições de 1 a 8, A a H
@@ -10,22 +12,53 @@ public class Position {
     private int num;
     private int color;
 
-    public Position(char letter, int num) {
+    public Position() {}
+
+    public Position(String position) throws InvalidPositionException {
+        if (position == null || position.length() != 2) {
+            throw new InvalidPositionException();
+        }
+
+        this.letter = Character.toUpperCase(position.charAt(0));
+        this.num = Character.getNumericValue(position.charAt(1));
+
+        validatePosition(letter, num);
+
+        updateColor();
+    }
+
+    public Position(char letter, int num) throws InvalidPositionException {
         this.letter = Character.toUpperCase(letter);
         this.num = num;
 
+        validatePosition(this.letter, this.num);
+
         updateColor();
     }
 
-    public Position(int letter, int num) {
+    public Position(int letter, int num) throws InvalidPositionException {
         this.letter = (char) ('A' + (letter - 1));
         this.num = num;
 
+        validatePosition(this.letter, this.num);
+
         updateColor();
     }
 
+    public void validatePosition(char letter, int num) throws InvalidPositionException {
+        int letterAsInt = (letter - 'A') + 1;
+
+        if (num < 1 || num > Consts.MAXROWS) {
+            throw new InvalidPositionException();
+        }
+
+        if (letterAsInt < 1 || letterAsInt > Consts.MAXCOLUMNS) {
+            throw new InvalidPositionException();
+        }
+    }
+
     private void updateColor() {
-        if((letter + num) % 2 == 0) {
+        if ((letter + num) % 2 == 0) {
             color = R.color.cellColorPrimary;
         } else {
             color = R.color.cellColorAlternative;

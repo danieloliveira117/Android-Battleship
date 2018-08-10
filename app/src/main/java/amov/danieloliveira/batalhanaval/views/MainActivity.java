@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("mode", CLIENT);
 
         startActivity(intent);
-
     }
 
     public void onTwoPlayers(View view) {

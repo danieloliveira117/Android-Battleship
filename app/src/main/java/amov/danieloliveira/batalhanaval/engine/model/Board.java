@@ -20,4 +20,12 @@ public class Board {
         shipList[5] = new Ship(ShipType.THREE);
         shipList[6] = new Ship(ShipType.T_SHAPE);
     }
+
+    public Ship[] getShipList() {
+        return shipList;
+    }
+
+    public List<Coord> getAttempts() {
+        return attempts;
+    }
 }

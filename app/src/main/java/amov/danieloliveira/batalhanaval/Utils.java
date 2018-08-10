@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Base64;
+import android.view.View;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,7 +25,7 @@ import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
 
 public class Utils {
     public static GameObservable getObservable(Context context) {
-        BattleshipApplication app = (BattleshipApplication) ((GameStartActivity) context).getApplication();
+        BattleshipApplication app = (BattleshipApplication) ((Activity) context).getApplication();
 
         return app.getObservable();
     }

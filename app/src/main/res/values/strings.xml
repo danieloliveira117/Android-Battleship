@@ -22,4 +22,5 @@
     <string name="serverip">Server IP</string>
     <string name="confirm">Confirm</string>
     <string name="invaildposition"></string>
+    <string name="shipyard">Shipyard</string>
 </resources>
