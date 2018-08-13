@@ -2,26 +2,33 @@ package amov.danieloliveira.batalhanaval.engine;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
-import amov.danieloliveira.batalhanaval.engine.model.Game;
+import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.model.Player;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 class GameModel {
-    private Game game = new Game();
+    private Player player1, player2;
+    private GameMode gameMode;
+
+    public GameModel() {
+        player1 = new Player(true);
+        player2 = new Player(false);
+    }
 
     public void setMode(GameMode mode) {
-        game.setGameMode(mode);
+        gameMode = mode;
     }
 
     public void updatePlayerData(PlayerType player, User user) {
         switch (player) {
             case PLAYER:
-                game.getPlayer1().setUser(user);
+                player1.setUser(user);
                 break;
             case ADVERSARY:
-                game.getPlayer2().setUser(user);
-                game.getPlayer2().setHuman(true);
+                player2.setUser(user);
+                player2.setHuman(true);
                 break;
         }
     }
@@ -41,9 +48,17 @@ class GameModel {
     private Player getPlayer(PlayerType player) {
         switch (player) {
             case PLAYER:
-                return game.getPlayer1();
+                return player1;
             default:
-                return game.getPlayer2();
+                return player2;
         }
+    }
+
+    public boolean addNewAttempt(PlayerType player, Position position) {
+        return getPlayer(player).addNewAttempt(position);
+    }
+
+    public PositionType getPositionType(PlayerType player, Position position) {
+        return getPlayer(player).getPositionType(position);
     }
 }

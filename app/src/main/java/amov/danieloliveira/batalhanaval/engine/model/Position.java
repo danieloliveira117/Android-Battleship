@@ -10,9 +10,9 @@ import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionExcepti
 public class Position {
     private char letter;
     private int num;
-    private int color;
 
-    public Position() {}
+    Position() {
+    }
 
     public Position(String position) throws InvalidPositionException {
         if (position == null || position.length() != 2) {
@@ -23,8 +23,6 @@ public class Position {
         this.num = Character.getNumericValue(position.charAt(1));
 
         validatePosition(letter, num);
-
-        updateColor();
     }
 
     public Position(char letter, int num) throws InvalidPositionException {
@@ -32,8 +30,6 @@ public class Position {
         this.num = num;
 
         validatePosition(this.letter, this.num);
-
-        updateColor();
     }
 
     public Position(int letter, int num) throws InvalidPositionException {
@@ -41,11 +37,17 @@ public class Position {
         this.num = num;
 
         validatePosition(this.letter, this.num);
-
-        updateColor();
     }
 
-    public void validatePosition(char letter, int num) throws InvalidPositionException {
+    public Position(int position) throws InvalidPositionException {
+        this.num = (position % Consts.MAXROWS) + 1;
+        int temp = (position / Consts.MAXCOLUMNS);
+        this.letter = (char) ('A' + temp);
+
+        validatePosition(this.letter, this.num);
+    }
+
+    private void validatePosition(char letter, int num) throws InvalidPositionException {
         int letterAsInt = (letter - 'A') + 1;
 
         if (num < 1 || num > Consts.MAXROWS) {
@@ -57,16 +59,12 @@ public class Position {
         }
     }
 
-    private void updateColor() {
-        if ((letter + num) % 2 == 0) {
-            color = R.color.cellColorPrimary;
-        } else {
-            color = R.color.cellColorAlternative;
-        }
-    }
-
     public int getColor() {
-        return color;
+        if ((letter + num) % 2 == 0) {
+            return R.color.cellColorPrimary;
+        } else {
+            return R.color.cellColorAlternative;
+        }
     }
 
     public int getLetterAsInt() {

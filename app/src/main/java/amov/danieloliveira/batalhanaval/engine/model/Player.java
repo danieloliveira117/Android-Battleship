@@ -1,12 +1,14 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
+import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+
 public class Player {
     private boolean isHuman;
     private User user;
     private Board board;
     private boolean shipsPlaced;
 
-    Player(boolean isHuman) {
+    public Player(boolean isHuman) {
         this.isHuman = isHuman;
         this.shipsPlaced = false;
         this.board = new Board();
@@ -38,5 +40,17 @@ public class Player {
 
     public void setShipsPlaced(boolean shipsPlaced) {
         this.shipsPlaced = shipsPlaced;
+    }
+
+    public boolean addNewAttempt(Position position) {
+        return board.addNewAttempt(position);
+    }
+
+    public void processSelectedPositions() {
+        board.processSelectedPositions();
+    }
+
+    public PositionType getPositionType(Position position) {
+        return board.getPositionType(position);
     }
 }

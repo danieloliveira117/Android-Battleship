@@ -13,5 +13,9 @@
             <enum name="ship_type_t_shape" value="4" />
         </attr>
         <attr name="ship_number" format="integer" />
+        <attr name="border_left" format="boolean" />
+        <attr name="border_top" format="boolean" />
+        <attr name="border_bottom" format="boolean" />
+        <attr name="border_right" format="boolean" />
     </declare-styleable>
 </resources>

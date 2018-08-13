@@ -3,6 +3,9 @@ package amov.danieloliveira.batalhanaval.engine;
 import java.util.Observable;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
+import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class GameObservable extends Observable {
@@ -25,5 +28,16 @@ public class GameObservable extends Observable {
 
         setChanged();
         notifyObservers(user);
+    }
+
+    public void addNewAttempt(PlayerType playerType, Position position) {
+        gameData.addNewAttempt(playerType, position);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public PositionType getPositionType(PlayerType player, Position position) {
+        return gameData.getPositionType(player, position);
     }
 }

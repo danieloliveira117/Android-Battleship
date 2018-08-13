@@ -2,6 +2,8 @@ package amov.danieloliveira.batalhanaval.engine;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitGameStart;
@@ -68,5 +70,15 @@ public class GameData {
 
     public void confirmShipPlacement(PlayerType player) {
         gameModel.confirmShipPlacement(player);
+    }
+
+    // TODO: 12/08/2018 Proteger por IGameState
+    // TODO: 13/08/2018 Utilizar boolean para iniciar reposicionamento de um navio
+    public boolean addNewAttempt(PlayerType player, Position position) {
+        return gameModel.addNewAttempt(player, position);
+    }
+
+    public PositionType getPositionType(PlayerType player, Position position) {
+        return gameModel.getPositionType(player, position);
     }
 }

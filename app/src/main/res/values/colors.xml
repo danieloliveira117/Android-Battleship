@@ -11,4 +11,12 @@
     <color name="colorRed">#ff0000</color>
     <color name="cellColorPrimary">#375D81</color>
     <color name="cellColorAlternative">#C4D7ED</color>
+    <color name="ship_one">#ffb3ba</color>
+    <color name="ship_two">#ffdfba</color>
+    <color name="ship_three">#ffffba</color>
+    <color name="ship_t_shape">#baffc9</color>
+
+    <color name="MISS">#1ca3ec</color>
+    <color name="SHIP">#999999</color>
+    <color name="SELECTED">#ffdfba</color>
 </resources>

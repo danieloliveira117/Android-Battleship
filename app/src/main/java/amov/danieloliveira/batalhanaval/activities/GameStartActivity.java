@@ -8,10 +8,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.View;
+
+import android.widget.GridView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,12 +30,15 @@ import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.model.User;
+import amov.danieloliveira.batalhanaval.views.BattleShipCellView;
 
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
+// TODO clear game data on back / game end / lost connection / on Pause????
 public class GameStartActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "GameStartActivity";
     private GameObservable gameObs;
+    public List<Integer> placedViews = new ArrayList<>();
 
     private int mode = SINGLEPLAYER;
     private Handler procMsg = null;
@@ -48,7 +60,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
     protected void onPause() {
         super.onPause();
 
-        if(gameCommunication != null) {
+        if (gameCommunication != null) {
             gameCommunication.onPause();
             gameCommunication = null;
         }
@@ -58,6 +70,9 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
+
+        gameObs = Utils.getObservable(this);
+        gameObs.addObserver(this);
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -76,9 +91,6 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         }
 
         procMsg = new Handler();
-
-        gameObs = Utils.getObservable(this);
-        gameObs.addObserver(this);
     }
 
     @Override
@@ -102,5 +114,4 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
 
         tv_adversary_username.setText(adversary.getUsername());
     }
-
 }

@@ -1,7 +1,5 @@
 package amov.danieloliveira.batalhanaval.engine;
 
-import java.lang.reflect.Type;
-
 import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
 
 public class JsonMessage<T> {

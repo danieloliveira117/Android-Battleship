@@ -1,8 +1,10 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.engine.enums.Orientation;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
@@ -11,7 +13,7 @@ public class Ship {
     public static int shipCount = 0;
     private int id;
     private ShipType type;
-    private List<Position> positionList = new ArrayList<>();
+    private Set<Position> positionList = new HashSet<>();
     private Orientation orientation;
     private boolean destroyed;
 
@@ -21,20 +23,7 @@ public class Ship {
         this.type = type;
         this.destroyed = false;
 
-        switch (type) {
-            case ONE:
-                addParts(1);
-                break;
-            case TWO:
-                addParts(2);
-                break;
-            case THREE:
-                addParts(3);
-                break;
-            case T_SHAPE:
-                addParts(5);
-                break;
-        }
+        addParts(type.getSize());
     }
 
     private void addParts(int num) {
@@ -47,7 +36,7 @@ public class Ship {
         return type;
     }
 
-    public List<Position> getPositionList() {
+    public Set<Position> getPositionList() {
         return positionList;
     }
 
