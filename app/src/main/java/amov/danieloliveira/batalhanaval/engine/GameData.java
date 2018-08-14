@@ -8,6 +8,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitGameStart;
+import amov.danieloliveira.batalhanaval.engine.state.AwaitShipPlacement;
 import amov.danieloliveira.batalhanaval.engine.state.IGameState;
 
 public class GameData {
@@ -86,6 +87,12 @@ public class GameData {
     }
 
     public PositionType getPositionType(PlayerType player, Position position) {
+        if (currentState instanceof AwaitGameStart)
+            return PositionType.UNKNOWN;
+
+        if (currentState instanceof AwaitShipPlacement)
+            return gameModel.getPositionValidity(player, position);
+
         return gameModel.getPositionType(player, position);
     }
 

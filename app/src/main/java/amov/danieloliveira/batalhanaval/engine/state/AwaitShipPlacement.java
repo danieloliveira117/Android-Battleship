@@ -6,7 +6,7 @@ import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberExcep
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 
-class AwaitShipPlacement extends StateAdapter {
+public class AwaitShipPlacement extends StateAdapter {
     public AwaitShipPlacement(GameData gameData) {
         super(gameData);
     }

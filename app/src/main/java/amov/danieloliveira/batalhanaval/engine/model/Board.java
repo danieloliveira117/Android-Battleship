@@ -93,4 +93,23 @@ public class Board {
 
         return shipList[ship];
     }
+
+    public PositionType getPositionValidity(Position position) {
+        int count = 0;
+
+        for (Ship ship : shipList) {
+            for (Position pos : ship.getPositionList()) {
+                if(pos != null && pos.equals(position)) {
+                    count++;
+                }
+            }
+        }
+
+        if(count == 1)
+            return PositionType.VALID;
+        else if(count == 0)
+            return PositionType.UNKNOWN;
+
+        return PositionType.INVALID;
+    }
 }

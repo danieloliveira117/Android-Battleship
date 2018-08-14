@@ -66,4 +66,8 @@ class GameModel {
     public Ship getPlayerShip(PlayerType player, Integer ship) throws InvalidShipNumberException {
         return getPlayer(player).getShipByID(ship);
     }
+
+    public PositionType getPositionValidity(PlayerType player, Position position) {
+        return getPlayer(player).getPositionValidity(position);
+    }
 }

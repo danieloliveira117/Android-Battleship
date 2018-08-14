@@ -58,4 +58,8 @@ public class Player {
     public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
         return board.getShipByID(ship);
     }
+
+    public PositionType getPositionValidity(Position position) {
+        return board.getPositionValidity(position);
+    }
 }
