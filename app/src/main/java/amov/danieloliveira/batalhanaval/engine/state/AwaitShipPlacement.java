@@ -2,32 +2,13 @@ package amov.danieloliveira.batalhanaval.engine.state;
 
 import amov.danieloliveira.batalhanaval.engine.GameData;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 
 class AwaitShipPlacement extends StateAdapter {
     public AwaitShipPlacement(GameData gameData) {
         super(gameData);
-    }
-
-    @Override
-    public IGameState nextShip(PlayerType player) {
-        boolean next = false;
-        Ship[] ships = gameData.getPlayerShips(player);
-        Ship current = gameData.getCurrentShip(player);
-
-        if (current == null) {
-            gameData.setCurrentShip(player, ships[0]);
-        } else {
-            for (Ship ship : ships) {
-                if (ship == current) {
-                    next = true;
-                } else if (next) {
-                    break;
-                }
-            }
-        }
-
-        return this;
     }
 
     @Override
@@ -38,6 +19,18 @@ class AwaitShipPlacement extends StateAdapter {
         /*if(gameData.allShipsPlaced()) {
             return new State;
         }*/
+
+        return this;
+    }
+
+    @Override
+    public IGameState placeShip(PlayerType player, Position position, Integer tag) {
+        try {
+            gameData.setCurrentShip(player, tag);
+            gameData.setCurrentShipPosition(player, position);
+        } catch (InvalidShipNumberException e) {
+            e.printStackTrace();
+        }
 
         return this;
     }

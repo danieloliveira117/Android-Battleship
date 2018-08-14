@@ -1,6 +1,7 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 
 public class Player {
     private boolean isHuman;
@@ -52,5 +53,9 @@ public class Player {
 
     public PositionType getPositionType(Position position) {
         return board.getPositionType(position);
+    }
+
+    public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
+        return board.getShipByID(ship);
     }
 }

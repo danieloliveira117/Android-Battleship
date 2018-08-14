@@ -1,25 +1,27 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.engine.enums.Orientation;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 
 public class Ship {
     public static int shipCount = 0;
     private int id;
     private ShipType type;
-    private Set<Position> positionList = new HashSet<>();
+    private List<Position> positionList = new ArrayList<>();
     private Orientation orientation;
     private boolean destroyed;
 
     public Ship(ShipType type) {
         this.id = shipCount++;
-        this.orientation = Orientation.NORTH;
+        this.orientation = Orientation.WEST;
         this.type = type;
         this.destroyed = false;
 
@@ -36,7 +38,7 @@ public class Ship {
         return type;
     }
 
-    public Set<Position> getPositionList() {
+    public List<Position> getPositionList() {
         return positionList;
     }
 
@@ -46,6 +48,7 @@ public class Ship {
 
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+        updatePosition(positionList.get(0));
     }
 
     public boolean isDestroyed() {
@@ -54,6 +57,143 @@ public class Ship {
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
+    }
+
+    public void updatePosition(Position position) {
+        Position temp = new Position(position);
+        boolean valid = true;
+
+        if (type == ShipType.T_SHAPE) {
+            Position original = new Position(temp);
+
+            switch (orientation) {
+                case NORTH:
+                    // WEST
+                    try {
+                        original.decrementHorizontal();
+                        positionList.set(3, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(3, new Position());
+                    }
+
+                    // Restore original
+                    original = new Position(temp);
+
+                    // EAST
+                    try {
+                        original.incrementHorizontal();
+                        positionList.set(4, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(4, new Position());
+                    }
+                    break;
+                case WEST:
+                    // SOUTH
+                    try {
+                        original.decrementVertical();
+                        positionList.set(3, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(3, new Position());
+                    }
+
+                    // Restore original
+                    original = new Position(temp);
+
+                    // NORTH
+                    try {
+                        original.incrementVertical();
+                        positionList.set(4, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(4, new Position());
+                    }
+                    break;
+                case SOUTH:
+                    // WEST
+                    try {
+                        original.incrementHorizontal();
+                        positionList.set(3, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(3, new Position());
+                    }
+
+                    // Restore original
+                    original = new Position(temp);
+
+                    // EAST
+                    try {
+                        original.decrementHorizontal();
+                        positionList.set(4, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(4, new Position());
+                    }
+                    break;
+                case EAST:
+                    // NORTH
+                    try {
+                        original.incrementVertical();
+                        positionList.set(3, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(3, new Position());
+                    }
+
+                    // Restore original
+                    original = new Position(temp);
+
+                    // SOUTH
+                    try {
+                        original.decrementVertical();
+                        positionList.set(4, original);
+                    } catch (InvalidPositionException ignored) {
+                        positionList.set(4, new Position());
+                    }
+                    break;
+            }
+
+            for (int i = 0; i < positionList.size() - 2; i++) {
+                if (valid) {
+                    positionList.set(i, new Position(temp));
+                } else {
+                    positionList.set(i, new Position());
+                }
+
+                try {
+                    incrementPosition(temp);
+                } catch (InvalidPositionException e) {
+                    valid = false;
+                }
+            }
+        } else { // ONE, TWO, THREE
+            for (int i = 0; i < positionList.size(); i++) {
+                if (valid) {
+                    positionList.set(i, new Position(temp));
+                } else {
+                    positionList.set(i, new Position());
+                }
+
+                try {
+                    incrementPosition(temp);
+                } catch (InvalidPositionException e) {
+                    valid = false;
+                }
+            }
+        }
+    }
+
+    private void incrementPosition(Position position) throws InvalidPositionException {
+        switch (orientation) {
+            case NORTH:
+                position.incrementVertical();
+                break;
+            case WEST:
+                position.incrementHorizontal();
+                break;
+            case SOUTH:
+                position.decrementVertical();
+                break;
+            case EAST:
+                position.decrementHorizontal();
+                break;
+        }
     }
 
     @Override
@@ -72,5 +212,15 @@ public class Ship {
     @Override
     public int hashCode() {
         return Objects.hash(id, type, positionList, orientation, destroyed);
+    }
+
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "type=" + type +
+                ", positionList=" + positionList +
+                ", orientation=" + orientation +
+                ", destroyed=" + destroyed +
+                '}';
     }
 }

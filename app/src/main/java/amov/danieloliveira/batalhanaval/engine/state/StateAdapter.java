@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.engine.state;
 import amov.danieloliveira.batalhanaval.engine.GameData;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class StateAdapter implements IGameState {
@@ -23,12 +24,12 @@ public class StateAdapter implements IGameState {
     }
 
     @Override
-    public IGameState nextShip(PlayerType player) {
+    public IGameState confirmShipPlacement(PlayerType player) {
         return this;
     }
 
     @Override
-    public IGameState confirmShipPlacement(PlayerType player) {
+    public IGameState placeShip(PlayerType player, Position position, Integer tag) {
         return this;
     }
 }

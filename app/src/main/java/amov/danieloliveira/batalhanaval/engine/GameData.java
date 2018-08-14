@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.engine;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
@@ -26,6 +27,10 @@ public class GameData {
 
     public void setAdversary(User user) {
         currentState = currentState.setAdversary(user);
+    }
+
+    public void placeShip(PlayerType player, Position position, Integer tag) {
+        currentState = currentState.placeShip(player, position, tag);
     }
 
     /* Update Game Model */
@@ -55,12 +60,14 @@ public class GameData {
         return null;
     }
 
-    public void setCurrentShip(PlayerType player, Ship ship) {
+    public void setCurrentShip(PlayerType player, Integer ship) throws InvalidShipNumberException {
+        Ship temp = gameModel.getPlayerShip(player, ship);
+
         switch (player) {
             case PLAYER:
-                currentShip[0] = ship;
+                currentShip[0] = temp;
             case ADVERSARY:
-                currentShip[1] = ship;
+                currentShip[1] = temp;
         }
     }
 
@@ -80,5 +87,9 @@ public class GameData {
 
     public PositionType getPositionType(PlayerType player, Position position) {
         return gameModel.getPositionType(player, position);
+    }
+
+    public void setCurrentShipPosition(PlayerType player, Position position) {
+        getCurrentShip(player).updatePosition(position);
     }
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 
 import static amov.danieloliveira.batalhanaval.Consts.MAXSHIPS;
 
@@ -84,5 +85,12 @@ public class Board {
         }
 
         return PositionType.UNKNOWN;
+    }
+
+    public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
+        if(ship < 0 || ship > MAXSHIPS - 1)
+            throw new InvalidShipNumberException();
+
+        return shipList[ship];
     }
 }

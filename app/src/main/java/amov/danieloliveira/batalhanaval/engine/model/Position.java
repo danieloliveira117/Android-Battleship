@@ -14,6 +14,11 @@ public class Position {
     Position() {
     }
 
+    public Position(Position position) {
+        this.letter = position.getLetter();
+        this.num = position.getNum();
+    }
+
     public Position(String position) throws InvalidPositionException {
         if (position == null || position.length() != 2) {
             throw new InvalidPositionException();
@@ -80,6 +85,35 @@ public class Position {
     }
 
     @Override
+    public String toString() {
+        return letter + "" + num;
+    }
+
+    public void decrementVertical() throws InvalidPositionException {
+        int temp = this.num - 1;
+        validatePosition(this.letter, temp);
+        this.num = temp;
+    }
+
+    public void decrementHorizontal() throws InvalidPositionException {
+        char temp = (char) (this.letter - 1);
+        validatePosition(temp, this.num);
+        this.letter = temp;
+    }
+
+    public void incrementVertical() throws InvalidPositionException {
+        int temp = this.num + 1;
+        validatePosition(this.letter, temp);
+        this.num = temp;
+    }
+
+    public void incrementHorizontal() throws InvalidPositionException {
+        char temp = (char) (this.letter + 1);
+        validatePosition(temp, this.num);
+        this.letter = temp;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -94,10 +128,5 @@ public class Position {
         int result = (int) letter;
         result = 31 * result + num;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return letter + "" + num;
     }
 }

@@ -78,10 +78,9 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        //final int height = getMeasuredHeight();
-        final int width = getMeasuredWidth();
+        final int size = Math.min(getMeasuredHeight(), getMeasuredWidth());
 
-        setMeasuredDimension(width, width);
+        setMeasuredDimension(size, size);
     }
 
     @Override
@@ -94,6 +93,9 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                 break;
             case DragEvent.ACTION_DRAG_ENTERED:
                 Log.d(TAG, "ACTION_DRAG_ENTERED");
+
+                gameObs.placeShip(PlayerType.PLAYER, position, (Integer) view.getTag());
+
                 // TODO: 13/08/2018 Show entire ship + border
                 this.setBackgroundResource(R.color.ship_t_shape);
                 this.invalidate();
@@ -126,6 +128,12 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private void updateColor() {
         // TODO change player type
         switch (gameObs.getPositionType(PlayerType.PLAYER, position)) {
+            case VALID:
+                this.setBackgroundResource(R.color.SELECTED);
+                break;
+            case INVALID:
+                this.setBackgroundResource(R.color.SELECTED);
+                break;
             case UNKNOWN:
                 this.setBackgroundResource(position.getColor());
                 break;

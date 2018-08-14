@@ -19,4 +19,6 @@
     <color name="MISS">#1ca3ec</color>
     <color name="SHIP">#999999</color>
     <color name="SELECTED">#ffdfba</color>
+    <color name="INVALID">#b71c1c</color>
+    <color name="VALID">#1b5e20</color>
 </resources>

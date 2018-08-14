@@ -40,4 +40,11 @@ public class GameObservable extends Observable {
     public PositionType getPositionType(PlayerType player, Position position) {
         return gameData.getPositionType(player, position);
     }
+
+    public void placeShip(PlayerType player, Position position, Integer tag) {
+        gameData.placeShip(player, position, tag);
+
+        setChanged();
+        notifyObservers();
+    }
 }
