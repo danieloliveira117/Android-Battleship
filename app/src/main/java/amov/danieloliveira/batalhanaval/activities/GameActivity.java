@@ -1,6 +1,7 @@
 package amov.danieloliveira.batalhanaval.activities;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
@@ -16,8 +17,10 @@ import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
+import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
+import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
 // TODO clear game data on back / game end / lost connection / on Pause????
@@ -26,6 +29,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private GameObservable gameObs;
     private GameCommunication gameCommunication;
     private int mode;
+    private PlayerType player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
         Intent intent = getIntent();
         if (intent != null) {
             mode = intent.getIntExtra("mode", SINGLEPLAYER);
+        }
+
+        if (mode == CLIENT) {
+            player = PlayerType.ADVERSARY;
+        } else {
+            player = PlayerType.PLAYER;
         }
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
@@ -73,7 +83,19 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        setCurrentPlayerTurn(gameObs.getCurrentPlayer());
+    }
 
+    private void setCurrentPlayerTurn(PlayerType player) {
+        ConstraintLayout layout;
+
+        if (player == PlayerType.PLAYER) {
+            layout = findViewById(R.id.info_player);
+        } else {
+            layout = findViewById(R.id.info_adversary);
+        }
+
+        layout.setBackgroundResource(R.color.MISS);
     }
 
     private void updateAdversary(User adversary) {

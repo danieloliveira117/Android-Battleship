@@ -42,4 +42,9 @@ public class StateAdapter implements IGameState {
     public IGameState setCurrentShip(PlayerType player, Position position) {
         return this;
     }
+
+    @Override
+    public IGameState randomizePlacement(PlayerType player) {
+        return this;
+    }
 }

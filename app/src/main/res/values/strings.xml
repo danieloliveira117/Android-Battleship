@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Battleship</string>
-    <string name="username">Username</string>
-    <string name="save_user">Save User</string>
-    <string name="take_picture">Take Picture</string>
-    <string name="permission_denied">You need to grant the permission to use the camera feature</string>
-    <string name="config_changed">Configuration changed</string>
-    <string name="username_min_length">The username needs to be at least 3 characters</string>
-    <string name="error_image">There has been an error getting your picture</string>
-    <string name="image_missing">You need to add an image</string>
-    <string name="title_activity_game_start">GameStartActivity</string>
-    <string name="error_netconn">No network connection</string>
-    <string name="serverdlg_title">Battleship Server</string>
-    <string name="serverdlg_msg">Waiting for a client…</string>
-    <string name="game_finished">The game was finished</string>
-    <string name="ships_not_placed_correctly">This starting placement is not valid</string>
-
-    <string name="play_one_player">One Player</string>
-    <string name="play_join_server">Join Server</string>
-    <string name="play_create_server">Create Server</string>
-    <string name="match_history">Match History</string>
-    <string name="config_user">Change User</string>
-
-    <string name="clientdlg_msg">Battleship Client</string>
-    <string name="serverip">Server IP</string>
-    <string name="confirm">Confirm</string>
-    <string name="shipyard">Shipyard</string>
 
     <string name="one">1</string>
     <string name="two">2</string>
@@ -44,5 +19,33 @@
     <string name="f">F</string>
     <string name="g">G</string>
     <string name="h">H</string>
+
+    <string name="username">Username</string>
+    <string name="save_user">Save User</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="permission_denied">You need to grant the permission to use the camera feature</string>
+    <string name="config_changed">Configuration changed</string>
+    <string name="username_min_length">The username needs to be at least 3 characters</string>
+    <string name="error_image">There has been an error getting your picture</string>
+    <string name="image_missing">You need to add an image</string>
+    <string name="title_activity_game_start">GameStartActivity</string>
+    <string name="error_netconn">No network connection</string>
+    <string name="serverdlg_title">Battleship Server</string>
+    <string name="serverdlg_msg">Waiting for a client…</string>
+    <string name="clientdlg_msg">Battleship Client</string>
+    <string name="serverip">Server IP</string>
+    <string name="confirm">Confirm</string>
+    <string name="game_finished">The game was finished</string>
+    <string name="ships_not_placed_correctly">This starting placement is not valid</string>
+
+    <string name="play_one_player">One Player</string>
+    <string name="play_join_server">Join Server</string>
+    <string name="play_create_server">Create Server</string>
+    <string name="match_history">Match History</string>
+    <string name="change_user">Change User</string>
+
+    <string name="shipyard">Shipyard</string>
     <string name="confirm_placement">Confirm Placement</string>
+    <string name="randomize_placement">Randomize Placement</string>
+    <string name="change_mode">Change to Single-Player</string>
 </resources>

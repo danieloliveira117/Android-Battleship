@@ -5,11 +5,15 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.engine.enums.Orientation;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
+
+import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
+import static amov.danieloliveira.batalhanaval.Consts.MAXROWS;
 
 public class Ship {
     public static int shipCount = 0;
@@ -196,6 +200,48 @@ public class Ship {
         }
     }
 
+    public boolean hasInvalidPositions() {
+        for (Position position : positionList) {
+            if(position == null || !position.isValid()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void setRandomOrientation() {
+        Random random = new Random();
+
+        switch (random.nextInt(4)) {
+            case 0:
+                orientation = Orientation.NORTH;
+                break;
+            case 1:
+                orientation = Orientation.WEST;
+                break;
+            case 2:
+                orientation = Orientation.EAST;
+                break;
+            case 3:
+                orientation = Orientation.SOUTH;
+                break;
+        }
+    }
+
+    public void setRandomPosition() {
+        Random random = new Random();
+
+        do {
+            setRandomOrientation();
+
+            try {
+                updatePosition(new Position(random.nextInt(MAXROWS), random.nextInt(MAXCOLUMNS)));
+            } catch (InvalidPositionException ignored) {}
+
+        } while (hasInvalidPositions());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -222,15 +268,5 @@ public class Ship {
                 ", orientation=" + orientation +
                 ", destroyed=" + destroyed +
                 '}';
-    }
-
-    public boolean hasInvalidPositions() {
-        for (Position position : positionList) {
-            if(position == null || !position.isValid()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

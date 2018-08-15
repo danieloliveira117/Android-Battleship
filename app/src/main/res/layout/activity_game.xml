@@ -6,31 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".activities.GameActivity">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/civ_player_avatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:civ_border_color="@color/gray"
-        app:civ_border_width="2dp"
-        app:civ_shadow="true"
-        app:civ_shadow_color="@color/colorAccent"
-        app:civ_shadow_radius="10"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/tv_player_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_player_name"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/info_player"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/light"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/civ_player_avatar"
-        app:layout_constraintRight_toLeftOf="@+id/tv_adversary_name"
-        app:layout_constraintBottom_toBottomOf="@+id/civ_adversary_avatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/info_adversary">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/civ_player_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:civ_border_color="@color/gray"
+            app:civ_border_width="2dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@color/colorAccent"
+            app:civ_shadow_radius="10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_player_name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_player_name"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/light"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@+id/civ_player_avatar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/info_adversary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/info_player"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tv_adversary_name"
@@ -40,8 +58,8 @@
         android:gravity="center_vertical|end"
         android:textColor="@color/light"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/civ_adversary_avatar"
-        app:layout_constraintLeft_toRightOf="@+id/tv_player_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/civ_adversary_avatar"
         app:layout_constraintTop_toTopOf="parent" />
     
@@ -54,8 +72,10 @@
         app:civ_shadow="true"
         app:civ_shadow_color="@color/colorAccent"
         app:civ_shadow_radius="10"
+        app:layout_constraintLeft_toRightOf="@id/tv_adversary_name"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <TableLayout
         android:id="@+id/tbl_player_ships"

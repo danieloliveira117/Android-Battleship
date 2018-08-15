@@ -72,4 +72,8 @@ public class Player {
     public List<Position> getShipPositions(Position position) {
         return board.getShipPositions(position);
     }
+
+    public void setRandomPlacement() {
+        board.setRandomPlacement();
+    }
 }

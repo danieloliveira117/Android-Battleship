@@ -50,4 +50,10 @@ public class AwaitShipPlacement extends StateAdapter {
 
         return this;
     }
+
+    @Override
+    public IGameState randomizePlacement(PlayerType player) {
+        gameData.setRandomPlacement(player);
+        return this;
+    }
 }

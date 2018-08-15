@@ -50,6 +50,10 @@ public class GameData {
         currentState = currentState.setCurrentShip(player, position);
     }
 
+    public void randomizePlacement(PlayerType player) {
+        currentState = currentState.randomizePlacement(player);
+    }
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);
@@ -62,6 +66,10 @@ public class GameData {
     }
 
     /* Gets */
+    public PlayerType getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public Ship getCurrentShip(PlayerType player) {
         switch (player) {
             case PLAYER:
@@ -150,5 +158,9 @@ public class GameData {
 
     public User getPlayer(PlayerType player) {
         return gameModel.getPlayer(player).getUser();
+    }
+
+    public void setRandomPlacement(PlayerType player) {
+        gameModel.setRandomPlacement(player);
     }
 }

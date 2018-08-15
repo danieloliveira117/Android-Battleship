@@ -1,6 +1,5 @@
 package amov.danieloliveira.batalhanaval;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -144,7 +143,7 @@ public class GameCommunication {
                         User adversary = ((UserBase64) jsonMessage.getObject()).toUser();
 
                         // Set adversary
-                        gameObs.setAdversary(adversary);
+                        gameObs.setAdversaryUser(adversary);
 
                         // Start Game
                         gameObs.startGame(GameMode.vsPLAYER, Utils.getUser(activity));

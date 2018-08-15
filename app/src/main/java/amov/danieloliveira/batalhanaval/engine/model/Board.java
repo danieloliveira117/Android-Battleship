@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
@@ -19,6 +20,10 @@ public class Board {
     private Map<Position, PositionType> adversaryAttempts = new HashMap<>();
 
     public Board() {
+        createShips();
+    }
+
+    private void createShips() {
         shipList[0] = new Ship(ShipType.ONE);
         shipList[1] = new Ship(ShipType.ONE);
         shipList[2] = new Ship(ShipType.TWO);
@@ -157,6 +162,29 @@ public class Board {
         return hasDuplicate(positionList);
     }
 
+    public void setRandomPlacement() {
+        // Restore board
+        createShips();
+
+        int count = 0;
+
+        List<Position> positionList= new ArrayList<>();
+
+        while (count < MAXSHIPS) {
+            shipList[count].setRandomPosition();
+
+            positionList.clear();
+
+            for (int i = 0; i <= count; i++) {
+                positionList.addAll(shipList[i].getPositionList());
+            }
+
+            if(count == 0 || !hasDuplicate(positionList)) {
+                count++;
+            }
+        }
+    }
+
     private static <T> boolean hasDuplicate(Iterable<T> all) {
         Set<T> set = new HashSet<>();
         // Set#add returns false if the set does not change, which
@@ -164,4 +192,5 @@ public class Board {
         for (T each : all) if (!set.add(each)) return true;
         return false;
     }
+
 }

@@ -24,7 +24,7 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
-    public void setAdversary(User user) {
+    public void setAdversaryUser(User user) {
         gameData.setAdversary(user);
 
         setChanged();
@@ -65,6 +65,13 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
+    public void randomizePlacement(PlayerType player) {
+        gameData.randomizePlacement(player);
+
+        setChanged();
+        notifyObservers();
+    }
+
     /* --- GETS --- */
 
     public PositionType getPositionType(PlayerType player, Position position) {
@@ -81,5 +88,9 @@ public class GameObservable extends Observable {
 
     public boolean validPlacement(PlayerType player) {
         return gameData.allShipsPlaced(player);
+    }
+
+    public PlayerType getCurrentPlayer() {
+        return gameData.getCurrentPlayer();
     }
 }

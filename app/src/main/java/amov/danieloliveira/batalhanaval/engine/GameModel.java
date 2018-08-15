@@ -84,4 +84,8 @@ class GameModel {
     public List<Position> getShipPositions(PlayerType player, Position position) {
         return getPlayer(player).getShipPositions(position);
     }
+
+    public void setRandomPlacement(PlayerType player) {
+        getPlayer(player).setRandomPlacement();
+    }
 }
