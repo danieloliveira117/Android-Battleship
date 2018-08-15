@@ -1,5 +1,6 @@
 package amov.danieloliveira.batalhanaval.engine;
 
+import java.util.List;
 import java.util.Observable;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
@@ -37,14 +38,44 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
-    public PositionType getPositionType(PlayerType player, Position position) {
-        return gameData.getPositionType(player, position);
-    }
-
     public void placeShip(PlayerType player, Position position, Integer tag) {
         gameData.placeShip(player, position, tag);
 
         setChanged();
         notifyObservers();
+    }
+
+    public void moveShip(PlayerType player, Position oldposition, Position newposition) {
+        gameData.moveShip(player, oldposition, newposition);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void confirmPlacement(PlayerType player) {
+        gameData.confirmShipPlacement(player);
+
+        setChanged();
+        notifyObservers();
+    }
+    public void selectShip(PlayerType player, Position position) {
+        gameData.setCurrentShip(player, position);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /* --- GETS --- */
+
+    public PositionType getPositionType(PlayerType player, Position position) {
+        return gameData.getPositionType(player, position);
+    }
+
+    public List<Position> getShipPositions(PlayerType player, Position position) {
+        return gameData.getShipPositions(player, position);
+    }
+
+    public User getAdversary() {
+        return gameData.getPlayer(PlayerType.ADVERSARY);
     }
 }

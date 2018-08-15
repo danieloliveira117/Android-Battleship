@@ -9,8 +9,10 @@
     <color name="windowBackground">#183152</color>
     <color name="black">#000000</color>
     <color name="colorRed">#ff0000</color>
+
     <color name="cellColorPrimary">#375D81</color>
     <color name="cellColorAlternative">#C4D7ED</color>
+
     <color name="ship_one">#ffb3ba</color>
     <color name="ship_two">#ffdfba</color>
     <color name="ship_three">#ffffba</color>
@@ -21,4 +23,5 @@
     <color name="SELECTED">#ffdfba</color>
     <color name="INVALID">#b71c1c</color>
     <color name="VALID">#1b5e20</color>
+    <color name="MOVED">#333333</color>
 </resources>

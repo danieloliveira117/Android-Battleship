@@ -1,5 +1,6 @@
 package amov.danieloliveira.batalhanaval.views;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -93,16 +94,16 @@ class ShipPartView extends View implements Observer, View.OnTouchListener {
 
             if (drawable != null) {
                 if (borderLeft) {
-                    drawable.setLeftBorder(2 * oneDP, Color.BLACK);
+                    drawable.setLeftBorder(2 * oneDP, getResources().getColor(R.color.MISS));
                 }
                 if (borderTop) {
-                    drawable.setTopBorder(2 * oneDP, Color.BLACK);
+                    drawable.setTopBorder(2 * oneDP, getResources().getColor(R.color.MISS));
                 }
                 if (borderRight) {
-                    drawable.setRightBorder(2 * oneDP, Color.BLACK);
+                    drawable.setRightBorder(2 * oneDP, getResources().getColor(R.color.MISS));
                 }
                 if (borderBottom) {
-                    drawable.setBottomBorder(2 * oneDP, Color.BLACK);
+                    drawable.setBottomBorder(2 * oneDP, getResources().getColor(R.color.MISS));
                 }
 
                 this.setBackground(drawable);
@@ -133,8 +134,9 @@ class ShipPartView extends View implements Observer, View.OnTouchListener {
                     view.setVisibility(INVISIBLE);
                 }
 
+                ClipData data = ClipData.newPlainText("", "");
                 DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-                v.startDrag(null, shadowBuilder, v, 0);
+                v.startDrag(data, shadowBuilder, v, 0);
                 v.setVisibility(View.INVISIBLE);
 
                 return true;

@@ -13,12 +13,13 @@ public class AwaitShipPlacement extends StateAdapter {
 
     @Override
     public IGameState confirmShipPlacement(PlayerType player) {
-        gameData.confirmShipPlacement(player);
+        gameData.setShipsPlaced(player);
 
         // TODO: 09/08/2018 Change game phase if both players already confirmed
-        /*if(gameData.allShipsPlaced()) {
-            return new State;
-        }*/
+        if(gameData.allShipsPlaced()) {
+            gameData.randomizeStartingPlayer();
+            return new AwaitPlayerMove(gameData);
+        }
 
         return this;
     }
@@ -31,6 +32,21 @@ public class AwaitShipPlacement extends StateAdapter {
         } catch (InvalidShipNumberException e) {
             e.printStackTrace();
         }
+
+        return this;
+    }
+
+    @Override
+    public IGameState moveShip(PlayerType player, Position old_position, Position new_position) {
+        gameData.setCurrentShipPosition(player, old_position);
+        gameData.setCurrentShipPosition(player, new_position);
+
+        return this;
+    }
+
+    @Override
+    public IGameState setCurrentShip(PlayerType player, Position position) {
+        gameData.setCurrentShipByPosition(player, position);
 
         return this;
     }

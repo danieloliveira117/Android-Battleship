@@ -1,6 +1,7 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
@@ -38,14 +39,14 @@ public class Board {
 
         // Check if all 3 positions have been selected
         for (PositionType positionType : adversaryAttempts.values()) {
-            if(positionType == PositionType.SELECTED) {
+            if (positionType == PositionType.SELECTED) {
                 selected++;
             }
         }
 
         // TODO verificar quantas casas ainda faltam -> se menor que 3 mudar o if...
-        if(selected == 3) {
-           return processSelectedPositions() == 3;
+        if (selected == 3) {
+            return processSelectedPositions() == 3;
         }
 
         return false;
@@ -80,7 +81,7 @@ public class Board {
     }
 
     public PositionType getPositionType(Position position) {
-        if(adversaryAttempts.containsKey(position)) {
+        if (adversaryAttempts.containsKey(position)) {
             return adversaryAttempts.get(position);
         }
 
@@ -88,28 +89,51 @@ public class Board {
     }
 
     public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
-        if(ship < 0 || ship > MAXSHIPS - 1)
+        if (ship < 0 || ship > MAXSHIPS - 1)
             throw new InvalidShipNumberException();
 
         return shipList[ship];
+    }
+
+    public Ship getShipByPosition(Position position) {
+        for (Ship ship : shipList) {
+            if (ship.getPositionList().contains(position)) {
+                return ship;
+            }
+        }
+
+        return null;
     }
 
     public PositionType getPositionValidity(Position position) {
         int count = 0;
 
         for (Ship ship : shipList) {
-            for (Position pos : ship.getPositionList()) {
-                if(pos != null && pos.equals(position)) {
-                    count++;
+
+            if (ship.getPositionList().contains(position)) {
+                count++;
+
+                if (ship.hasInvalidPositions()) {
+                    return PositionType.INVALID;
                 }
             }
         }
 
-        if(count == 1)
+        if (count == 1)
             return PositionType.VALID;
-        else if(count == 0)
+        else if (count == 0)
             return PositionType.UNKNOWN;
 
         return PositionType.INVALID;
+    }
+
+    public List<Position> getShipPositions(Position position) {
+        for (Ship ship : shipList) {
+            if (ship.getPositionList().contains(position)) {
+                return ship.getPositionList();
+            }
+        }
+
+        return null;
     }
 }

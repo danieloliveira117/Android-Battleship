@@ -32,4 +32,14 @@ public class StateAdapter implements IGameState {
     public IGameState placeShip(PlayerType player, Position position, Integer tag) {
         return this;
     }
+
+    @Override
+    public IGameState moveShip(PlayerType player, Position old_position, Position new_position) {
+        return this;
+    }
+
+    @Override
+    public IGameState setCurrentShip(PlayerType player, Position position) {
+        return this;
+    }
 }

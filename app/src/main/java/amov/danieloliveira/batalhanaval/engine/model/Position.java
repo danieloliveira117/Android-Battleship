@@ -8,15 +8,18 @@ import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionExcepti
  * Posições de 1 a 8, A a H
  */
 public class Position {
+    private boolean valid;
     private char letter;
     private int num;
 
     Position() {
+        valid = false;
     }
 
     public Position(Position position) {
         this.letter = position.getLetter();
         this.num = position.getNum();
+        this.valid = true;
     }
 
     public Position(String position) throws InvalidPositionException {
@@ -55,6 +58,8 @@ public class Position {
     private void validatePosition(char letter, int num) throws InvalidPositionException {
         int letterAsInt = (letter - 'A') + 1;
 
+        this.valid = false;
+
         if (num < 1 || num > Consts.MAXROWS) {
             throw new InvalidPositionException();
         }
@@ -62,6 +67,8 @@ public class Position {
         if (letterAsInt < 1 || letterAsInt > Consts.MAXCOLUMNS) {
             throw new InvalidPositionException();
         }
+
+        this.valid = true;
     }
 
     public int getColor() {
@@ -82,6 +89,10 @@ public class Position {
 
     public int getNum() {
         return num;
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 
     @Override

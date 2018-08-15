@@ -1,5 +1,8 @@
 package amov.danieloliveira.batalhanaval.engine;
 
+import java.util.List;
+import java.util.Random;
+
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
@@ -12,6 +15,7 @@ import amov.danieloliveira.batalhanaval.engine.state.AwaitShipPlacement;
 import amov.danieloliveira.batalhanaval.engine.state.IGameState;
 
 public class GameData {
+    private PlayerType currentPlayer;
     private GameModel gameModel;
     private IGameState currentState;
     private Ship[] currentShip = {null, null};
@@ -34,6 +38,18 @@ public class GameData {
         currentState = currentState.placeShip(player, position, tag);
     }
 
+    public void confirmShipPlacement(PlayerType player) {
+        currentState = currentState.confirmShipPlacement(player);
+    }
+
+    public void moveShip(PlayerType player, Position oldposition, Position newposition) {
+        currentState = currentState.moveShip(player, oldposition, newposition);
+    }
+
+    public void setCurrentShip(PlayerType player, Position position) {
+        currentState = currentState.setCurrentShip(player, position);
+    }
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);
@@ -46,10 +62,6 @@ public class GameData {
     }
 
     /* Gets */
-    public Ship[] getPlayerShips(PlayerType player) {
-        return gameModel.getPlayerShips(player);
-    }
-
     public Ship getCurrentShip(PlayerType player) {
         switch (player) {
             case PLAYER:
@@ -76,10 +88,6 @@ public class GameData {
         return gameModel.allShipsPlaced();
     }
 
-    public void confirmShipPlacement(PlayerType player) {
-        gameModel.confirmShipPlacement(player);
-    }
-
     // TODO: 12/08/2018 Proteger por IGameState
     // TODO: 13/08/2018 Utilizar boolean para iniciar reposicionamento de um navio
     public boolean addNewAttempt(PlayerType player, Position position) {
@@ -98,5 +106,45 @@ public class GameData {
 
     public void setCurrentShipPosition(PlayerType player, Position position) {
         getCurrentShip(player).updatePosition(position);
+    }
+
+    public void setShipsPlaced(PlayerType player) {
+        gameModel.setShipsPlaced(player);
+    }
+
+    public void randomizeStartingPlayer() {
+        Random r = new Random();
+        if(r.nextBoolean()) {
+            currentPlayer = PlayerType.PLAYER;
+        } else {
+            currentPlayer = PlayerType.ADVERSARY;
+        }
+    }
+
+    public void nextPlayer() {
+        if(currentPlayer == PlayerType.PLAYER) {
+            currentPlayer = PlayerType.ADVERSARY;
+        } else {
+            currentPlayer = PlayerType.PLAYER;
+        }
+    }
+
+    public List<Position> getShipPositions(PlayerType player, Position position) {
+        return gameModel.getShipPositions(player, position);
+    }
+
+    public void setCurrentShipByPosition(PlayerType player, Position position) {
+        Ship temp = gameModel.getPlayerShip(player, position);
+
+        switch (player) {
+            case PLAYER:
+                currentShip[0] = temp;
+            case ADVERSARY:
+                currentShip[1] = temp;
+        }
+    }
+
+    public User getPlayer(PlayerType player) {
+        return gameModel.getPlayer(player).getUser();
     }
 }

@@ -1,5 +1,6 @@
 package amov.danieloliveira.batalhanaval;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -43,11 +44,15 @@ public class GameCommunication {
     private Socket socketGame = null;
     private BufferedReader input;
     private PrintWriter output;
+    private int mode;
 
-    public GameCommunication(GameStartActivity activity, Handler procMsg, int mode) {
+    GameCommunication(GameStartActivity activity, int mode) {
         this.activity = activity;
-        this.procMsg = procMsg;
+        this.procMsg = new Handler();
+        this.mode = mode;
+    }
 
+    public void startCommunication() {
         switch (mode) {
             case SERVER:
                 server();
@@ -58,17 +63,7 @@ public class GameCommunication {
         }
     }
 
-    public <T> void SendMessage(T obj, MsgType type) {
-        Gson gson = new Gson();
-
-        JsonMessage<T> jsonMessage = new JsonMessage<>(obj, type);
-        String json = gson.toJson(jsonMessage, JsonMessage.class);
-
-        output.println(json);
-        output.flush();
-    }
-
-    public void onPause() {
+    public void endCommunication() {
         try {
             commThread.interrupt();
             if (socketGame != null)
@@ -85,6 +80,16 @@ public class GameCommunication {
         input = null;
         output = null;
         socketGame = null;
+    }
+
+    private <T> void SendMessage(T obj, MsgType type) {
+        Gson gson = new Gson();
+
+        JsonMessage<T> jsonMessage = new JsonMessage<>(obj, type);
+        String json = gson.toJson(jsonMessage, JsonMessage.class);
+
+        output.println(json);
+        output.flush();
     }
 
     private Thread commThread = new Thread(new Runnable() {
@@ -132,7 +137,8 @@ public class GameCommunication {
 
                 switch (tempMessage.getType()) {
                     case USER64: {
-                        final Type type = new TypeToken<JsonMessage<UserBase64>>() {}.getType();
+                        final Type type = new TypeToken<JsonMessage<UserBase64>>() {
+                        }.getType();
                         final JsonMessage jsonMessage = gson.fromJson(mJson, type);
 
                         User adversary = ((UserBase64) jsonMessage.getObject()).toUser();

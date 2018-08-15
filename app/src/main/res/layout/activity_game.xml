@@ -4,232 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.GameStartActivity">
+    tools:context=".activities.GameActivity">
 
-    <TableLayout
-        android:id="@+id/tbl_shipyard"
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/civ_adversary_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_border_color="@color/gray"
+        app:civ_border_width="2dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/colorAccent"
+        app:civ_shadow_radius="10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tv_adversary_username"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_adversary_username"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:gravity="center_vertical|start"
+        android:textColor="@color/light"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/civ_adversary_avatar"
+        app:layout_constraintLeft_toRightOf="@+id/civ_adversary_avatar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/civ_adversary_avatar" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_phase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        android:background="@color/MISS"
-        android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/tbl_place_ships"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/play_one_player"
+        android:textColor="@color/light"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="150dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_1"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="1"
-                app:ship_type="ship_type_one" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_2"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="2"
-                app:ship_type="ship_type_one" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_10"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="6"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_11"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="6"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_12"
-                android:background="@drawable/border"
-                app:ship_number="6"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_type="ship_type_three" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_3"
-                android:background="@drawable/border"
-                app:ship_number="3"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_type="ship_type_two" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_4"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="3"
-                app:ship_type="ship_type_two" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_13"
-                android:background="@drawable/border"
-                app:border_bottom="false"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_6"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="4"
-                app:ship_type="ship_type_two" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_5"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="4"
-                app:ship_type="ship_type_two" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_15"
-                android:background="@drawable/border"
-                app:border_bottom="false"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="false"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_14"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_16"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_9"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="5"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_8"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="5"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_7"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="5"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_17"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="false"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-        </TableRow>
-    </TableLayout>
+        app:layout_constraintTop_toBottomOf="@+id/civ_adversary_avatar" />
 
     <TableLayout
         android:id="@+id/tbl_place_ships"
@@ -239,8 +55,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbl_shipyard"
-        app:layout_constraintBottom_toTopOf="@+id/btn_confirm_placement"
+        app:layout_constraintTop_toBottomOf="@+id/civ_adversary_avatar"
         app:layout_constraintWidth_max="300dp">
 
         <!-- Colunas -->
@@ -936,18 +751,6 @@
                 android:layout_weight="1"
                 app:position="H8" />
         </TableRow>
-        
+
     </TableLayout>
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_confirm_placement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tbl_place_ships"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/confirm_placement"
-        android:onClick="onConfirmPlacement"/>
-
 </android.support.constraint.ConstraintLayout>

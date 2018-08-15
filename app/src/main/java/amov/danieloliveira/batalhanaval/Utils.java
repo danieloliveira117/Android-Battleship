@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.views.BattleShipCellView;
 
@@ -107,26 +109,23 @@ public class Utils {
         return views;
     }
 
-    public static View findViewByCoordinates(@NonNull TableLayout parent, int x, int y) {
+    public static List<BattleShipCellView> findViewsWithPositions(TableLayout parent, List<Position> positions) {
+        List<BattleShipCellView> list = new ArrayList<>();
+
         for (int i = 0; i < parent.getChildCount(); i++) {
             TableRow row = (TableRow) parent.getChildAt(i);
 
             for (int j = 0; j < row.getChildCount(); j++) {
                 View v = row.getChildAt(j);
 
-                if(v instanceof BattleShipCellView) {
-                    Rect _bounds = new Rect();
-
-                    v.getHitRect(_bounds);
-
-                    if(_bounds.contains(x, y)) {
-                        return v;
-                    }
+                if (v instanceof BattleShipCellView && v.getTag() != null
+                        && positions.contains((Position) v.getTag())) {
+                    list.add((BattleShipCellView) v);
                 }
             }
         }
 
-        return null;
+        return list;
     }
 
     /* thanks to: http://mobile.cs.fsu.edu/converting-images-to-json-objects/ */

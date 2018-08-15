@@ -1,5 +1,7 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
+import java.util.List;
+
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 
@@ -59,7 +61,15 @@ public class Player {
         return board.getShipByID(ship);
     }
 
+    public Ship getShipByPosition(Position position) {
+        return board.getShipByPosition(position);
+    }
+
     public PositionType getPositionValidity(Position position) {
         return board.getPositionValidity(position);
+    }
+
+    public List<Position> getShipPositions(Position position) {
+        return board.getShipPositions(position);
     }
 }

@@ -1,5 +1,7 @@
 package amov.danieloliveira.batalhanaval.engine;
 
+import java.util.List;
+
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
@@ -42,11 +44,11 @@ class GameModel {
         return getPlayer(PlayerType.PLAYER).allShipsPlaced() && getPlayer(PlayerType.ADVERSARY).allShipsPlaced();
     }
 
-    public void confirmShipPlacement(PlayerType player) {
+    public void setShipsPlaced(PlayerType player) {
         getPlayer(player).setShipsPlaced(true);
     }
 
-    private Player getPlayer(PlayerType player) {
+    Player getPlayer(PlayerType player) {
         switch (player) {
             case PLAYER:
                 return player1;
@@ -67,7 +69,15 @@ class GameModel {
         return getPlayer(player).getShipByID(ship);
     }
 
+    public Ship getPlayerShip(PlayerType player, Position position) {
+        return getPlayer(player).getShipByPosition(position);
+    }
+
     public PositionType getPositionValidity(PlayerType player, Position position) {
         return getPlayer(player).getPositionValidity(position);
+    }
+
+    public List<Position> getShipPositions(PlayerType player, Position position) {
+        return getPlayer(player).getShipPositions(position);
     }
 }

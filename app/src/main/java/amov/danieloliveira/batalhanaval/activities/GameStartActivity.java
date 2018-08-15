@@ -1,55 +1,47 @@
 package amov.danieloliveira.batalhanaval.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.View;
-
-import android.widget.GridView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
-import com.mikhaellopez.circularimageview.CircularImageView;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
+import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
-import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
+import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.User;
-import amov.danieloliveira.batalhanaval.views.BattleShipCellView;
 
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
 // TODO clear game data on back / game end / lost connection / on Pause????
+// TODO: 14/08/2018 REPLACE ALL PLAYERTYPEs
 public class GameStartActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "GameStartActivity";
     private GameObservable gameObs;
-    public List<Integer> placedViews = new ArrayList<>();
+    private GameCommunication gameCommunication;
+    public Set<Integer> placedViews = new HashSet<>();
 
     private int mode = SINGLEPLAYER;
-    private Handler procMsg = null;
-    private GameCommunication gameCommunication;
 
     @Override
     protected void onResume() {
         super.onResume();
 
         if (mode != SINGLEPLAYER) {
-            gameCommunication = new GameCommunication(this, procMsg, mode);
+            BattleshipApplication app = (BattleshipApplication) this.getApplication();
+            gameCommunication = app.newGameCommunication(this, mode);
         } else {
             gameObs.setAdversary(new User("BotTron2000", null));
             gameObs.startGame(GameMode.vsAI, null);
@@ -61,7 +53,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         super.onPause();
 
         if (gameCommunication != null) {
-            gameCommunication.onPause();
+            gameCommunication.endCommunication();
             gameCommunication = null;
         }
     }
@@ -71,7 +63,9 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
 
-        gameObs = Utils.getObservable(this);
+        BattleshipApplication app = (BattleshipApplication) this.getApplication();
+
+        gameObs = app.getObservable();
         gameObs.addObserver(this);
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -90,28 +84,26 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
             mode = intent.getIntExtra("mode", SINGLEPLAYER);
         }
 
-        procMsg = new Handler();
+        // Start Game Communication
+        gameCommunication = app.newGameCommunication(this, mode);
+        gameCommunication.startCommunication();
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        // Atualizar imagem / nome do adversário
-        if (arg instanceof User) {
-            updateAdversary((User) arg);
-        }
     }
 
-    private void updateAdversary(User adversary) {
-        // Update Views
-        CircularImageView civ_adversary_avatar = findViewById(R.id.civ_adversary_avatar);
-        AppCompatTextView tv_adversary_username = findViewById(R.id.tv_adversary_username);
+    public void onConfirmPlacement(View view) {
+        gameObs.confirmPlacement(PlayerType.PLAYER);
 
-        if (adversary.getImage() == null) {
-            civ_adversary_avatar.setImageResource(R.drawable.default_image);
-        } else {
-            civ_adversary_avatar.setImageBitmap(adversary.getImage());
-        }
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("mode", mode);
+        startActivity(intent);
 
-        tv_adversary_username.setText(adversary.getUsername());
+        finish();
+    }
+
+    public void showCustomDialog(Dialog dialog) {
+        dialog.show();
     }
 }

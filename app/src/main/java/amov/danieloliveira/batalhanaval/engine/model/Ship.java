@@ -223,4 +223,14 @@ public class Ship {
                 ", destroyed=" + destroyed +
                 '}';
     }
+
+    public boolean hasInvalidPositions() {
+        for (Position position : positionList) {
+            if(position == null || !position.isValid()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

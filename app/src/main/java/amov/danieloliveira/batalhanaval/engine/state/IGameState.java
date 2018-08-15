@@ -14,4 +14,8 @@ public interface IGameState {
     IGameState confirmShipPlacement(PlayerType player);
 
     IGameState placeShip(PlayerType player, Position position, Integer tag);
+
+    IGameState moveShip(PlayerType player, Position oldposition, Position newposition);
+
+    IGameState setCurrentShip(PlayerType player, Position position);
 }
