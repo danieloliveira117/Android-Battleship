@@ -96,14 +96,14 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
     public void onConfirmPlacement(View view) {
         gameObs.confirmPlacement(PlayerType.PLAYER);
 
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("mode", mode);
-        startActivity(intent);
+        if(gameObs.validPlacement(PlayerType.PLAYER)) {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("mode", mode);
+            startActivity(intent);
 
-        finish();
-    }
-
-    public void showCustomDialog(Dialog dialog) {
-        dialog.show();
+            finish();
+        } else {
+            Toast.makeText(this, R.string.ships_not_placed_correctly, Toast.LENGTH_LONG).show();
+        }
     }
 }

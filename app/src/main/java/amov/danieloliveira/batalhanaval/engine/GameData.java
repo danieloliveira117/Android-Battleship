@@ -88,6 +88,10 @@ public class GameData {
         return gameModel.allShipsPlaced();
     }
 
+    public boolean allShipsPlaced(PlayerType playerType) {
+        return gameModel.allShipsPlaced(playerType);
+    }
+
     // TODO: 12/08/2018 Proteger por IGameState
     // TODO: 13/08/2018 Utilizar boolean para iniciar reposicionamento de um navio
     public boolean addNewAttempt(PlayerType player, Position position) {

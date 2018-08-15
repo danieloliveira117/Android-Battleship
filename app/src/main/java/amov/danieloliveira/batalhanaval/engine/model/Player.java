@@ -41,8 +41,8 @@ public class Player {
         return shipsPlaced;
     }
 
-    public void setShipsPlaced(boolean shipsPlaced) {
-        this.shipsPlaced = shipsPlaced;
+    public void setShipsPlaced() {
+        this.shipsPlaced = !board.hasInvalidShipPositions();
     }
 
     public boolean addNewAttempt(Position position) {

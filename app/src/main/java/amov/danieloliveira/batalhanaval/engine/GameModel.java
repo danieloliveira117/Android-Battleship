@@ -44,8 +44,12 @@ class GameModel {
         return getPlayer(PlayerType.PLAYER).allShipsPlaced() && getPlayer(PlayerType.ADVERSARY).allShipsPlaced();
     }
 
+    public boolean allShipsPlaced(PlayerType player) {
+        return getPlayer(player).allShipsPlaced();
+    }
+
     public void setShipsPlaced(PlayerType player) {
-        getPlayer(player).setShipsPlaced(true);
+        getPlayer(player).setShipsPlaced();
     }
 
     Player getPlayer(PlayerType player) {

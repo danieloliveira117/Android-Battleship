@@ -23,8 +23,6 @@ public class Preferences {
             user = new User(username, image);
 
             app.setUser(user);
-
-            Toast.makeText(activity, "Olá " + username, Toast.LENGTH_LONG).show();
         }
 
         return user;

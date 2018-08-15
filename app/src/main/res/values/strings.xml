@@ -14,6 +14,7 @@
     <string name="serverdlg_title">Battleship Server</string>
     <string name="serverdlg_msg">Waiting for a client…</string>
     <string name="game_finished">The game was finished</string>
+    <string name="ships_not_placed_correctly">This starting placement is not valid</string>
 
     <string name="play_one_player">One Player</string>
     <string name="play_join_server">Join Server</string>

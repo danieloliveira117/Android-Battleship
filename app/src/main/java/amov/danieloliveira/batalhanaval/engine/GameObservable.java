@@ -78,4 +78,8 @@ public class GameObservable extends Observable {
     public User getAdversary() {
         return gameData.getPlayer(PlayerType.ADVERSARY);
     }
+
+    public boolean validPlacement(PlayerType player) {
+        return gameData.allShipsPlaced(player);
+    }
 }

@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
+import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.Preferences;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
@@ -21,12 +24,19 @@ public class MainActivity extends AppCompatActivity {
 
         User user = Preferences.loadPreferences(MainActivity.this);
 
-        if(user == null) {
+        if (user == null) {
             // Primeira utilização necessita de configurar o utilizador
             startActivity(new Intent(this, ConfigUserActivity.class));
             finish();
         } else {
+            BattleshipApplication app = (BattleshipApplication) getApplication();
+            app.setUser(user);
+
             setContentView(R.layout.activity_main);
+
+            if (savedInstanceState == null) {
+                Toast.makeText(this, "Olá " + user.getUsername() + "!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -61,6 +71,4 @@ public class MainActivity extends AppCompatActivity {
     public void onChangeUser(View view) {
         startActivity(new Intent(this, ConfigUserActivity.class));
     }
-
-
 }

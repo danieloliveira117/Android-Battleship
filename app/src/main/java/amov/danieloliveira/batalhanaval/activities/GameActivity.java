@@ -13,6 +13,7 @@ import java.util.Observer;
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.model.User;
@@ -43,6 +44,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         gameObs = app.getObservable();
         gameObs.addObserver(this);
 
+        updatePlayer(app.getUser());
         updateAdversary(gameObs.getAdversary());
     }
 
@@ -54,6 +56,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
             finish();
         } else {
             updateAdversary(gameObs.getAdversary());
+            updatePlayer(Utils.getUser(this));
             // TODO: 15/08/2018 restore game
         }
     }
@@ -76,7 +79,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private void updateAdversary(User adversary) {
         // Update Views
         CircularImageView civ_adversary_avatar = findViewById(R.id.civ_adversary_avatar);
-        AppCompatTextView tv_adversary_username = findViewById(R.id.tv_adversary_username);
+        AppCompatTextView tv_adversary_username = findViewById(R.id.tv_adversary_name);
 
         if (adversary.getImage() == null) {
             civ_adversary_avatar.setImageResource(R.drawable.default_image);
@@ -85,5 +88,19 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
 
         tv_adversary_username.setText(adversary.getUsername());
+    }
+
+    private void updatePlayer(User player) {
+        // Update Views
+        CircularImageView civ_player_avatar = findViewById(R.id.civ_player_avatar);
+        AppCompatTextView tv_player_username = findViewById(R.id.tv_player_name);
+
+        if (player.getImage() == null) {
+            civ_player_avatar.setImageResource(R.drawable.default_image);
+        } else {
+            civ_player_avatar.setImageBitmap(player.getImage());
+        }
+
+        tv_player_username.setText(player.getUsername());
     }
 }

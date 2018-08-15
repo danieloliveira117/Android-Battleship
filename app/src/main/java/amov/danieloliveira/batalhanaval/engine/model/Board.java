@@ -1,8 +1,11 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
@@ -135,5 +138,30 @@ public class Board {
         }
 
         return null;
+    }
+
+    public boolean hasInvalidShipPositions() {
+        List<Position> positionList = new ArrayList<>();
+
+        for (Ship ship : shipList) {
+            // Only valid positions
+            for (Position position : ship.getPositionList()) {
+                if (position == null || !position.isValid()) {
+                    return true;
+                }
+            }
+
+            positionList.addAll(ship.getPositionList());
+        }
+
+        return hasDuplicate(positionList);
+    }
+
+    private static <T> boolean hasDuplicate(Iterable<T> all) {
+        Set<T> set = new HashSet<>();
+        // Set#add returns false if the set does not change, which
+        // indicates that a duplicate element has been added.
+        for (T each : all) if (!set.add(each)) return true;
+        return false;
     }
 }
