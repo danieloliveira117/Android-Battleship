@@ -48,4 +48,6 @@
     <string name="confirm_placement">Confirm Placement</string>
     <string name="randomize_placement">Randomize Placement</string>
     <string name="change_mode">Change to Single-Player</string>
+    <string name="camera_permission_required">Camera Permission is required for this app to run</string>
+    <string name="error_opening_camera">There\'s been an error opening your camera, please try again or check this app\'s permissions</string>
 </resources>

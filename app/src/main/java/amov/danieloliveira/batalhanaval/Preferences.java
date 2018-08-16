@@ -18,7 +18,7 @@ public class Preferences {
         String username = sharedPref.getString("username", null);
 
         if (username != null) {
-            Bitmap image = Utils.getUserImage();
+            Bitmap image = Utils.getUserImage(activity);
 
             user = new User(username, image);
 

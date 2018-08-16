@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -24,6 +25,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -49,6 +52,7 @@ import amov.danieloliveira.batalhanaval.R;
 
 import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
 
+// thanks to: https://inducesmile.com/android/android-camera2-api-example-tutorial/
 public class TakePictureActivity extends AppCompatActivity {
     private static final String TAG = "TakePictureActivity";
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -64,9 +68,13 @@ public class TakePictureActivity extends AppCompatActivity {
     protected CameraDevice cameraDevice;
     protected CameraCaptureSession cameraCaptureSessions;
     protected CaptureRequest.Builder captureRequestBuilder;
+
     private TextureView textureView;
     private Size imageDimension;
     private File file;
+    private ImageReader imageReader;
+    private Handler mBackgroundHandler;
+    private HandlerThread mBackgroundThread;
 
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -88,15 +96,11 @@ public class TakePictureActivity extends AppCompatActivity {
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
     };
-
-    private ImageReader imageReader;
-    private Handler mBackgroundHandler;
-
     private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
             //This is called when the camera is open
-            Log.e(TAG, "onOpened");
+            Log.d(TAG, "onOpened");
             cameraDevice = camera;
             createCameraPreview();
         }
@@ -108,17 +112,15 @@ public class TakePictureActivity extends AppCompatActivity {
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            if(cameraDevice != null) {
+            if (cameraDevice != null) {
                 cameraDevice.close();
                 cameraDevice = null;
             }
         }
     };
 
-    private HandlerThread mBackgroundThread;
-
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         closeCamera();
         finish();
         return true;
@@ -204,7 +206,8 @@ public class TakePictureActivity extends AppCompatActivity {
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
 
-            file = new File(Environment.getExternalStorageDirectory() + IMAGE_NAME);
+            ContextWrapper c = new ContextWrapper(this);
+            file = new File(c.getFilesDir().getPath() + "/" + IMAGE_NAME);
 
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
@@ -239,7 +242,8 @@ public class TakePictureActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession session) {}
+                public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                }
             }, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -317,12 +321,13 @@ public class TakePictureActivity extends AppCompatActivity {
                 }
             }
 
+            Log.d(TAG, "openCamera X");
             manager.openCamera(cameraId, stateCallback, null);
-        } catch (CameraAccessException e) {
+        } catch (CameraAccessException|SecurityException e) {
             e.printStackTrace();
+            Toast.makeText(this, R.string.error_opening_camera, Toast.LENGTH_SHORT).show();
+            finish();
         }
-
-        Log.d(TAG, "openCamera X");
     }
 
     protected void updatePreview() {
@@ -356,7 +361,7 @@ public class TakePictureActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // close the app
-                Toast.makeText(TakePictureActivity.this, getResources().getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
+                Toast.makeText(TakePictureActivity.this, getResources().getString(R.string.camera_permission_required), Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -378,7 +383,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.e(TAG, "onPause");
+        Log.d(TAG, "onPause");
         //closeCamera();
         stopBackgroundThread();
         super.onPause();

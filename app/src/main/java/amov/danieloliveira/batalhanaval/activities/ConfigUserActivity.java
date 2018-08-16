@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
@@ -27,13 +28,23 @@ public class ConfigUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_config_user);
 
         AppCompatImageView imageView = findViewById(R.id.user_image);
-        Bitmap image = Utils.getUserImage();
+        Bitmap image = Utils.getUserImage(this);
 
         if (image != null) {
             imageView.setImageBitmap(image);
         }
 
-        // TODO: 06/08/2018 If username exists put it in TextInputEditText and show back button
+        User user = Utils.getUser(this);
+
+        if(user != null) {
+            // show back button
+            ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+            TextInputEditText text_input = findViewById(R.id.edit_username);
+            text_input.setText(user.getUsername());
+        }
     }
 
     public void onCreateUser(View view) {
@@ -44,7 +55,7 @@ public class ConfigUserActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getString(R.string.username_min_length), Toast.LENGTH_SHORT).show();
         }
 
-        Bitmap image = Utils.getUserImage();
+        Bitmap image = Utils.getUserImage(this);
 
         if(image == null) {
             Toast.makeText(this, getResources().getString(R.string.image_missing), Toast.LENGTH_SHORT).show();
@@ -72,7 +83,7 @@ public class ConfigUserActivity extends AppCompatActivity {
 
                 // Imagem encontrada a modificar a imagem do utilizador
                 AppCompatImageView imageView = findViewById(R.id.user_image);
-                Bitmap image = Utils.getUserImage();
+                Bitmap image = Utils.getUserImage(this);
 
                 if (image != null) {
                     imageView.setImageBitmap(image);
@@ -84,5 +95,11 @@ public class ConfigUserActivity extends AppCompatActivity {
                 Log.d(TAG, "RESULT_CANCELED");
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

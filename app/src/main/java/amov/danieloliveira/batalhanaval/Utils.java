@@ -2,6 +2,7 @@ package amov.danieloliveira.batalhanaval;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -56,8 +57,9 @@ public class Utils {
         return app.getUser();
     }
 
-    public static Bitmap getUserImage() {
-        File file = new File(Environment.getExternalStorageDirectory() + IMAGE_NAME);
+    public static Bitmap getUserImage(Context context) {
+        ContextWrapper c = new ContextWrapper(context);
+        File file = new File(c.getFilesDir().getPath() + "/" + IMAGE_NAME);
         Bitmap image = null;
 
         if (file.exists()) {
