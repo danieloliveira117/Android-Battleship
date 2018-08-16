@@ -11,6 +11,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitGameStart;
+import amov.danieloliveira.batalhanaval.engine.state.AwaitPlayerMove;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitShipPlacement;
 import amov.danieloliveira.batalhanaval.engine.state.IGameState;
 
@@ -54,11 +55,18 @@ public class GameData {
         currentState = currentState.randomizePlacement(player);
     }
 
+    public void clickNewPosition(PlayerType player, Position position) {
+        currentState = currentState.clickNewPosition(player, position);
+    }
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);
 
-        // TODO: 07/08/2018 anything else needed here?
+        if(mode == GameMode.vsAI) {
+            gameModel.setRandomPlacement(PlayerType.ADVERSARY);
+            gameModel.setShipsPlaced(PlayerType.ADVERSARY);
+        }
     }
 
     public void updatePlayerData(PlayerType player, User user) {
@@ -100,10 +108,8 @@ public class GameData {
         return gameModel.allShipsPlaced(playerType);
     }
 
-    // TODO: 12/08/2018 Proteger por IGameState
-    // TODO: 13/08/2018 Utilizar boolean para iniciar reposicionamento de um navio
-    public boolean addNewAttempt(PlayerType player, Position position) {
-        return gameModel.addNewAttempt(player, position);
+    public void addNewAttempt(Position position) {
+        gameModel.addNewAttempt(currentPlayer, position);
     }
 
     public PositionType getPositionType(PlayerType player, Position position) {
@@ -114,6 +120,10 @@ public class GameData {
             return gameModel.getPositionValidity(player, position);
 
         return gameModel.getPositionType(player, position);
+    }
+
+    public void setRandomPlacement(PlayerType player) {
+        gameModel.setRandomPlacement(player);
     }
 
     public void setCurrentShipPosition(PlayerType player, Position position) {
@@ -160,7 +170,31 @@ public class GameData {
         return gameModel.getPlayer(player).getUser();
     }
 
-    public void setRandomPlacement(PlayerType player) {
-        gameModel.setRandomPlacement(player);
+    public GameMode getGameMode() {
+        return gameModel.getGameMode();
+    }
+
+    public boolean canDragAndDrop() {
+        return currentState instanceof AwaitShipPlacement;
+    }
+
+    public boolean isLastSelect() {
+        return gameModel.isLastSelect(currentPlayer);
+    }
+
+    public int processSelectedPositions() {
+        return gameModel.processSelectedPositions(currentPlayer);
+    }
+
+    public boolean didGameEnd() {
+        return gameModel.didGameEnd(currentPlayer);
+    }
+
+    public void playRandomly() {
+        clickNewPosition(PlayerType.ADVERSARY, gameModel.getRandomPlayPosition(currentPlayer));
+    }
+
+    public User getCurrentUser() {
+        return gameModel.getCurrentUser(currentPlayer);
     }
 }

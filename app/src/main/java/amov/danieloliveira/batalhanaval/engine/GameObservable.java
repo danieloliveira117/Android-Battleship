@@ -31,8 +31,8 @@ public class GameObservable extends Observable {
         notifyObservers(user);
     }
 
-    public void addNewAttempt(PlayerType playerType, Position position) {
-        gameData.addNewAttempt(playerType, position);
+    public void clickNewPosition(PlayerType player, Position position) {
+        gameData.clickNewPosition(player, position);
 
         setChanged();
         notifyObservers();
@@ -72,6 +72,19 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
+
+    public void playRandomly() {
+        gameData.playRandomly();
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void refreshData() {
+        setChanged();
+        notifyObservers();
+    }
+
     /* --- GETS --- */
 
     public PositionType getPositionType(PlayerType player, Position position) {
@@ -92,5 +105,17 @@ public class GameObservable extends Observable {
 
     public PlayerType getCurrentPlayer() {
         return gameData.getCurrentPlayer();
+    }
+
+    public boolean canDragAndDrop() {
+        return gameData.canDragAndDrop();
+    }
+
+    public boolean didGameEnd() {
+        return gameData.didGameEnd();
+    }
+
+    public User getCurrentUser() {
+        return gameData.getCurrentUser();
     }
 }

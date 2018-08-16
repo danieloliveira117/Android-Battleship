@@ -6,10 +6,10 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
-public class StateAdapter implements IGameState {
+public class GameStateAdapter implements IGameState {
     GameData gameData;
 
-    public StateAdapter(GameData gameData) {
+    public GameStateAdapter(GameData gameData) {
         this.gameData = gameData;
     }
 
@@ -45,6 +45,11 @@ public class StateAdapter implements IGameState {
 
     @Override
     public IGameState randomizePlacement(PlayerType player) {
+        return this;
+    }
+
+    @Override
+    public IGameState clickNewPosition(PlayerType player, Position position) {
         return this;
     }
 }

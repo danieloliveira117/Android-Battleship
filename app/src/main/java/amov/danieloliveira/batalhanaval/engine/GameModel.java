@@ -1,23 +1,33 @@
 package amov.danieloliveira.batalhanaval.engine;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
+import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
+import static amov.danieloliveira.batalhanaval.Consts.MAXROWS;
+
 class GameModel {
     private Player player1, player2;
     private GameMode gameMode;
 
     public GameModel() {
-        player1 = new Player(true);
-        player2 = new Player(false);
+        player1 = new Player();
+        player2 = new Player();
+    }
+
+    GameMode getGameMode() {
+        return gameMode;
     }
 
     public void setMode(GameMode mode) {
@@ -25,19 +35,7 @@ class GameModel {
     }
 
     public void updatePlayerData(PlayerType player, User user) {
-        switch (player) {
-            case PLAYER:
-                player1.setUser(user);
-                break;
-            case ADVERSARY:
-                player2.setUser(user);
-                player2.setHuman(true);
-                break;
-        }
-    }
-
-    public Ship[] getPlayerShips(PlayerType player) {
-        return getPlayer(player).getBoard().getShipList();
+        getPlayer(player).setUser(user);
     }
 
     public boolean allShipsPlaced() {
@@ -52,21 +50,26 @@ class GameModel {
         getPlayer(player).setShipsPlaced();
     }
 
-    Player getPlayer(PlayerType player) {
-        switch (player) {
-            case PLAYER:
-                return player1;
-            default:
-                return player2;
-        }
+    private Player getOpponent(PlayerType player) {
+        if (player == PlayerType.PLAYER)
+            return player2;
+        else
+            return player1;
     }
 
-    public boolean addNewAttempt(PlayerType player, Position position) {
-        return getPlayer(player).addNewAttempt(position);
+    Player getPlayer(PlayerType player) {
+        if (player == PlayerType.PLAYER)
+            return player1;
+        else
+            return player2;
+    }
+
+    public void addNewAttempt(PlayerType player, Position position) {
+        getOpponent(player).addNewAttempt(position);
     }
 
     public PositionType getPositionType(PlayerType player, Position position) {
-        return getPlayer(player).getPositionType(position);
+        return getOpponent(player).getPositionType(position);
     }
 
     public Ship getPlayerShip(PlayerType player, Integer ship) throws InvalidShipNumberException {
@@ -87,5 +90,29 @@ class GameModel {
 
     public void setRandomPlacement(PlayerType player) {
         getPlayer(player).setRandomPlacement();
+    }
+
+    public boolean isLastSelect(PlayerType player) {
+        return getOpponent(player).isLastSelect();
+    }
+
+    public int processSelectedPositions(PlayerType player) {
+        return getOpponent(player).processSelectedPositions();
+    }
+
+    public boolean didGameEnd(PlayerType player) {
+        return getOpponent(player).allShipsDestroyed();
+    }
+
+    public Position getRandomPlayPosition(PlayerType player) {
+        List<Position> positions = getOpponent(player).getUnknownPositions();
+
+        Random random = new Random();
+
+        return positions.get(random.nextInt(positions.size()));
+    }
+
+    public User getCurrentUser(PlayerType player) {
+        return getPlayer(player).getUser();
     }
 }

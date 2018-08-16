@@ -4,9 +4,8 @@ import amov.danieloliveira.batalhanaval.engine.GameData;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
-import amov.danieloliveira.batalhanaval.engine.model.Ship;
 
-public class AwaitShipPlacement extends StateAdapter {
+public class AwaitShipPlacement extends GameStateAdapter {
     public AwaitShipPlacement(GameData gameData) {
         super(gameData);
     }
@@ -15,7 +14,6 @@ public class AwaitShipPlacement extends StateAdapter {
     public IGameState confirmShipPlacement(PlayerType player) {
         gameData.setShipsPlaced(player);
 
-        // TODO: 09/08/2018 Change game phase if both players already confirmed
         if(gameData.allShipsPlaced()) {
             gameData.randomizeStartingPlayer();
             return new AwaitPlayerMove(gameData);

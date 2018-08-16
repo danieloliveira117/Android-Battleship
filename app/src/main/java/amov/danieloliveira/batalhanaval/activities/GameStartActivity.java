@@ -23,6 +23,7 @@ import java.util.Set;
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
@@ -50,7 +51,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
             gameCommunication = app.newGameCommunication(this, mode);
         } else {
             gameObs.setAdversaryUser(new User("BotTron2000", null));
-            gameObs.startGame(GameMode.vsAI, null);
+            gameObs.startGame(GameMode.vsAI, Utils.getUser(this));
         }
     }
 
@@ -137,6 +138,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_mode:
+
                 // TODO: 15/08/2018 Change mode to single player
                 MenuItem changeMode = findViewById(R.id.action_change_mode);
                 changeMode.setVisible(false);

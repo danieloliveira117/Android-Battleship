@@ -6,27 +6,13 @@ import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 
 public class Player {
-    private boolean isHuman;
     private User user;
     private Board board;
     private boolean shipsPlaced;
 
-    public Player(boolean isHuman) {
-        this.isHuman = isHuman;
+    public Player() {
         this.shipsPlaced = false;
         this.board = new Board();
-    }
-
-    public boolean isHuman() {
-        return isHuman;
-    }
-
-    public void setHuman(boolean human) {
-        isHuman = human;
-    }
-
-    public Board getBoard() {
-        return board;
     }
 
     public User getUser() {
@@ -45,12 +31,12 @@ public class Player {
         this.shipsPlaced = !board.hasInvalidShipPositions();
     }
 
-    public boolean addNewAttempt(Position position) {
-        return board.addNewAttempt(position);
+    public void addNewAttempt(Position position) {
+        board.addNewAttempt(position);
     }
 
-    public void processSelectedPositions() {
-        board.processSelectedPositions();
+    public int processSelectedPositions() {
+        return board.processSelectedPositions();
     }
 
     public PositionType getPositionType(Position position) {
@@ -75,5 +61,17 @@ public class Player {
 
     public void setRandomPlacement() {
         board.setRandomPlacement();
+    }
+
+    public boolean isLastSelect() {
+        return board.isLastSelect();
+    }
+
+    public boolean allShipsDestroyed() {
+        return board.allShipsDestroyed();
+    }
+
+    public List<Position> getUnknownPositions() {
+        return board.getUnknownPositions();
     }
 }

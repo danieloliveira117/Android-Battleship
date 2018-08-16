@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
-import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
@@ -42,12 +40,14 @@ public class Board {
         return shipList;
     }
 
-    public boolean addNewAttempt(Position position) {
+    public void addNewAttempt(Position position) {
         // Ignore repeated positions
         if (!adversaryAttempts.containsKey(position)) {
             adversaryAttempts.put(position, PositionType.SELECTED);
         }
+    }
 
+    public boolean isLastSelect() {
         int selected = 0;
 
         // Check if all 3 positions have been selected
@@ -58,11 +58,7 @@ public class Board {
         }
 
         // All 3 positions have been selected
-        if (selected == MAXSELECT || MAXROWS * MAXCOLUMNS == adversaryAttempts.size()) {
-            return processSelectedPositions() == MAXSELECT;
-        }
-
-        return false;
+        return selected == MAXSELECT || MAXROWS * MAXCOLUMNS == adversaryAttempts.size();
     }
 
     public int processSelectedPositions() {
@@ -76,15 +72,32 @@ public class Board {
             for (Ship ship : shipList) {
                 if (ship.getPositionList().contains(position)) {
                     // Set position as HIT
-                    adversaryAttempts.put(position, PositionType.HIT);
+                    switch (ship.getType()) {
+                        case ONE:
+                            adversaryAttempts.put(position, PositionType.HIT_ONE);
+                            break;
+                        case TWO:
+                            adversaryAttempts.put(position, PositionType.HIT_TWO);
+                            break;
+                        case THREE:
+                            adversaryAttempts.put(position, PositionType.HIT_THREE);
+                            break;
+                        case T_SHAPE:
+                            adversaryAttempts.put(position, PositionType.HIT_T_SHAPE);
+                            break;
+                    }
+
                     numberOfHits++;
 
                     // Check if all parts of the ship have been destroyed
                     if (adversaryAttempts.keySet().containsAll(ship.getPositionList())) {
-                        for (Position part : ship.getPositionList()) {
+                        /*for (Position part : ship.getPositionList()) {
                             // Replace HIT for SHIP
                             adversaryAttempts.put(part, PositionType.SHIP);
-                        }
+                        }*/
+
+                        // TODO: 16/08/2018 Uncover this ship adjacente positions
+                        ship.setDestroyed(true);
                     }
                 }
             }
@@ -176,12 +189,77 @@ public class Board {
         return hasDuplicate(positionList);
     }
 
+    public boolean allShipsDestroyed() {
+        for (Ship ship : shipList) {
+            if (!ship.isDestroyed())
+                return false;
+        }
+
+        return true;
+    }
+
     public void setRandomPlacement() {
+        List<Position> positionList;
+        Set<Position> adjacentSet;
+        int count;
+        int iter;
+        boolean done = false;
 
-        int count = 0;
-        List<Position> positionList = new ArrayList<>();
-        Set<Position> adjacentSet = new HashSet<>();
+        do {
+            count = 0;
+            iter = 0;
 
+            List<Position> availableBoard = new ArrayList<>(MAXCOLUMNS * MAXROWS);
+
+            for (int i = 1; i <= MAXROWS; i++) {
+                for (int j = 1; j <= MAXCOLUMNS; j++) {
+                    try {
+                        availableBoard.add(new Position(i, j));
+                    } catch (InvalidPositionException ignored) {
+                        ignored.printStackTrace();
+                    }
+                }
+            }
+
+            // Clear ship positions
+            createShips();
+
+            while (count < MAXSHIPS) {
+                shipList[count].setRandomPosition(availableBoard);
+
+                positionList = new ArrayList<>();
+                adjacentSet = new HashSet<>();
+
+                for (int i = 0; i <= count; i++) {
+                    positionList.addAll(shipList[i].getPositionList());
+                    adjacentSet.addAll(shipList[i].getAdjacentPositions());
+                }
+
+                positionList.addAll(adjacentSet);
+
+                iter++;
+
+                if (count == 0 || !hasDuplicate(positionList)) {
+                    availableBoard.removeAll(positionList);
+                    count++;
+                    done = true;
+                } else if (iter == 100) {
+                    done = false;
+                    break;
+                }
+            }
+        } while (!done);
+    }
+
+    private static <T> boolean hasDuplicate(Iterable<T> all) {
+        Set<T> set = new HashSet<>();
+        // Set#add returns false if the set does not change, which
+        // indicates that a duplicate element has been added.
+        for (T each : all) if (!set.add(each)) return true;
+        return false;
+    }
+
+    public List<Position> getUnknownPositions() {
         List<Position> availableBoard = new ArrayList<>(MAXCOLUMNS * MAXROWS);
 
         for (int i = 1; i <= MAXROWS; i++) {
@@ -194,35 +272,8 @@ public class Board {
             }
         }
 
-        // Clear ship positions
-        createShips();
+        availableBoard.removeAll(adversaryAttempts.keySet());
 
-        while (count < MAXSHIPS) {
-            shipList[count].setRandomPosition(availableBoard);
-
-            positionList.clear();
-            adjacentSet.clear();
-
-            for (int i = 0; i <= count; i++) {
-                positionList.addAll(shipList[i].getPositionList());
-                adjacentSet.addAll(shipList[i].getAdjacentPositions());
-            }
-
-            positionList.addAll(adjacentSet);
-
-            if (count == 0 || !hasDuplicate(positionList)) {
-                availableBoard.removeAll(positionList);
-                count++;
-            }
-        }
+        return availableBoard;
     }
-
-    private static <T> boolean hasDuplicate(Iterable<T> all) {
-        Set<T> set = new HashSet<>();
-        // Set#add returns false if the set does not change, which
-        // indicates that a duplicate element has been added.
-        for (T each : all) if (!set.add(each)) return true;
-        return false;
-    }
-
 }

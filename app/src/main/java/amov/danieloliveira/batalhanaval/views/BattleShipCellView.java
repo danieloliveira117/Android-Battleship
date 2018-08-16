@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -31,7 +30,6 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private GameObservable gameObs;
     private Position position;
     private Context context;
-    private GestureDetector gestureDetector;
 
     public BattleShipCellView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -52,8 +50,6 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
             this.setOnDragListener(this);
             this.setOnTouchListener(this);
-
-            gestureDetector = new GestureDetector(context, new SingleTapConfirm());
         }
 
         try {
@@ -159,12 +155,20 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
             case MISS:
                 this.setBackgroundResource(R.color.MISS);
                 break;
-            case HIT:
-                // TODO change cross to ship part number (1, 2, 3 or T)
-                this.setBackgroundResource(R.drawable.ic_cross);
+            case HIT_ONE:
+                this.setBackgroundResource(R.drawable.ic_one);
+                break;
+            case HIT_TWO:
+                this.setBackgroundResource(R.drawable.ic_two);
+                break;
+            case HIT_THREE:
+                this.setBackgroundResource(R.drawable.ic_three);
+                break;
+            case HIT_T_SHAPE:
+                this.setBackgroundResource(R.drawable.ic_tshape);
                 break;
             case SHIP:
-                this.setBackgroundResource(R.color.SHIP);
+                this.setBackgroundResource(R.drawable.ic_cross);
                 break;
         }
 
@@ -179,8 +183,8 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (gestureDetector.onTouchEvent(event)) {
-            gameObs.addNewAttempt(PlayerType.PLAYER, position);
+        if (!gameObs.canDragAndDrop()) {
+            gameObs.clickNewPosition(PlayerType.PLAYER, position);
             return true;
         } else {
             final TableLayout container = (TableLayout) v.getParent().getParent();
@@ -209,15 +213,6 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                 default:
                     return false;
             }
-        }
-    }
-
-    // https://stackoverflow.com/questions/19538747/how-to-use-both-ontouch-and-onclick-for-an-imagebutton
-    private class SingleTapConfirm extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent event) {
-            return true;
         }
     }
 }

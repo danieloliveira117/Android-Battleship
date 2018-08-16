@@ -1,10 +1,12 @@
 package amov.danieloliveira.batalhanaval.activities;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
+import android.view.View;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -15,6 +17,7 @@ import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
+import amov.danieloliveira.batalhanaval.engine.BotThread;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
@@ -30,11 +33,17 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private GameCommunication gameCommunication;
     private int mode;
     private PlayerType player;
+    private BotThread botThread;
+    private Handler handler;
+
+    private boolean onCreateRunned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        onCreateRunned = true;
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -56,19 +65,30 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
         updatePlayer(app.getUser());
         updateAdversary(gameObs.getAdversary());
+
+        handler = new Handler();
+        botThread = new BotThread(handler, gameObs);
+        botThread.start();
+
+        gameObs.refreshData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mode != SINGLEPLAYER) {
-            finish();
-        } else {
-            updateAdversary(gameObs.getAdversary());
-            updatePlayer(Utils.getUser(this));
-            // TODO: 15/08/2018 restore game
+        if (!onCreateRunned) {
+            if (mode != SINGLEPLAYER) {
+                finish();
+            } else {
+                updateAdversary(gameObs.getAdversary());
+                updatePlayer(Utils.getUser(this));
+                // TODO: 15/08/2018 restore game
+                gameObs.refreshData();
+            }
         }
+
+        onCreateRunned = false;
     }
 
     @Override
@@ -84,18 +104,29 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         setCurrentPlayerTurn(gameObs.getCurrentPlayer());
+
+        if(gameObs.didGameEnd()) {
+            AppCompatTextView end_game_message = findViewById(R.id.end_game_message);
+
+            end_game_message.setText(String.format(getResources().getString(R.string.end_game_message), gameObs.getCurrentUser().getUsername()));
+            end_game_message.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setCurrentPlayerTurn(PlayerType player) {
-        ConstraintLayout layout;
+        ConstraintLayout current;
+        ConstraintLayout other;
 
         if (player == PlayerType.PLAYER) {
-            layout = findViewById(R.id.info_player);
+            current = findViewById(R.id.info_player);
+            other = findViewById(R.id.info_adversary);
         } else {
-            layout = findViewById(R.id.info_adversary);
+            current = findViewById(R.id.info_adversary);
+            other = findViewById(R.id.info_player);
         }
 
-        layout.setBackgroundResource(R.color.MISS);
+        current.setBackgroundResource(R.color.MISS);
+        other.setBackgroundResource(R.color.colorPrimaryDark);
     }
 
     private void updateAdversary(User adversary) {

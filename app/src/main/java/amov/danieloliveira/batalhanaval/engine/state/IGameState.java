@@ -20,4 +20,6 @@ public interface IGameState {
     IGameState setCurrentShip(PlayerType player, Position position);
 
     IGameState randomizePlacement(PlayerType player);
+
+    IGameState clickNewPosition(PlayerType player, Position position);
 }

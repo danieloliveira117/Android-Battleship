@@ -783,4 +783,17 @@
         </TableRow>
 
     </TableLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/end_game_message"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/MISS"
+        android:textSize="40sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_player"
+        app:layout_constraintBottom_toTopOf="@id/tbl_player_ships"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>
