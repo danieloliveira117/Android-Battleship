@@ -24,4 +24,5 @@
     <color name="INVALID">#b71c1c</color>
     <color name="VALID">#1b5e20</color>
     <color name="MOVED">#333333</color>
+    <color name="ADJACENT">#576b58</color>
 </resources>

@@ -1,7 +1,7 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +20,7 @@ public class Ship {
     private int id;
     private ShipType type;
     private List<Position> positionList = new ArrayList<>();
+    private Set<Position>  adjacentPositions = new HashSet<>();
     private Orientation orientation;
     private boolean destroyed;
 
@@ -29,17 +30,21 @@ public class Ship {
         this.type = type;
         this.destroyed = false;
 
-        addParts(type.getSize());
+        addParts(positionList, type.getSize());
     }
 
-    private void addParts(int num) {
+    private void addParts(List<Position> list, int num) {
         for (int i = 0; i < num; i++) {
-            positionList.add(new Position());
+            list.add(new Position());
         }
     }
 
     public ShipType getType() {
         return type;
+    }
+
+    public Set<Position> getAdjacentPositions() {
+        return adjacentPositions;
     }
 
     public List<Position> getPositionList() {
@@ -181,6 +186,92 @@ public class Ship {
                 }
             }
         }
+
+        updateAdjacent();
+    }
+
+    private void updateAdjacent() {
+        adjacentPositions = new HashSet<>();
+
+        for (Position position : positionList) {
+            // TOP LEFT
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.incrementVertical();
+                new_pos.incrementHorizontal();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // TOP
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.incrementVertical();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // TOP RIGHT
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.incrementVertical();
+                new_pos.decrementHorizontal();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // LEFT
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.incrementHorizontal();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // RIGHT
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.decrementHorizontal();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // BOTTOM LEFT
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.decrementVertical();
+                new_pos.incrementHorizontal();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // BOTTOM
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.decrementVertical();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+
+            // BOTTOM RIGHT
+            try {
+                Position new_pos = new Position(position);
+
+                new_pos.decrementVertical();
+                new_pos.decrementHorizontal();
+
+                adjacentPositions.add(new_pos);
+            } catch (InvalidPositionException ignored) {}
+        }
+
+        adjacentPositions.removeAll(positionList);
     }
 
     private void incrementPosition(Position position) throws InvalidPositionException {
@@ -229,16 +320,14 @@ public class Ship {
         }
     }
 
-    public void setRandomPosition() {
+    public void setRandomPosition(List<Position> availableBoard) {
         Random random = new Random();
 
         do {
             setRandomOrientation();
 
-            try {
-                updatePosition(new Position(random.nextInt(MAXROWS), random.nextInt(MAXCOLUMNS)));
-            } catch (InvalidPositionException ignored) {}
-
+            Position temp = availableBoard.get(random.nextInt(availableBoard.size()));
+            updatePosition(temp);
         } while (hasInvalidPositions());
     }
 

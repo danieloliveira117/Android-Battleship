@@ -141,6 +141,9 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private void updateColor() {
         // TODO change player type
         switch (gameObs.getPositionType(PlayerType.PLAYER, position)) {
+            case ADJACENT:
+                this.setBackgroundResource(R.color.ADJACENT);
+                break;
             case VALID:
                 this.setBackgroundResource(R.color.VALID);
                 break;

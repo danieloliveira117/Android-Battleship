@@ -8,10 +8,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
+import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 
+import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
+import static amov.danieloliveira.batalhanaval.Consts.MAXROWS;
+import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 import static amov.danieloliveira.batalhanaval.Consts.MAXSHIPS;
 
 public class Board {
@@ -52,9 +57,9 @@ public class Board {
             }
         }
 
-        // TODO verificar quantas casas ainda faltam -> se menor que 3 mudar o if...
-        if (selected == 3) {
-            return processSelectedPositions() == 3;
+        // All 3 positions have been selected
+        if (selected == MAXSELECT || MAXROWS * MAXCOLUMNS == adversaryAttempts.size()) {
+            return processSelectedPositions() == MAXSELECT;
         }
 
         return false;
@@ -115,6 +120,7 @@ public class Board {
 
     public PositionType getPositionValidity(Position position) {
         int count = 0;
+        boolean isAdjacent = false;
 
         for (Ship ship : shipList) {
 
@@ -125,14 +131,22 @@ public class Board {
                     return PositionType.INVALID;
                 }
             }
+
+            if (!isAdjacent && ship.getAdjacentPositions().contains(position)) {
+                isAdjacent = true;
+            }
         }
 
-        if (count == 1)
-            return PositionType.VALID;
-        else if (count == 0)
-            return PositionType.UNKNOWN;
+        if (count > 1 || isAdjacent && count == 1)
+            return PositionType.INVALID;
 
-        return PositionType.INVALID;
+        if (!isAdjacent && count == 1)
+            return PositionType.VALID;
+
+        if (isAdjacent)
+            return PositionType.ADJACENT;
+
+        return PositionType.UNKNOWN;
     }
 
     public List<Position> getShipPositions(Position position) {
@@ -163,23 +177,41 @@ public class Board {
     }
 
     public void setRandomPlacement() {
-        // Restore board
-        createShips();
 
         int count = 0;
+        List<Position> positionList = new ArrayList<>();
+        Set<Position> adjacentSet = new HashSet<>();
 
-        List<Position> positionList= new ArrayList<>();
+        List<Position> availableBoard = new ArrayList<>(MAXCOLUMNS * MAXROWS);
+
+        for (int i = 1; i <= MAXROWS; i++) {
+            for (int j = 1; j <= MAXCOLUMNS; j++) {
+                try {
+                    availableBoard.add(new Position(i, j));
+                } catch (InvalidPositionException ignored) {
+                    ignored.printStackTrace();
+                }
+            }
+        }
+
+        // Clear ship positions
+        createShips();
 
         while (count < MAXSHIPS) {
-            shipList[count].setRandomPosition();
+            shipList[count].setRandomPosition(availableBoard);
 
             positionList.clear();
+            adjacentSet.clear();
 
             for (int i = 0; i <= count; i++) {
                 positionList.addAll(shipList[i].getPositionList());
+                adjacentSet.addAll(shipList[i].getAdjacentPositions());
             }
 
-            if(count == 0 || !hasDuplicate(positionList)) {
+            positionList.addAll(adjacentSet);
+
+            if (count == 0 || !hasDuplicate(positionList)) {
+                availableBoard.removeAll(positionList);
                 count++;
             }
         }
