@@ -17,7 +17,6 @@ import amov.danieloliveira.batalhanaval.Preferences;
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.model.User;
-// TODO: 09/08/2018 Change were image is saved
 
 public class ConfigUserActivity extends AppCompatActivity {
     private static final String TAG = "ConfigUserActivity";

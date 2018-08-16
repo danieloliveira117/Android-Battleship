@@ -209,19 +209,14 @@ public class BorderDrawable extends Drawable {
 
     @Override
     public void setAlpha(int alpha) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public int getOpacity() {
-        // TODO Auto-generated method stub
         return PixelFormat.UNKNOWN;
     }
 }

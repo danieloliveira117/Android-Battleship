@@ -16,6 +16,10 @@ public class GameObservable extends Observable {
         this.gameData = new GameData();
     }
 
+    public void newGameData() {
+        this.gameData = new GameData();
+    }
+
     /* --- SETS --- */
     public void startGame(GameMode mode, User user) {
         gameData.startGame(mode, user);

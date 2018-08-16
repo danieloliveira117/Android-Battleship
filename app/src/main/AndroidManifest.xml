@@ -26,8 +26,16 @@
         </activity>
         <activity android:name=".activities.ConfigUserActivity" />
         <activity android:name=".activities.TakePictureActivity" />
-        <activity android:name=".activities.GameStartActivity" />
-        <activity android:name=".activities.GameActivity"></activity>
+        <activity android:name=".activities.GameStartActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.GameActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

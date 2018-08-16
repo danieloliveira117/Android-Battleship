@@ -47,6 +47,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         super.onResume();
 
         if (mode != SINGLEPLAYER) {
+            gameObs.newGameData();
             BattleshipApplication app = (BattleshipApplication) this.getApplication();
             gameCommunication = app.newGameCommunication(this, mode);
         } else {
@@ -98,6 +99,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         }
 
         // Start Game Communication
+        gameObs.newGameData();
         gameCommunication = app.newGameCommunication(this, mode);
         gameCommunication.startCommunication();
     }

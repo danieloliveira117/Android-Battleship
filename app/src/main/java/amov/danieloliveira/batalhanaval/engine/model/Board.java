@@ -19,7 +19,6 @@ import static amov.danieloliveira.batalhanaval.Consts.MAXSHIPS;
 
 public class Board {
     private Ship[] shipList = new Ship[MAXSHIPS];
-    // TODO save this player's attempts instead of adversary
     private Map<Position, PositionType> adversaryAttempts = new HashMap<>();
 
     public Board() {
@@ -63,8 +62,12 @@ public class Board {
 
     public int processSelectedPositions() {
         int numberOfHits = 0;
+        List<Ship> destroyedShip = new ArrayList<>();
 
         for (Position position : adversaryAttempts.keySet()) {
+            if(!adversaryAttempts.get(position).equals(PositionType.SELECTED))
+                continue;
+
             // Start as if no ship has been hit
             adversaryAttempts.put(position, PositionType.MISS);
 
@@ -91,16 +94,18 @@ public class Board {
 
                     // Check if all parts of the ship have been destroyed
                     if (adversaryAttempts.keySet().containsAll(ship.getPositionList())) {
-                        /*for (Position part : ship.getPositionList()) {
-                            // Replace HIT for SHIP
-                            adversaryAttempts.put(part, PositionType.SHIP);
-                        }*/
-
-                        // TODO: 16/08/2018 Uncover this ship adjacente positions
-                        ship.setDestroyed(true);
+                        destroyedShip.add(ship);
                     }
                 }
             }
+        }
+
+        for(Ship ship : destroyedShip) {
+            for (Position adjacent : ship.getAdjacentPositions()) {
+                adversaryAttempts.put(adjacent, PositionType.MISS);
+            }
+
+            ship.setDestroyed(true);
         }
 
         return numberOfHits;
