@@ -74,4 +74,12 @@ public class Player {
     public List<Position> getUnknownPositions() {
         return board.getUnknownPositions();
     }
+
+    public int getShipsDestroyed() {
+        return board.getShipsDestroyed();
+    }
+
+    public int getNumberOfHits() {
+        return board.getNumberOfHits();
+    }
 }

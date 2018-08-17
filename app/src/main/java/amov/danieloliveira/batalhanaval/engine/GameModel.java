@@ -1,32 +1,29 @@
 package amov.danieloliveira.batalhanaval.engine;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
-import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
-import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
-import static amov.danieloliveira.batalhanaval.Consts.MAXROWS;
-
-class GameModel {
+public class GameModel {
     private Player player1, player2;
     private GameMode gameMode;
+    private int numPlays;
 
-    public GameModel() {
+    GameModel() {
         player1 = new Player();
         player2 = new Player();
+        numPlays = 0;
     }
 
-    GameMode getGameMode() {
+    public GameMode getGameMode() {
         return gameMode;
     }
 
@@ -109,10 +106,42 @@ class GameModel {
 
         Random random = new Random();
 
-        return positions.get(random.nextInt(positions.size()));
+        if(positions.size() > 0) {
+            return positions.get(random.nextInt(positions.size()));
+        }
+
+        return null;
     }
 
     public User getCurrentUser(PlayerType player) {
         return getPlayer(player).getUser();
+    }
+
+    public int getNumPlays() {
+        return numPlays;
+    }
+
+    public void incrementNumPlays() {
+        numPlays++;
+    }
+
+    public PlayerType getPlayerType(User user) {
+        if(player1.getUser().equals(user)) {
+            return PlayerType.PLAYER;
+        }
+
+        return PlayerType.ADVERSARY;
+    }
+
+    public User getUser(PlayerType player) {
+        return getPlayer(player).getUser();
+    }
+
+    public int getNumberOfHits(PlayerType player) {
+        return getOpponent(player).getNumberOfHits();
+    }
+
+    public int getShipsDestroyed(PlayerType player) {
+        return getPlayer(player).getShipsDestroyed();
     }
 }

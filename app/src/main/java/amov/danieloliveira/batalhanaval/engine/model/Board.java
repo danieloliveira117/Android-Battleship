@@ -65,7 +65,7 @@ public class Board {
         List<Ship> destroyedShip = new ArrayList<>();
 
         for (Position position : adversaryAttempts.keySet()) {
-            if(!adversaryAttempts.get(position).equals(PositionType.SELECTED))
+            if (!adversaryAttempts.get(position).equals(PositionType.SELECTED))
                 continue;
 
             // Start as if no ship has been hit
@@ -100,7 +100,7 @@ public class Board {
             }
         }
 
-        for(Ship ship : destroyedShip) {
+        for (Ship ship : destroyedShip) {
             for (Position adjacent : ship.getAdjacentPositions()) {
                 adversaryAttempts.put(adjacent, PositionType.MISS);
             }
@@ -280,5 +280,32 @@ public class Board {
         availableBoard.removeAll(adversaryAttempts.keySet());
 
         return availableBoard;
+    }
+
+    public int getShipsDestroyed() {
+        int count = 0;
+
+        for (Ship ship : shipList) {
+            if (ship.isDestroyed()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int getNumberOfHits() {
+        int count = 0;
+
+        for (PositionType positionType : adversaryAttempts.values()) {
+            if (positionType == PositionType.HIT_ONE ||
+                    positionType == PositionType.HIT_TWO ||
+                    positionType == PositionType.HIT_THREE ||
+                    positionType == PositionType.HIT_T_SHAPE) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }

@@ -3,21 +3,25 @@ package amov.danieloliveira.batalhanaval.engine;
 import java.util.List;
 import java.util.Observable;
 
+import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
+import amov.danieloliveira.batalhanaval.engine.model.MatchHistory;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class GameObservable extends Observable {
     private GameData gameData;
+    private BattleshipApplication app;
 
-    public GameObservable() {
-        this.gameData = new GameData();
+    public GameObservable(BattleshipApplication app) {
+        this.app = app;
+        this.gameData = new GameData(app);
     }
 
     public void newGameData() {
-        this.gameData = new GameData();
+        this.gameData = new GameData(app);
     }
 
     /* --- SETS --- */

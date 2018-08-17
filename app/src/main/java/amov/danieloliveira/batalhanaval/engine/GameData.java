@@ -1,8 +1,11 @@
 package amov.danieloliveira.batalhanaval.engine;
 
+import android.app.Application;
+
 import java.util.List;
 import java.util.Random;
 
+import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
@@ -16,12 +19,14 @@ import amov.danieloliveira.batalhanaval.engine.state.AwaitShipPlacement;
 import amov.danieloliveira.batalhanaval.engine.state.IGameState;
 
 public class GameData {
+    private BattleshipApplication app;
     private PlayerType currentPlayer;
     private GameModel gameModel;
     private IGameState currentState;
     private Ship[] currentShip = {null, null};
 
-    GameData() {
+    GameData(BattleshipApplication application) {
+        this.app = application;
         this.gameModel = new GameModel();
         this.currentState = new AwaitGameStart(this);
     }
@@ -196,5 +201,13 @@ public class GameData {
 
     public User getCurrentUser() {
         return gameModel.getCurrentUser(currentPlayer);
+    }
+
+    public void saveGameResults() {
+        app.addNewMatchHistory(gameModel);
+    }
+
+    public void incrementNumPlays() {
+        gameModel.incrementNumPlays();
     }
 }

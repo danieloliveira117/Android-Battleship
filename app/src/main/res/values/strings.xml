@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Battleship</string>
+    <string name="title_activity_match_history">Match History</string>
+    <string name="title_activity_game_start">Place your ships</string>
 
     <string name="one">1</string>
     <string name="two">2</string>
@@ -28,7 +30,6 @@
     <string name="username_min_length">The username needs to be at least 3 characters</string>
     <string name="error_image">There has been an error getting your picture</string>
     <string name="image_missing">You need to add an image</string>
-    <string name="title_activity_game_start">GameStartActivity</string>
     <string name="error_netconn">No network connection</string>
     <string name="serverdlg_title">Battleship Server</string>
     <string name="serverdlg_msg">Waiting for a client…</string>
@@ -51,4 +52,12 @@
     <string name="camera_permission_required">Camera Permission is required for this app to run</string>
     <string name="error_opening_camera">There\'s been an error opening your camera, please try again or check this app\'s permissions</string>
     <string name="end_game_message">%1$s\n WON!!!</string>
+    <string name="player_greeting">Hi %1$s!</string>
+    <string name="vs_ai">vs AI</string>
+    <string name="vs_player">vs Player</string>
+    <string name="victory">Victory</string>
+    <string name="defeat">Defeat</string>
+    <string name="vs">vs</string>
+    <string name="num_hits_label">Number of Hits</string>
+    <string name="num_ships_destroyed">Ships Sunken</string>
 </resources>

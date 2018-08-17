@@ -9,7 +9,6 @@ import android.widget.Toast;
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.Preferences;
 import amov.danieloliveira.batalhanaval.R;
-import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        User user = Preferences.loadPreferences(MainActivity.this);
+        User user = Preferences.loadUserPreferences(MainActivity.this);
 
         if (user == null) {
             // Primeira utilização necessita de configurar o utilizador
@@ -32,10 +31,12 @@ public class MainActivity extends AppCompatActivity {
             BattleshipApplication app = (BattleshipApplication) getApplication();
             app.setUser(user);
 
+            Preferences.loadMatchHistoryListPreferences(this);
+
             setContentView(R.layout.activity_main);
 
             if (savedInstanceState == null) {
-                Toast.makeText(this, "Olá " + user.getUsername() + "!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, String.format(getResources().getString(R.string.player_greeting), user.getUsername()), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onMatchHistory(View view) {
-
+        startActivity(new Intent(this, MatchHistoryActivity.class));
     }
 
     public void onChangeUser(View view) {

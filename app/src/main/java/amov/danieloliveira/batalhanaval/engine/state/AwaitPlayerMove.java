@@ -13,20 +13,24 @@ public class AwaitPlayerMove extends GameStateAdapter {
 
     @Override
     public IGameState clickNewPosition(PlayerType player, Position position) {
-        if(gameData.getCurrentPlayer() == player) {
+        if (gameData.getCurrentPlayer() == player && position != null) {
             gameData.addNewAttempt(position);
 
-            if(gameData.isLastSelect()) {
-                // TODO Mudar a posição de um barco
-                if(gameData.processSelectedPositions() == MAXSELECT) {
-                    // return new AwaitShipReposition(gameData);
+            if (gameData.isLastSelect()) {
+                int hits = gameData.processSelectedPositions();
+
+                gameData.incrementNumPlays();
+
+                if (gameData.didGameEnd()) {
+                    return new GameEnded(gameData);
                 }
 
-                if(gameData.didGameEnd()) {
-                    return new GameEnded(gameData);
-                } else {
-                    gameData.nextPlayer();
+                if (hits == MAXSELECT) {
+                    // TODO Mudar a posição de um barco
+                    //return new AwaitShipReposition(gameData);
                 }
+
+                gameData.nextPlayer();
             }
         }
 

@@ -24,9 +24,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ConfigUserActivity" />
-        <activity android:name=".activities.TakePictureActivity" />
-        <activity android:name=".activities.GameStartActivity">
+        <activity
+            android:name=".activities.ConfigUserActivity"
+            android:label="@string/change_user" />
+
+        <activity
+            android:name=".activities.TakePictureActivity"
+            android:label="@string/take_picture"
+            android:parentActivityName=".activities.ConfigUserActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ConfigUserActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.GameStartActivity"
+            android:label="@string/title_activity_game_start">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -35,6 +48,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.MatchHistoryActivity"
+            android:label="@string/title_activity_match_history"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="amov.danieloliveira.batalhanaval.activities.MainActivity" />
         </activity>
     </application>
 

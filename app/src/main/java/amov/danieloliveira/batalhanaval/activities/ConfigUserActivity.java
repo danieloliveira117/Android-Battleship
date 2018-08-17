@@ -63,7 +63,7 @@ public class ConfigUserActivity extends AppCompatActivity {
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
         app.setUser(new User(username, image));
-        Preferences.savePreferences(this);
+        Preferences.saveUserPreferences(this);
 
         startActivity(new Intent(this, MainActivity.class));
         this.finish();

@@ -1,20 +1,24 @@
 package amov.danieloliveira.batalhanaval;
 
-import android.app.Activity;
 import android.app.Application;
-import android.os.Handler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
+import amov.danieloliveira.batalhanaval.engine.GameModel;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
+import amov.danieloliveira.batalhanaval.engine.model.MatchHistory;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class BattleshipApplication extends Application {
     private GameObservable obs;
     private GameCommunication gameCommunication;
     private User user;
+    private List<MatchHistory> matchHistory = new ArrayList<>();
 
     public BattleshipApplication() {
-        this.obs = new GameObservable();
+        this.obs = new GameObservable(this);
         this.gameCommunication = null;
     }
 
@@ -50,5 +54,18 @@ public class BattleshipApplication extends Application {
         gameCommunication = new GameCommunication(activity, mode);
 
         return gameCommunication;
+    }
+
+    public List<MatchHistory> getMatchHistory() {
+        return matchHistory;
+    }
+
+    public void setMatchHistoryList(List<MatchHistory> matchHistoryList) {
+        this.matchHistory = matchHistoryList;
+    }
+
+    public void addNewMatchHistory(GameModel gameModel) {
+        this.matchHistory.add(new MatchHistory(gameModel, user));
+        Preferences.saveMatchHistoryListPreferences(this);
     }
 }

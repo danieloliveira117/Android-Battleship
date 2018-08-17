@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:padding="@dimen/text_margin">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_vs_game_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/vs_ai"
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_game_result"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_game_result"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/defeat"
+            android:textAllCaps="true"
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/tv_vs_game_mode"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@color/light"
+        android:paddingEnd="@dimen/fab_margin"
+        android:paddingStart="@dimen/fab_margin"
+        android:paddingBottom="@dimen/fab_margin">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_player_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:text="PlayerDaTreta"
+            app:layout_constraintBottom_toBottomOf="@id/tv_vs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_vs"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/vs"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/tv_player_name"
+            app:layout_constraintRight_toLeftOf="@id/tv_adversary_name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_adversary_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:text="PlayerDaTreta"
+            app:layout_constraintBottom_toBottomOf="@id/tv_vs"
+            app:layout_constraintLeft_toRightOf="@id/tv_vs"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_num_hits_player"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/four"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_num_hits_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_vs" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_ships_destroyed_player"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/six"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_ships_destroyed_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_num_hits_player" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_num_hits_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/num_hits_label"
+            android:textAlignment="center"
+            app:layout_constraintLeft_toRightOf="@id/tv_num_hits_player"
+            app:layout_constraintRight_toLeftOf="@id/tv_num_hits_adversary"
+            app:layout_constraintTop_toBottomOf="@id/tv_vs" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_ships_destroyed_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/num_ships_destroyed"
+            android:textAlignment="center"
+            app:layout_constraintLeft_toLeftOf="@id/tv_num_hits_label"
+            app:layout_constraintRight_toRightOf="@id/tv_num_hits_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_num_hits_label" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_num_hits_adversary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/one"
+            android:textAlignment="textEnd"
+            app:layout_constraintLeft_toRightOf="@id/tv_num_hits_label"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vs" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_ships_destroyed_adversary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/eight"
+            android:textAlignment="textEnd"
+            app:layout_constraintLeft_toRightOf="@id/tv_num_hits_label"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_num_hits_adversary" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
