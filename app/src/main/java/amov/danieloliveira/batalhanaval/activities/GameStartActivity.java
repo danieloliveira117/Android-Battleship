@@ -14,7 +14,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
@@ -76,17 +75,6 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         gameObs = app.getObservable();
         gameObs.addObserver(this);
 
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        assert connMgr != null;
-
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected()) {
-            Toast.makeText(this, R.string.error_netconn, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
         Intent intent = getIntent();
         if (intent != null) {
             mode = intent.getIntExtra("mode", SINGLEPLAYER);
@@ -100,8 +88,22 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
 
         // Start Game Communication
         gameObs.newGameData();
-        gameCommunication = app.newGameCommunication(this, mode);
-        gameCommunication.startCommunication();
+
+        if (mode != SINGLEPLAYER) {
+            ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            assert connMgr != null;
+
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo == null || !networkInfo.isConnected()) {
+                Toast.makeText(this, R.string.error_netconn, Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
+
+            gameCommunication = app.newGameCommunication(this, mode);
+            gameCommunication.startCommunication();
+        }
     }
 
     @Override
@@ -170,5 +172,9 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
                 }
             }
         }
+    }
+
+    public void onRotateShip(View view) {
+        gameObs.rotateCurrentShip(player);
     }
 }

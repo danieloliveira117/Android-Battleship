@@ -358,4 +358,21 @@ public class Ship {
                 ", destroyed=" + destroyed +
                 '}';
     }
+
+    public void rotateShip() {
+        switch (orientation) {
+            case NORTH:
+                setOrientation(Orientation.WEST);
+                break;
+            case WEST:
+                setOrientation(Orientation.SOUTH);
+                break;
+            case SOUTH:
+                setOrientation(Orientation.EAST);
+                break;
+            case EAST:
+                setOrientation(Orientation.NORTH);
+                break;
+        }
+    }
 }

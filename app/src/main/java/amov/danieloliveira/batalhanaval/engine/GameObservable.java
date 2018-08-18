@@ -93,6 +93,13 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
+    public void rotateCurrentShip(PlayerType player) {
+        gameData.rotateCurrentShip(player);
+
+        setChanged();
+        notifyObservers();
+    }
+
     /* --- GETS --- */
 
     public PositionType getPositionType(PlayerType player, Position position) {

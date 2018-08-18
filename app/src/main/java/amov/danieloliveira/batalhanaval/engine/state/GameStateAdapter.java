@@ -52,4 +52,9 @@ public class GameStateAdapter implements IGameState {
     public IGameState clickNewPosition(PlayerType player, Position position) {
         return this;
     }
+
+    @Override
+    public IGameState rotateCurrentShip(PlayerType player) {
+        return this;
+    }
 }

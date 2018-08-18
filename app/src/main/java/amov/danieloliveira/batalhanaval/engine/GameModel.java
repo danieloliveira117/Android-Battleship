@@ -144,4 +144,9 @@ public class GameModel {
     public int getShipsDestroyed(PlayerType player) {
         return getPlayer(player).getShipsDestroyed();
     }
+
+    public void rotateShip(Ship ship) {
+        if(ship != null)
+        ship.rotateShip();
+    }
 }

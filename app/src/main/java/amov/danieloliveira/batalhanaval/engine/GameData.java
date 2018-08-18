@@ -64,6 +64,10 @@ public class GameData {
         currentState = currentState.clickNewPosition(player, position);
     }
 
+    public void rotateCurrentShip(PlayerType player) {
+        currentState = currentState.rotateCurrentShip(player);
+    }
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);
@@ -209,5 +213,9 @@ public class GameData {
 
     public void incrementNumPlays() {
         gameModel.incrementNumPlays();
+    }
+
+    public void rotateShip(PlayerType player) {
+        gameModel.rotateShip(getCurrentShip(player));
     }
 }

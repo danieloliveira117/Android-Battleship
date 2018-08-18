@@ -22,4 +22,6 @@ public interface IGameState {
     IGameState randomizePlacement(PlayerType player);
 
     IGameState clickNewPosition(PlayerType player, Position position);
+
+    IGameState rotateCurrentShip(PlayerType player);
 }

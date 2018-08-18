@@ -54,4 +54,10 @@ public class AwaitShipPlacement extends GameStateAdapter {
         gameData.setRandomPlacement(player);
         return this;
     }
+
+    @Override
+    public IGameState rotateCurrentShip(PlayerType player) {
+        gameData.rotateShip(player);
+        return this;
+    }
 }
