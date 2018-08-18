@@ -51,8 +51,8 @@ public class Player {
         return board.getShipByPosition(position);
     }
 
-    public PositionType getPositionValidity(Position position) {
-        return board.getPositionValidity(position);
+    public PositionType getPositionValidity(Position position, Ship currentShip) {
+        return board.getPositionValidity(position, currentShip);
     }
 
     public List<Position> getShipPositions(Position position) {

@@ -126,7 +126,7 @@ public class GameData {
             return PositionType.UNKNOWN;
 
         if (currentState instanceof AwaitShipPlacement)
-            return gameModel.getPositionValidity(player, position);
+            return gameModel.getPositionValidity(player, position, getCurrentShip(player));
 
         return gameModel.getPositionType(player, position);
     }

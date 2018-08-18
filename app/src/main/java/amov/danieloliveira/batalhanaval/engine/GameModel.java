@@ -77,8 +77,8 @@ public class GameModel {
         return getPlayer(player).getShipByPosition(position);
     }
 
-    public PositionType getPositionValidity(PlayerType player, Position position) {
-        return getPlayer(player).getPositionValidity(position);
+    public PositionType getPositionValidity(PlayerType player, Position position, Ship currentShip) {
+        return getPlayer(player).getPositionValidity(position, currentShip);
     }
 
     public List<Position> getShipPositions(PlayerType player, Position position) {

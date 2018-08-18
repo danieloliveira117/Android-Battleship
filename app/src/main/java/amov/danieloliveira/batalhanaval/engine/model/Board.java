@@ -136,9 +136,10 @@ public class Board {
         return null;
     }
 
-    public PositionType getPositionValidity(Position position) {
+    public PositionType getPositionValidity(Position position, Ship currentShip) {
         int count = 0;
         boolean isAdjacent = false;
+        boolean isSelected = false;
 
         for (Ship ship : shipList) {
 
@@ -147,6 +148,10 @@ public class Board {
 
                 if (ship.hasInvalidPositions()) {
                     return PositionType.INVALID;
+                }
+
+                if (currentShip != null && ship.equals(currentShip)) {
+                    isSelected = true;
                 }
             }
 
@@ -158,8 +163,12 @@ public class Board {
         if (count > 1 || isAdjacent && count == 1)
             return PositionType.INVALID;
 
-        if (!isAdjacent && count == 1)
-            return PositionType.VALID;
+        if (!isAdjacent && count == 1) {
+            if (isSelected)
+                return PositionType.SELECTED;
+            else
+                return PositionType.VALID;
+        }
 
         if (isAdjacent)
             return PositionType.ADJACENT;
