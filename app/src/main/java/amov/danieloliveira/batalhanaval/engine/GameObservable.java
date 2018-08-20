@@ -7,9 +7,11 @@ import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
-import amov.danieloliveira.batalhanaval.engine.model.MatchHistory;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
+
+import static amov.danieloliveira.batalhanaval.engine.enums.MsgType.CONFIRM_PLACEMENT;
 
 public class GameObservable extends Observable {
     private GameData gameData;
@@ -25,11 +27,16 @@ public class GameObservable extends Observable {
     }
 
     /* --- SETS --- */
+    public void refreshData() {
+        setChanged();
+        notifyObservers(gameData.getGameMode());
+    }
+
     public void startGame(GameMode mode, User user) {
         gameData.startGame(mode, user);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(mode);
     }
 
     public void setAdversaryUser(User user) {
@@ -64,8 +71,9 @@ public class GameObservable extends Observable {
         gameData.confirmShipPlacement(player);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(CONFIRM_PLACEMENT);
     }
+
     public void selectShip(PlayerType player, Position position) {
         gameData.setCurrentShip(player, position);
 
@@ -88,16 +96,18 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
-    public void refreshData() {
-        setChanged();
-        notifyObservers();
-    }
-
     public void rotateCurrentShip(PlayerType player) {
         gameData.rotateCurrentShip(player);
 
         setChanged();
         notifyObservers();
+    }
+
+    public void confirmPlacementRemote(PlayerType type, Board board) {
+        gameData.confirmShipPlacementRemote(type, board);
+
+        setChanged();
+        notifyObservers(board);
     }
 
     /* --- GETS --- */
@@ -132,5 +142,9 @@ public class GameObservable extends Observable {
 
     public User getCurrentUser() {
         return gameData.getCurrentUser();
+    }
+
+    public Board getPlayerBoard(PlayerType type) {
+        return gameData.getPlayerBoard(type);
     }
 }

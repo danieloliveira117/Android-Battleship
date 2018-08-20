@@ -21,8 +21,7 @@ import java.util.List;
 import static amov.danieloliveira.batalhanaval.Consts.VICTORY;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link MatchHistory} and makes a call to the
- * specified @link OnListFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link MatchHistory}
  */
 public class MatchHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MatchHistoryRecyclerViewAdapter.ViewHolder> {
     private final List<MatchHistory> mValues;

@@ -14,14 +14,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
 
-import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.SerializableHashSet;
 import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
@@ -31,44 +30,55 @@ import amov.danieloliveira.batalhanaval.engine.model.User;
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
+// TODO: 19/08/2018 Check if PlayerType remains the same when mode changes to single player!!!
 // TODO clear game data on back / game end / lost connection / on Pause????
 public class GameStartActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "GameStartActivity";
     private GameObservable gameObs;
     private GameCommunication gameCommunication;
-    public Set<Integer> placedViews = new HashSet<>();
 
     private int mode = SINGLEPLAYER;
-    private PlayerType player;
+    private PlayerType type;
+    private TableLayout tbl_place_ships;
+
+    public SerializableHashSet<Integer> placedViews = new SerializableHashSet<>();
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mode != SINGLEPLAYER) {
+        /*if (mode != SINGLEPLAYER) {
             gameObs.newGameData();
             BattleshipApplication app = (BattleshipApplication) this.getApplication();
             gameCommunication = app.newGameCommunication(this, mode);
-        } else {
-            gameObs.setAdversaryUser(new User("BotTron2000", null));
-            gameObs.startGame(GameMode.vsAI, Utils.getUser(this));
-        }
+        }*/
+        // TODO: 20/08/2018 ???
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if (gameCommunication != null) {
+        // TODO: 20/08/2018 End if not rotation
+        /*if (gameCommunication != null) {
             gameCommunication.endCommunication();
             gameCommunication = null;
-        }
+        }*/
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("placedViews", placedViews);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
+
+        tbl_place_ships = findViewById(R.id.tbl_place_ships);
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
 
@@ -81,39 +91,67 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         }
 
         if (mode == CLIENT) {
-            player = PlayerType.ADVERSARY;
+            type = PlayerType.ADVERSARY;
+            tbl_place_ships.setTag(1);
         } else {
-            player = PlayerType.PLAYER;
+            type = PlayerType.PLAYER;
+            tbl_place_ships.setTag(0);
         }
 
-        // Start Game Communication
-        gameObs.newGameData();
+        if (savedInstanceState == null || savedInstanceState.getSerializable("placedViews") == null) {
+            // Start Game Communication
+            gameObs.newGameData();
 
-        if (mode != SINGLEPLAYER) {
-            ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (mode != SINGLEPLAYER) {
+                ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            assert connMgr != null;
+                assert connMgr != null;
 
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo == null || !networkInfo.isConnected()) {
-                Toast.makeText(this, R.string.error_netconn, Toast.LENGTH_LONG).show();
-                finish();
-                return;
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo == null || !networkInfo.isConnected()) {
+                    Toast.makeText(this, R.string.error_netconn, Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
+
+                gameCommunication = app.newGameCommunication(this, mode);
+                gameCommunication.startCommunication();
+            } else {
+                gameObs.setAdversaryUser(new User("BotTron2000", null));
+                gameObs.startGame(GameMode.vsAI, Utils.getUser(this));
             }
+        } else {
+            // Avoid warnings (cast generics)
+            placedViews = (SerializableHashSet<Integer>) savedInstanceState.getSerializable("placedViews");
+            /*Object temp = savedInstanceState.getSerializable("placedViews");
 
-            gameCommunication = app.newGameCommunication(this, mode);
-            gameCommunication.startCommunication();
+            placedViews.clear();
+
+            if(temp instanceof SerializableHashSet) {
+                SerializableHashSet temp2 = (SerializableHashSet) temp;
+
+                for (Object o : temp2) {
+                    if(o instanceof Integer) {
+                        placedViews.add((Integer) o);
+                    }
+                }
+            }*/
+            // end
+
+            hidePlacedShipsInShipyard();
+            gameObs.refreshData();
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
+
     }
 
     public void onConfirmPlacement(View view) {
-        gameObs.confirmPlacement(player);
+        gameObs.confirmPlacement(type);
 
-        if (gameObs.validPlacement(player)) {
+        if (gameObs.validPlacement(type)) {
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("mode", mode);
             startActivity(intent);
@@ -130,9 +168,9 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         inflater.inflate(R.menu.game_start_menu, menu);
 
         if (mode == SINGLEPLAYER) {
-            menu.findItem(R.id.action_change_mode).setVisible(true);
-        } else {
             menu.findItem(R.id.action_change_mode).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_change_mode).setVisible(true);
         }
 
         return true;
@@ -151,7 +189,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
             case R.id.action_randomize_placement:
                 hideAllShipsInShipyard();
 
-                gameObs.randomizePlacement(player);
+                gameObs.randomizePlacement(type);
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -174,7 +212,25 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    private void hidePlacedShipsInShipyard() {
+        TableLayout layout = findViewById(R.id.tbl_shipyard);
+
+        if (layout != null) {
+            for (int i = 0; i < layout.getChildCount(); i++) {
+                TableRow row = (TableRow) layout.getChildAt(i);
+
+                for (int j = 0; j < row.getChildCount(); j++) {
+                    View view = row.getChildAt(j);
+
+                    if (placedViews.contains((Integer) view.getTag())) {
+                        view.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        }
+    }
+
     public void onRotateShip(View view) {
-        gameObs.rotateCurrentShip(player);
+        gameObs.rotateCurrentShip(type);
     }
 }

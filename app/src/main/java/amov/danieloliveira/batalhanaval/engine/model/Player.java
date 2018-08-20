@@ -82,4 +82,12 @@ public class Player {
     public int getNumberOfHits() {
         return board.getNumberOfHits();
     }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }

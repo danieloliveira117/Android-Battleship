@@ -2,6 +2,7 @@ package amov.danieloliveira.batalhanaval.engine.state;
 
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
@@ -24,4 +25,6 @@ public interface IGameState {
     IGameState clickNewPosition(PlayerType player, Position position);
 
     IGameState rotateCurrentShip(PlayerType player);
+
+    IGameState confirmShipPlacementRemote(PlayerType type, Board board);
 }

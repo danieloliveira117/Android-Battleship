@@ -51,7 +51,7 @@ public class BattleshipApplication extends Application {
             gameCommunication.endCommunication();
         }
 
-        gameCommunication = new GameCommunication(activity, mode);
+        gameCommunication = new GameCommunication(obs, activity, mode);
 
         return gameCommunication;
     }

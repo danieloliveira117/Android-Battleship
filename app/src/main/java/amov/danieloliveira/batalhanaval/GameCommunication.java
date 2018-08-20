@@ -1,5 +1,6 @@
 package amov.danieloliveira.batalhanaval;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,11 +21,15 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.JsonMessage;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
+import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.model.UserBase64;
 import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
@@ -33,9 +38,12 @@ import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 
-public class GameCommunication {
+public class GameCommunication implements Observer {
     private static final String TAG = "GameCommunication";
 
+    private PlayerType type;
+    private PlayerType opponentType;
+    private GameObservable gameObs;
     private GameStartActivity activity;
     private Handler procMsg;
     private ProgressDialog pd = null;
@@ -45,10 +53,21 @@ public class GameCommunication {
     private PrintWriter output;
     private int mode;
 
-    GameCommunication(GameStartActivity activity, int mode) {
+    GameCommunication(GameObservable gameObs, GameStartActivity activity, int mode) {
+        this.gameObs = gameObs;
         this.activity = activity;
         this.procMsg = new Handler();
         this.mode = mode;
+
+        if (mode == CLIENT) {
+            type = PlayerType.ADVERSARY;
+            opponentType = PlayerType.PLAYER;
+        } else {
+            type = PlayerType.PLAYER;
+            opponentType = PlayerType.ADVERSARY;
+        }
+
+        gameObs.addObserver(this);
     }
 
     public void startCommunication() {
@@ -64,6 +83,7 @@ public class GameCommunication {
 
     public void endCommunication() {
         try {
+            gameObs.deleteObserver(this);
             commThread.interrupt();
             if (socketGame != null)
                 socketGame.close();
@@ -108,6 +128,7 @@ public class GameCommunication {
                     HandleMessage(input.readLine());
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 procMsg.post(new Runnable() {
                     @Override
                     public void run() {
@@ -148,6 +169,15 @@ public class GameCommunication {
                         // Start Game
                         gameObs.startGame(GameMode.vsPLAYER, Utils.getUser(activity));
                     }
+                    break;
+                    case CONFIRM_PLACEMENT: {
+                        final Type type = new TypeToken<JsonMessage<Board>>() {
+                        }.getType();
+                        final JsonMessage jsonMessage = gson.fromJson(mJson, type);
+
+                        gameObs.confirmPlacementRemote(opponentType, (Board) jsonMessage.getObject());
+                    }
+                    break;
                 }
             }
         });
@@ -206,9 +236,10 @@ public class GameCommunication {
         t.start();
     }
 
+    @SuppressLint("SetTextI18n")
     private void clientDlg() {
         final EditText edtIP = new EditText(activity);
-        edtIP.setText("10.0.2.2"); // emulator's default ip
+        edtIP.setText("192.168.1.103"); // emulator's default ip 10.0.2.2
 
         AlertDialog ad = new AlertDialog.Builder(activity).setTitle(activity.getString(R.string.clientdlg_msg))
                 .setMessage(activity.getString(R.string.serverip)).setView(edtIP)
@@ -253,5 +284,14 @@ public class GameCommunication {
         });
 
         t.start();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg == MsgType.CONFIRM_PLACEMENT) {
+            if (gameObs.validPlacement(type)) {
+                SendMessage(gameObs.getPlayerBoard(type), MsgType.CONFIRM_PLACEMENT);
+            }
+        }
     }
 }

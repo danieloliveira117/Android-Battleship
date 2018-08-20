@@ -61,4 +61,5 @@
     <string name="num_hits_label">Number of Hits</string>
     <string name="num_ships_destroyed">Ships Sunken</string>
     <string name="rotate_ship">Rotate Ship</string>
+    <string name="waiting_for_opponent_msg">Waiting for opponent to place their ships…</string>
 </resources>

@@ -16,6 +16,7 @@ import android.widget.TableRow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;

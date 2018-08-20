@@ -1,84 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.ConfigUserActivity">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fl_image_edit"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside">
+        android:layout_height="match_parent">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/user_image"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:src="@drawable/default_image"
-            android:maxHeight="300dp"
-            android:layout_gravity="center"
-            app:civ_border_color="@color/gray"
-            app:civ_border_width="5dp"
-            app:civ_shadow="true"
-            app:civ_shadow_color="@color/colorAccent"
-            app:civ_shadow_radius="10" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_edit_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/ic_edit"
-            android:onClick="onEditImage"
-            android:padding="0dp" />
-    </FrameLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:textColorHint="@color/light"
-        app:counterEnabled="true"
-        app:counterMaxLength="10"
-        app:counterTextAppearance="@style/TextLimitStyle"
-        app:hintTextAppearance="@style/TextHintStyle"
-        app:layout_constraintTop_toBottomOf="@+id/fl_image_edit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" >
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_username"
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fl_image_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:hint="@string/username"
-            android:inputType="text"
-            android:maxLength="10"
-            android:textColor="@color/light"
-            android:textColorHint="@color/lighter" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside">
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_create_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
-        android:onClick="onCreateUser"
-        android:text="@string/save_user"
-        app:layout_constraintTop_toBottomOf="@+id/til_username"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</android.support.constraint.ConstraintLayout>
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/user_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:maxHeight="300dp"
+                android:src="@drawable/default_image"
+                app:civ_border_color="@color/gray"
+                app:civ_border_width="5dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="@color/colorAccent"
+                app:civ_shadow_radius="10" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_edit_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_edit"
+                android:onClick="onEditImage"
+                android:padding="0dp" />
+        </FrameLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/light"
+            app:counterEnabled="true"
+            app:counterMaxLength="10"
+            app:counterTextAppearance="@style/TextLimitStyle"
+            app:hintTextAppearance="@style/TextHintStyle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_image_edit">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:hint="@string/username"
+                android:inputType="text"
+                android:maxLength="10"
+                android:textColor="@color/light"
+                android:textColorHint="@color/lighter" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_create_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:onClick="onCreateUser"
+            android:text="@string/save_user"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_username" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

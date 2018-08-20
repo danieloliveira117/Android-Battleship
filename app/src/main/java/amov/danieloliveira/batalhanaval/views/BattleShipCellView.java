@@ -20,8 +20,10 @@ import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
+import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
+import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 
 // TODO change PlayerType.PLAYER to current player in game data????
@@ -30,6 +32,8 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private GameObservable gameObs;
     private Position position;
     private Context context;
+    private PlayerType type = null;
+    private TableLayout container;
 
     public BattleShipCellView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -70,6 +74,20 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
     @Override
     public void update(Observable o, Object arg) {
+        if (arg instanceof GameMode) {
+            this.container = (TableLayout) getParent().getParent();
+
+            if (container.getTag() == null) {
+                return;
+            } else if (container.getTag() instanceof Integer) {
+                if ((Integer) container.getTag() == 0) {
+                    type = PlayerType.PLAYER;
+                } else {
+                    type = PlayerType.ADVERSARY;
+                }
+            }
+        }
+
         updateColor();
     }
 
@@ -135,8 +153,10 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     }
 
     private void updateColor() {
-        // TODO change player type
-        switch (gameObs.getPositionType(PlayerType.PLAYER, position)) {
+        if (type == null)
+            return;
+
+        switch (gameObs.getPositionType(type, position)) {
             case ADJACENT:
                 this.setBackgroundResource(R.color.ADJACENT);
                 break;
@@ -184,7 +204,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (!gameObs.canDragAndDrop()) {
-            gameObs.clickNewPosition(PlayerType.PLAYER, position);
+            gameObs.clickNewPosition(type, position);
             return true;
         } else {
             final TableLayout container = (TableLayout) v.getParent().getParent();
@@ -193,10 +213,10 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
             // Handles each of the expected events
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
-                    List<Position> positions = gameObs.getShipPositions(PlayerType.PLAYER, position);
+                    List<Position> positions = gameObs.getShipPositions(type, position);
 
                     if (positions != null) {
-                        gameObs.selectShip(PlayerType.PLAYER, position);
+                        gameObs.selectShip(type, position);
 
                         List<BattleShipCellView> viewList = Utils.findViewsWithPositions(container, positions);
 

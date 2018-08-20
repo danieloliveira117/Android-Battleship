@@ -7,6 +7,7 @@ import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
@@ -54,8 +55,8 @@ public class GameModel {
             return player1;
     }
 
-    Player getPlayer(PlayerType player) {
-        if (player == PlayerType.PLAYER)
+    Player getPlayer(PlayerType type) {
+        if (type == PlayerType.PLAYER)
             return player1;
         else
             return player2;
@@ -106,7 +107,7 @@ public class GameModel {
 
         Random random = new Random();
 
-        if(positions.size() > 0) {
+        if (positions.size() > 0) {
             return positions.get(random.nextInt(positions.size()));
         }
 
@@ -126,7 +127,7 @@ public class GameModel {
     }
 
     public PlayerType getPlayerType(User user) {
-        if(player1.getUser().equals(user)) {
+        if (player1.getUser().equals(user)) {
             return PlayerType.PLAYER;
         }
 
@@ -146,7 +147,16 @@ public class GameModel {
     }
 
     public void rotateShip(Ship ship) {
-        if(ship != null)
-        ship.rotateShip();
+        if (ship != null) {
+            ship.rotateShip();
+        }
+    }
+
+    public Board getPlayerBoard(PlayerType type) {
+        return getPlayer(type).getBoard();
+    }
+
+    public void setPlayerBoard(PlayerType type, Board board) {
+        getPlayer(type).setBoard(board);
     }
 }

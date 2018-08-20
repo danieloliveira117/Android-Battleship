@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.engine.state;
 import amov.danieloliveira.batalhanaval.engine.GameData;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 
 public class AwaitShipPlacement extends GameStateAdapter {
@@ -11,10 +12,16 @@ public class AwaitShipPlacement extends GameStateAdapter {
     }
 
     @Override
+    public IGameState confirmShipPlacementRemote(PlayerType type, Board board) {
+        gameData.setPlayerBoard(type, board);
+        return confirmShipPlacement(type);
+    }
+
+    @Override
     public IGameState confirmShipPlacement(PlayerType player) {
         gameData.setShipsPlaced(player);
 
-        if(gameData.allShipsPlaced()) {
+        if (gameData.allShipsPlaced()) {
             gameData.randomizeStartingPlayer();
             return new AwaitPlayerMove(gameData);
         }

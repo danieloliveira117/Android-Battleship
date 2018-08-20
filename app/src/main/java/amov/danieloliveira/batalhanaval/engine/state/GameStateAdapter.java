@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.engine.state;
 import amov.danieloliveira.batalhanaval.engine.GameData;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
@@ -55,6 +56,11 @@ public class GameStateAdapter implements IGameState {
 
     @Override
     public IGameState rotateCurrentShip(PlayerType player) {
+        return this;
+    }
+
+    @Override
+    public IGameState confirmShipPlacementRemote(PlayerType type, Board board) {
         return this;
     }
 }

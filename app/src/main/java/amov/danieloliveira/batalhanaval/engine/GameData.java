@@ -1,7 +1,5 @@
 package amov.danieloliveira.batalhanaval.engine;
 
-import android.app.Application;
-
 import java.util.List;
 import java.util.Random;
 
@@ -10,11 +8,11 @@ import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitGameStart;
-import amov.danieloliveira.batalhanaval.engine.state.AwaitPlayerMove;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitShipPlacement;
 import amov.danieloliveira.batalhanaval.engine.state.IGameState;
 
@@ -217,5 +215,17 @@ public class GameData {
 
     public void rotateShip(PlayerType player) {
         gameModel.rotateShip(getCurrentShip(player));
+    }
+
+    public Board getPlayerBoard(PlayerType type) {
+        return gameModel.getPlayerBoard(type);
+    }
+
+    public void setPlayerBoard(PlayerType type, Board board) {
+        gameModel.setPlayerBoard(type, board);
+    }
+
+    public void confirmShipPlacementRemote(PlayerType type, Board board) {
+        currentState = currentState.confirmShipPlacementRemote(type, board);
     }
 }
