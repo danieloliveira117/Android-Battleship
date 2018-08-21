@@ -66,11 +66,20 @@ public class GameData {
         currentState = currentState.rotateCurrentShip(player);
     }
 
+    public void confirmShipPlacementRemote(PlayerType type, Board board) {
+        currentState = currentState.confirmShipPlacementRemote(type, board);
+    }
+
+    public void setStartingPlayer(PlayerType type) {
+        currentState = currentState.setStartingPlayer(type);
+    }
+
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);
 
-        if(mode == GameMode.vsAI) {
+        if (mode == GameMode.vsAI) {
             gameModel.setRandomPlacement(PlayerType.ADVERSARY);
             gameModel.setShipsPlaced(PlayerType.ADVERSARY);
         }
@@ -143,7 +152,7 @@ public class GameData {
 
     public void randomizeStartingPlayer() {
         Random r = new Random();
-        if(r.nextBoolean()) {
+        if (r.nextBoolean()) {
             currentPlayer = PlayerType.PLAYER;
         } else {
             currentPlayer = PlayerType.ADVERSARY;
@@ -151,7 +160,7 @@ public class GameData {
     }
 
     public void nextPlayer() {
-        if(currentPlayer == PlayerType.PLAYER) {
+        if (currentPlayer == PlayerType.PLAYER) {
             currentPlayer = PlayerType.ADVERSARY;
         } else {
             currentPlayer = PlayerType.PLAYER;
@@ -225,7 +234,7 @@ public class GameData {
         gameModel.setPlayerBoard(type, board);
     }
 
-    public void confirmShipPlacementRemote(PlayerType type, Board board) {
-        currentState = currentState.confirmShipPlacementRemote(type, board);
+    public void setCurrentPlayer(PlayerType currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 }

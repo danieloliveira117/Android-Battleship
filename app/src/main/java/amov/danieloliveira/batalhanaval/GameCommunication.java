@@ -36,6 +36,7 @@ import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
+import static amov.danieloliveira.batalhanaval.Consts.PORT_AUX;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 
 public class GameCommunication implements Observer {
@@ -105,10 +106,15 @@ public class GameCommunication implements Observer {
         Gson gson = new Gson();
 
         JsonMessage<T> jsonMessage = new JsonMessage<>(obj, type);
-        String json = gson.toJson(jsonMessage, JsonMessage.class);
+        final String json = gson.toJson(jsonMessage, JsonMessage.class);
 
-        output.println(json);
-        output.flush();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                output.println(json);
+                output.flush();
+            }
+        }).start();
     }
 
     private Thread commThread = new Thread(new Runnable() {
@@ -128,7 +134,7 @@ public class GameCommunication implements Observer {
                     HandleMessage(input.readLine());
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "HandleMessage", e);
                 procMsg.post(new Runnable() {
                     @Override
                     public void run() {
@@ -144,6 +150,8 @@ public class GameCommunication implements Observer {
     });
 
     private void HandleMessage(String input) {
+        if (input == null) return;
+
         final JsonParser parser = new JsonParser();
         final JsonElement mJson = parser.parse(input);
 
@@ -178,9 +186,19 @@ public class GameCommunication implements Observer {
                         gameObs.confirmPlacementRemote(opponentType, (Board) jsonMessage.getObject());
                     }
                     break;
+                    case STARTING_PLAYER: {
+                        final Type type = new TypeToken<JsonMessage<PlayerType>>() {
+                        }.getType();
+                        final JsonMessage jsonMessage = gson.fromJson(mJson, type);
+
+                        gameObs.setStartingPlayerRemote((PlayerType) jsonMessage.getObject());
+                    }
+                    break;
                 }
             }
         });
+
+        Log.d(TAG, "message handled");
     }
 
     private void server() {
@@ -239,7 +257,7 @@ public class GameCommunication implements Observer {
     @SuppressLint("SetTextI18n")
     private void clientDlg() {
         final EditText edtIP = new EditText(activity);
-        edtIP.setText("192.168.1.103"); // emulator's default ip 10.0.2.2
+        edtIP.setText("192.168.1.101"); // emulator's default ip 10.0.2.2
 
         AlertDialog ad = new AlertDialog.Builder(activity).setTitle(activity.getString(R.string.clientdlg_msg))
                 .setMessage(activity.getString(R.string.serverip)).setView(edtIP)
@@ -289,9 +307,11 @@ public class GameCommunication implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg == MsgType.CONFIRM_PLACEMENT) {
-            if (gameObs.validPlacement(type)) {
+            if (gameObs.validPlacement(type) && output != null) {
                 SendMessage(gameObs.getPlayerBoard(type), MsgType.CONFIRM_PLACEMENT);
             }
+        } else if (arg == MsgType.STARTING_PLAYER) {
+            SendMessage(gameObs.getCurrentPlayer(), MsgType.STARTING_PLAYER);
         }
     }
 }

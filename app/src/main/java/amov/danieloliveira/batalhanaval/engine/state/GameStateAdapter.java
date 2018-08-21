@@ -63,4 +63,9 @@ public class GameStateAdapter implements IGameState {
     public IGameState confirmShipPlacementRemote(PlayerType type, Board board) {
         return this;
     }
+
+    @Override
+    public IGameState setStartingPlayer(PlayerType type) {
+        return this;
+    }
 }

@@ -85,8 +85,13 @@ public class GameActivity extends AppCompatActivity implements Observer {
         gameObs = app.getObservable();
         gameObs.addObserver(this);
 
-        updatePlayer(app.getUser());
-        updateAdversary(gameObs.getAdversary());
+        if (mode == CLIENT) {
+            updatePlayer(gameObs.getAdversary());
+            updateAdversary(app.getUser());
+        } else {
+            updatePlayer(app.getUser());
+            updateAdversary(gameObs.getAdversary());
+        }
 
         if (mode == SINGLEPLAYER) {
             gameObs.refreshData();
@@ -149,6 +154,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         if (arg instanceof Board) {
             if (gameObs.validPlacement(opponent) && pd != null) {
                 pd.dismiss();
+                gameObs.refreshData();
             }
         } else {
             setCurrentPlayerTurn(gameObs.getCurrentPlayer());

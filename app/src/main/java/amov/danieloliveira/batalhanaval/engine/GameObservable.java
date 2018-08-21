@@ -5,6 +5,7 @@ import java.util.Observable;
 
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
+import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
@@ -146,5 +147,14 @@ public class GameObservable extends Observable {
 
     public Board getPlayerBoard(PlayerType type) {
         return gameData.getPlayerBoard(type);
+    }
+
+    public void setStartingPlayerRemote(PlayerType type) {
+        gameData.setStartingPlayer(type);
+    }
+
+    public void sendStartingPlayer() {
+        setChanged();
+        notifyObservers(MsgType.STARTING_PLAYER);
     }
 }

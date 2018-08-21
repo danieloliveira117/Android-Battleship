@@ -18,11 +18,16 @@ public class AwaitShipPlacement extends GameStateAdapter {
     }
 
     @Override
+    public IGameState setStartingPlayer(PlayerType type) {
+        gameData.setCurrentPlayer(type);
+        return this;
+    }
+
+    @Override
     public IGameState confirmShipPlacement(PlayerType player) {
         gameData.setShipsPlaced(player);
 
         if (gameData.allShipsPlaced()) {
-            gameData.randomizeStartingPlayer();
             return new AwaitPlayerMove(gameData);
         }
 

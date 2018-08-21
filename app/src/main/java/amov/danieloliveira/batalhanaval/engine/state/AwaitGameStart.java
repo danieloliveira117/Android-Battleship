@@ -15,6 +15,7 @@ public class AwaitGameStart extends GameStateAdapter {
     public IGameState startGame(GameMode mode, User user) {
         gameData.updatePlayerData(PlayerType.PLAYER, user);
         gameData.prepareGame(mode);
+        gameData.randomizeStartingPlayer();
         return new AwaitShipPlacement(gameData);
     }
 

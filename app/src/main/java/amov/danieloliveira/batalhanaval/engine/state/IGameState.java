@@ -27,4 +27,6 @@ public interface IGameState {
     IGameState rotateCurrentShip(PlayerType player);
 
     IGameState confirmShipPlacementRemote(PlayerType type, Board board);
+
+    IGameState setStartingPlayer(PlayerType type);
 }
