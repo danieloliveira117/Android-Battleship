@@ -39,7 +39,6 @@ import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 
-// TODO: 22/08/2018 Check playerType who wins the game
 public class GameCommunication implements Observer {
     private static final String TAG = "GameCommunication";
 
