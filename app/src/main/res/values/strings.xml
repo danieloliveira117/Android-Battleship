@@ -4,23 +4,23 @@
     <string name="title_activity_match_history">Match History</string>
     <string name="title_activity_game_start">Place your ships</string>
 
-    <string name="one">1</string>
-    <string name="two">2</string>
-    <string name="three">3</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="six">6</string>
-    <string name="seven">7</string>
-    <string name="eight">8</string>
+    <string name="one" translatable="false">1</string>
+    <string name="two" translatable="false">2</string>
+    <string name="three" translatable="false">3</string>
+    <string name="four" translatable="false">4</string>
+    <string name="five" translatable="false">5</string>
+    <string name="six" translatable="false">6</string>
+    <string name="seven" translatable="false">7</string>
+    <string name="eight" translatable="false">8</string>
 
-    <string name="a">A</string>
-    <string name="b">B</string>
-    <string name="c">C</string>
-    <string name="d">D</string>
-    <string name="e">E</string>
-    <string name="f">F</string>
-    <string name="g">G</string>
-    <string name="h">H</string>
+    <string name="a" translatable="false">A</string>
+    <string name="b" translatable="false">B</string>
+    <string name="c" translatable="false">C</string>
+    <string name="d" translatable="false">D</string>
+    <string name="e" translatable="false">E</string>
+    <string name="f" translatable="false">F</string>
+    <string name="g" translatable="false">G</string>
+    <string name="h" translatable="false">H</string>
 
     <string name="username">Username</string>
     <string name="save_user">Save User</string>
@@ -52,14 +52,14 @@
     <string name="camera_permission_required">Camera Permission is required for this app to run</string>
     <string name="error_opening_camera">There\'s been an error opening your camera, please try again or check this app\'s permissions</string>
     <string name="end_game_message">%1$s\n WON!!!</string>
-    <string name="player_greeting">Hi %1$s!</string>
     <string name="vs_ai">vs AI</string>
     <string name="vs_player">vs Player</string>
     <string name="victory">Victory</string>
     <string name="defeat">Defeat</string>
-    <string name="vs">vs</string>
+    <string name="vs" translatable="false">vs</string>
     <string name="num_hits_label">Number of Hits</string>
     <string name="num_ships_destroyed">Ships Sunken</string>
     <string name="rotate_ship">Rotate Ship</string>
     <string name="waiting_for_opponent_msg">Waiting for opponent to place their ships…</string>
+    <string name="player_greeting">Hi %1$s!</string>
 </resources>

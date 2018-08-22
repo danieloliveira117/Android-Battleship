@@ -1,4 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Batalha Naval</string>
+    <string name="title_activity_match_history">Histórico de Jogos</string>
+    <string name="title_activity_game_start">Coloca os teus navios</string>
+    <string name="username">Nome de Utilizador</string>
+    <string name="save_user">Guardar Utilizador</string>
+    <string name="take_picture">Tirar Fotografia</string>
+    <string name="permission_denied">É necessário garantir a permissão para utilizar a funcionalidade da camera</string>
+    <string name="config_changed">A configuração foi alterada</string>
+    <string name="username_min_length">O nome de utilizador tem de ter pelo menos 3 caracteres</string>
+    <string name="error_image">Ocorreu um erro ao tirar a fotografia</string>
+    <string name="image_missing">Tem de acrescentar uma imagem</string>
+    <string name="error_netconn">Não existe ligação à rede</string>
+    <string name="serverdlg_title">Batalha Naval - Servidor</string>
+    <string name="serverdlg_msg">À espera de um cliente…</string>
+    <string name="clientdlg_msg">Batalha Naval - Cliente</string>
+    <string name="serverip">IP Servidor</string>
+    <string name="confirm">Confirmar</string>
+    <string name="game_finished">O jogo terminou</string>
+    <string name="ships_not_placed_correctly">O posicionamento inicial não é válido</string>
+    <string name="play_one_player">Um Jogador</string>
+    <string name="play_join_server">Juntar-se a um Servidor</string>
+    <string name="play_create_server">Criar um Servidor</string>
+    <string name="match_history">Histórico de Jogos</string>
+    <string name="change_user">Alterar Utilizador</string>
+    <string name="shipyard">Porto</string>
+    <string name="confirm_placement">Confirmar Posição Inicial</string>
+    <string name="randomize_placement">Posição inicial aleatória</string>
+    <string name="change_mode">Mudar para um jogador</string>
+    <string name="camera_permission_required">É necessário dar a permissão da camera para utilizar esta aplicação</string>
+    <string name="error_opening_camera">Ocorreu um erro ao abrir a camera, por favor tente novamente ou verifique as permissões desta aplicação.</string>
+    <string name="end_game_message">%1$s\n GANHOU!!!</string>
+    <string name="player_greeting">Olá %1$s!</string>
+    <string name="vs_ai">vs IA</string>
+    <string name="vs_player">vs Jogador</string>
+    <string name="victory">Vitória</string>
+    <string name="defeat">Derrota</string>
+    <string name="num_hits_label">Disparos bem sucedidos</string>
+    <string name="num_ships_destroyed">Navios Afundados</string>
+    <string name="rotate_ship">Rodar Navio</string>
+    <string name="waiting_for_opponent_msg">À espera que o adversário coloque os seus navios...</string>
 </resources>

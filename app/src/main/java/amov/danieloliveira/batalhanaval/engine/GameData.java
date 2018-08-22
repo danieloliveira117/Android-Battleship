@@ -74,6 +74,9 @@ public class GameData {
         currentState = currentState.setStartingPlayer(type);
     }
 
+    public void clickPositionRemote(PlayerType type, Position position) {
+        currentState = currentState.clickPositionRemote(type, position);
+    }
 
     /* Update Game Model */
     public void prepareGame(GameMode mode) {

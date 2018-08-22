@@ -123,20 +123,20 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
             }
         } else {
             // Avoid warnings (cast generics)
-            placedViews = (SerializableHashSet<Integer>) savedInstanceState.getSerializable("placedViews");
-            /*Object temp = savedInstanceState.getSerializable("placedViews");
+            //placedViews = (SerializableHashSet<Integer>) savedInstanceState.getSerializable("placedViews");
+            Object temp = savedInstanceState.getSerializable("placedViews");
 
             placedViews.clear();
 
-            if(temp instanceof SerializableHashSet) {
+            if (temp instanceof SerializableHashSet) {
                 SerializableHashSet temp2 = (SerializableHashSet) temp;
 
                 for (Object o : temp2) {
-                    if(o instanceof Integer) {
+                    if (o instanceof Integer) {
                         placedViews.add((Integer) o);
                     }
                 }
-            }*/
+            }
             // end
 
             hidePlacedShipsInShipyard();

@@ -29,4 +29,6 @@ public interface IGameState {
     IGameState confirmShipPlacementRemote(PlayerType type, Board board);
 
     IGameState setStartingPlayer(PlayerType type);
+
+    IGameState clickPositionRemote(PlayerType type, Position position);
 }

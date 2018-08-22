@@ -36,4 +36,9 @@ public class AwaitPlayerMove extends GameStateAdapter {
 
         return this;
     }
+
+    @Override
+    public IGameState clickPositionRemote(PlayerType type, Position position) {
+        return clickNewPosition(type, position);
+    }
 }

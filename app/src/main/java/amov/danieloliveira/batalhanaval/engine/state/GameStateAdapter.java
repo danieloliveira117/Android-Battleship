@@ -68,4 +68,9 @@ public class GameStateAdapter implements IGameState {
     public IGameState setStartingPlayer(PlayerType type) {
         return this;
     }
+
+    @Override
+    public IGameState clickPositionRemote(PlayerType type, Position position) {
+        return this;
+    }
 }

@@ -17,10 +17,12 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PipedOutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,20 +31,21 @@ import amov.danieloliveira.batalhanaval.engine.JsonMessage;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
+import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.model.UserBase64;
 import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
-import static amov.danieloliveira.batalhanaval.Consts.PORT_AUX;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 
 public class GameCommunication implements Observer {
     private static final String TAG = "GameCommunication";
 
-    private PlayerType type;
+    private PlayerType playerType;
     private PlayerType opponentType;
     private GameObservable gameObs;
     private GameStartActivity activity;
@@ -61,10 +64,10 @@ public class GameCommunication implements Observer {
         this.mode = mode;
 
         if (mode == CLIENT) {
-            type = PlayerType.ADVERSARY;
+            playerType = PlayerType.ADVERSARY;
             opponentType = PlayerType.PLAYER;
         } else {
-            type = PlayerType.PLAYER;
+            playerType = PlayerType.PLAYER;
             opponentType = PlayerType.ADVERSARY;
         }
 
@@ -194,6 +197,14 @@ public class GameCommunication implements Observer {
                         gameObs.setStartingPlayerRemote((PlayerType) jsonMessage.getObject());
                     }
                     break;
+                    case CLICK_POSITION: {
+                        final Type type = new TypeToken<JsonMessage<Position>>() {
+                        }.getType();
+                        final JsonMessage jsonMessage = gson.fromJson(mJson, type);
+
+                        gameObs.clickPositionRemote(opponentType, (Position) jsonMessage.getObject());
+                    }
+                    break;
                 }
             }
         });
@@ -307,11 +318,13 @@ public class GameCommunication implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg == MsgType.CONFIRM_PLACEMENT) {
-            if (gameObs.validPlacement(type) && output != null) {
-                SendMessage(gameObs.getPlayerBoard(type), MsgType.CONFIRM_PLACEMENT);
+            if (gameObs.validPlacement(playerType) && output != null) {
+                SendMessage(gameObs.getPlayerBoard(playerType), MsgType.CONFIRM_PLACEMENT);
             }
         } else if (arg == MsgType.STARTING_PLAYER) {
             SendMessage(gameObs.getCurrentPlayer(), MsgType.STARTING_PLAYER);
+        } else if (arg instanceof Position) {
+            SendMessage((Position) arg, MsgType.CLICK_POSITION);
         }
     }
 }

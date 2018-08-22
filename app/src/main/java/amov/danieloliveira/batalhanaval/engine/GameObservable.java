@@ -1,6 +1,8 @@
 package amov.danieloliveira.batalhanaval.engine;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
@@ -51,7 +53,7 @@ public class GameObservable extends Observable {
         gameData.clickNewPosition(player, position);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(position);
     }
 
     public void placeShip(PlayerType player, Position position, Integer tag) {
@@ -156,5 +158,12 @@ public class GameObservable extends Observable {
     public void sendStartingPlayer() {
         setChanged();
         notifyObservers(MsgType.STARTING_PLAYER);
+    }
+
+    public void clickPositionRemote(PlayerType type, Position position) {
+        gameData.clickPositionRemote(type, position);
+
+        setChanged();
+        notifyObservers();
     }
 }
