@@ -15,13 +15,13 @@ public class MatchHistory {
     private boolean playerWon;
 
     public MatchHistory(GameModel model, User user) {
-        PlayerType player = model.getPlayerType(user);
+        PlayerType player = model.getUser(PlayerType.PLAYER).equals(user) ? PlayerType.PLAYER : PlayerType.ADVERSARY;
         PlayerType opponent = player == PlayerType.PLAYER ? PlayerType.ADVERSARY : PlayerType.PLAYER;
 
         this.gameMode = model.getGameMode();
 
-        this.player = model.getUser(player).getUsername();
-        this.opponent = model.getUser(opponent).getUsername();
+        this.player = model.getUser(PlayerType.PLAYER).getUsername();
+        this.opponent = model.getUser(PlayerType.ADVERSARY).getUsername();
 
         this.numHitsPlayer = model.getNumberOfHits(player);
         this.shipsDestroyedPlayer = model.getShipsDestroyed(opponent);

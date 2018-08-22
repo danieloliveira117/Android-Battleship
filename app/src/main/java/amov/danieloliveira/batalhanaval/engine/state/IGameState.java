@@ -4,11 +4,10 @@ import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
-import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public interface IGameState {
-    IGameState startGame(GameMode mode, User user);
+    IGameState startGame(GameMode mode, User user, boolean client);
 
     IGameState setAdversary(User user);
 

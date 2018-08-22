@@ -30,8 +30,8 @@ public class GameData {
     }
 
     /* States */
-    public void startGame(GameMode mode, User user) {
-        currentState = currentState.startGame(mode, user);
+    public void startGame(GameMode mode, User user, boolean client) {
+        currentState = currentState.startGame(mode, user, client);
     }
 
     public void setAdversary(User user) {
@@ -185,7 +185,7 @@ public class GameData {
         }
     }
 
-    public User getPlayer(PlayerType player) {
+    public User getPlayerUser(PlayerType player) {
         return gameModel.getPlayer(player).getUser();
     }
 

@@ -119,7 +119,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
                 gameCommunication.startCommunication();
             } else {
                 gameObs.setAdversaryUser(new User("BotTron2000", null));
-                gameObs.startGame(GameMode.vsAI, Utils.getUser(this));
+                gameObs.startGame(GameMode.vsAI, Utils.getUser(this), false);
             }
         } else {
             // Avoid warnings (cast generics)

@@ -15,7 +15,7 @@ public class GameStateAdapter implements IGameState {
     }
 
     @Override
-    public IGameState startGame(GameMode mode, User user) {
+    public IGameState startGame(GameMode mode, User user, boolean client) {
         return this;
     }
 

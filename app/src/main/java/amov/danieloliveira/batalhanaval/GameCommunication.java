@@ -17,12 +17,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PipedOutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,7 +29,6 @@ import amov.danieloliveira.batalhanaval.engine.JsonMessage;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.MsgType;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
-import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
@@ -42,6 +39,7 @@ import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.PORT;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 
+// TODO: 22/08/2018 Check playerType who wins the game
 public class GameCommunication implements Observer {
     private static final String TAG = "GameCommunication";
 
@@ -89,14 +87,18 @@ public class GameCommunication implements Observer {
         try {
             gameObs.deleteObserver(this);
             commThread.interrupt();
-            if (socketGame != null)
+
+            if (socketGame != null) {
                 socketGame.close();
+            }
 
-            if (output != null)
+            if (output != null) {
                 output.close();
+            }
 
-            if (input != null)
+            if (input != null) {
                 input.close();
+            }
         } catch (Exception ignored) {
         }
 
@@ -172,13 +174,22 @@ public class GameCommunication implements Observer {
                         }.getType();
                         final JsonMessage jsonMessage = gson.fromJson(mJson, type);
 
-                        User adversary = ((UserBase64) jsonMessage.getObject()).toUser();
+                        User player;
+                        User adversary;
+
+                        if (mode == CLIENT) {
+                            player = ((UserBase64) jsonMessage.getObject()).toUser();
+                            adversary = Utils.getUser(activity);
+                        } else {
+                            adversary = ((UserBase64) jsonMessage.getObject()).toUser();
+                            player = Utils.getUser(activity);
+                        }
 
                         // Set adversary
                         gameObs.setAdversaryUser(adversary);
 
                         // Start Game
-                        gameObs.startGame(GameMode.vsPLAYER, Utils.getUser(activity));
+                        gameObs.startGame(GameMode.vsPLAYER, player, mode == CLIENT);
                     }
                     break;
                     case CONFIRM_PLACEMENT: {
@@ -318,7 +329,7 @@ public class GameCommunication implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg == MsgType.CONFIRM_PLACEMENT) {
-            if (gameObs.validPlacement(playerType) && output != null) {
+            if (gameObs.validPlacement(playerType)) {
                 SendMessage(gameObs.getPlayerBoard(playerType), MsgType.CONFIRM_PLACEMENT);
             }
         } else if (arg == MsgType.STARTING_PLAYER) {

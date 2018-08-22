@@ -13,10 +13,8 @@ import android.widget.TableLayout;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.function.ToDoubleBiFunction;
 
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
@@ -24,7 +22,6 @@ import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.BotThread;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
-import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.User;
@@ -66,7 +63,13 @@ public class GameActivity extends AppCompatActivity implements Observer {
             mode = intent.getIntExtra("mode", SINGLEPLAYER);
         }
 
-        // TODO: 20/08/2018 Set Adversary
+        BattleshipApplication app = (BattleshipApplication) this.getApplication();
+        gameCommunication = app.getGameCommunication();
+
+        gameObs = app.getObservable();
+        gameObs.addObserver(this);
+
+        // TODO: 22/08/2018 adversary
         if (mode == CLIENT) {
             opponent = PlayerType.PLAYER;
             player = PlayerType.ADVERSARY;
@@ -79,24 +82,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
             // tbl_adversary_ships.setTag(1);
         }
 
-        BattleshipApplication app = (BattleshipApplication) this.getApplication();
-        gameCommunication = app.getGameCommunication();
-
-        gameObs = app.getObservable();
-        gameObs.addObserver(this);
-
-        if (mode == CLIENT) {
-            updatePlayer(gameObs.getAdversary());
-            updateAdversary(app.getUser());
-        } else {
-            updatePlayer(app.getUser());
-            updateAdversary(gameObs.getAdversary());
-        }
-
-        if (mode == SINGLEPLAYER) {
-            gameObs.refreshData();
-            startBot();
-        } else if (!gameObs.validPlacement(opponent)) {
+        if (!gameObs.validPlacement(opponent)) {
             pd = new ProgressDialog(this);
             pd.setMessage(this.getString(R.string.waiting_for_opponent_msg));
             pd.setTitle(R.string.app_name);
@@ -104,14 +90,18 @@ public class GameActivity extends AppCompatActivity implements Observer {
             pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    // TODO: 20/08/2018 check if something else needs to be closed
                     finish();
                 }
             });
 
             pd.show();
-        } else {
-            gameObs.refreshData();
+            return;
+        }
+
+        prepareBoard();
+
+        if (mode == SINGLEPLAYER) {
+            startBot();
         }
     }
 
@@ -129,10 +119,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
             if (mode != SINGLEPLAYER) {
                 finish();
             } else {
-                updateAdversary(gameObs.getAdversary());
-                updatePlayer(Utils.getUser(this));
+                prepareBoard();
                 // TODO: 15/08/2018 restore game
-                gameObs.refreshData();
             }
         }
 
@@ -149,12 +137,19 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    private void prepareBoard() {
+        updatePlayer(gameObs.getPlayerUser(PlayerType.PLAYER));
+        updateAdversary(gameObs.getPlayerUser(PlayerType.ADVERSARY));
+
+        gameObs.refreshData();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Board) {
             if (gameObs.validPlacement(opponent) && pd != null) {
                 pd.dismiss();
-                gameObs.refreshData();
+                prepareBoard();
             }
         } else {
             setCurrentPlayerTurn(gameObs.getCurrentPlayer());

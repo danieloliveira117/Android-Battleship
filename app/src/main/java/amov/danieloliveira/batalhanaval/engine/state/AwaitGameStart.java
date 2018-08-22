@@ -12,10 +12,14 @@ public class AwaitGameStart extends GameStateAdapter {
     }
 
     @Override
-    public IGameState startGame(GameMode mode, User user) {
+    public IGameState startGame(GameMode mode, User user, boolean client) {
         gameData.updatePlayerData(PlayerType.PLAYER, user);
         gameData.prepareGame(mode);
-        gameData.randomizeStartingPlayer();
+
+        if (!client) {
+            gameData.randomizeStartingPlayer();
+        }
+
         return new AwaitShipPlacement(gameData);
     }
 

@@ -27,7 +27,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 
 // TODO change PlayerType.PLAYER to current player in game data????
-public class BattleShipCellView extends AppCompatTextView implements Observer, View.OnDragListener, View.OnTouchListener {
+public class BattleShipCellView extends AppCompatTextView implements Observer, View.OnDragListener, View.OnClickListener, View.OnLongClickListener {
     private static final String TAG = "BattleShipCellView";
     private GameObservable gameObs;
     private Position position;
@@ -53,7 +53,8 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
             gameObs.addObserver(this);
 
             this.setOnDragListener(this);
-            this.setOnTouchListener(this);
+            this.setOnClickListener(this);
+            this.setOnLongClickListener(this);
         }
 
         try {
@@ -202,37 +203,38 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public void onClick(View v) {
         if (!gameObs.canDragAndDrop()) {
             gameObs.clickNewPosition(type, position);
-            return true;
         } else {
-            final TableLayout container = (TableLayout) v.getParent().getParent();
-            final int action = event.getAction();
-
-            // Handles each of the expected events
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    List<Position> positions = gameObs.getShipPositions(type, position);
-
-                    if (positions != null) {
-                        gameObs.selectShip(type, position);
-
-                        List<BattleShipCellView> viewList = Utils.findViewsWithPositions(container, positions);
-
-                        for (View view : viewList) {
-                            view.setBackgroundResource(R.color.MOVED);
-                        }
-
-                        ClipData data = ClipData.newPlainText("", "");
-                        DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-                        v.startDrag(data, shadowBuilder, v, 0);
-                    }
-
-                    return true;
-                default:
-                    return false;
-            }
+            gameObs.selectShip(type, position);
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (gameObs.canDragAndDrop()) {
+            final TableLayout container = (TableLayout) v.getParent().getParent();
+
+            List<Position> positions = gameObs.getShipPositions(type, position);
+
+            if (positions != null) {
+                gameObs.selectShip(type, position);
+
+                List<BattleShipCellView> viewList = Utils.findViewsWithPositions(container, positions);
+
+                for (View view : viewList) {
+                    view.setBackgroundResource(R.color.MOVED);
+                }
+
+                ClipData data = ClipData.newPlainText("", "");
+                DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                v.startDrag(data, shadowBuilder, v, 0);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
