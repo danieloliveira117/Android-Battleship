@@ -153,10 +153,6 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         gameObs.confirmPlacement(type);
 
         if (gameObs.validPlacement(type)) {
-            if (mode == SERVER) {
-                gameObs.sendStartingPlayer();
-            }
-
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("mode", mode);
             startActivity(intent);

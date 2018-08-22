@@ -139,7 +139,7 @@ public class GameCommunication implements Observer {
                     HandleMessage(input.readLine());
                 }
             } catch (Exception e) {
-                Log.e(TAG, "HandleMessage", e);
+                //Log.e(TAG, "HandleMessage", e);
                 procMsg.post(new Runnable() {
                     @Override
                     public void run() {
@@ -190,6 +190,10 @@ public class GameCommunication implements Observer {
 
                         // Start Game
                         gameObs.startGame(GameMode.vsPLAYER, player, mode == CLIENT);
+
+                        if (mode == SERVER) {
+                            gameObs.sendStartingPlayer();
+                        }
                     }
                     break;
                     case CONFIRM_PLACEMENT: {
@@ -217,10 +221,10 @@ public class GameCommunication implements Observer {
                     }
                     break;
                 }
+
+                Log.d(TAG, "Received " + tempMessage.getType());
             }
         });
-
-        Log.d(TAG, "message handled");
     }
 
     private void server() {
@@ -335,7 +339,7 @@ public class GameCommunication implements Observer {
         } else if (arg == MsgType.STARTING_PLAYER) {
             SendMessage(gameObs.getCurrentPlayer(), MsgType.STARTING_PLAYER);
         } else if (arg instanceof Position) {
-            SendMessage((Position) arg, MsgType.CLICK_POSITION);
+            SendMessage(arg, MsgType.CLICK_POSITION);
         }
     }
 }

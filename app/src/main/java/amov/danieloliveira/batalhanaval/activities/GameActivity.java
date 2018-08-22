@@ -119,8 +119,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
             if (mode != SINGLEPLAYER) {
                 finish();
             } else {
+                // TODO: 15/08/2018 restore game ??
                 prepareBoard();
-                // TODO: 15/08/2018 restore game
+                handler = new Handler();
+                botThread = new BotThread(handler, gameObs);
+                botThread.start();
             }
         }
 
@@ -134,6 +137,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
         if (gameCommunication != null) {
             gameCommunication.endCommunication();
             gameCommunication = null;
+        }
+
+        if (botThread != null) {
+            botThread.interrupt();
+            botThread = null;
         }
     }
 
