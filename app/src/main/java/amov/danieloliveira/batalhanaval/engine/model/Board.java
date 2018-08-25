@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.engine.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,8 @@ import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 import static amov.danieloliveira.batalhanaval.Consts.MAXSHIPS;
 
 public class Board {
-    private Ship[] shipList = new Ship[MAXSHIPS];
+    private List<Ship> shipList = new ArrayList<>(MAXSHIPS);
+    private List<Ship> oldShips = new ArrayList<>(MAXSHIPS);
     private Map<Position, PositionType> adversaryAttempts = new HashMap<>();
 
     public Board() {
@@ -26,17 +28,14 @@ public class Board {
     }
 
     private void createShips() {
-        shipList[0] = new Ship(ShipType.ONE);
-        shipList[1] = new Ship(ShipType.ONE);
-        shipList[2] = new Ship(ShipType.TWO);
-        shipList[3] = new Ship(ShipType.TWO);
-        shipList[4] = new Ship(ShipType.THREE);
-        shipList[5] = new Ship(ShipType.THREE);
-        shipList[6] = new Ship(ShipType.T_SHAPE);
-    }
-
-    public Ship[] getShipList() {
-        return shipList;
+        shipList.clear();
+        shipList.add(new Ship(ShipType.ONE));
+        shipList.add(new Ship(ShipType.ONE));
+        shipList.add(new Ship(ShipType.TWO));
+        shipList.add(new Ship(ShipType.TWO));
+        shipList.add(new Ship(ShipType.THREE));
+        shipList.add(new Ship(ShipType.THREE));
+        shipList.add(new Ship(ShipType.T_SHAPE));
     }
 
     public void addNewAttempt(Position position) {
@@ -74,22 +73,9 @@ public class Board {
             // Check if a ship has been hit
             for (Ship ship : shipList) {
                 if (ship.getPositionList().contains(position)) {
-                    // Set position as HIT
-                    switch (ship.getType()) {
-                        case ONE:
-                            adversaryAttempts.put(position, PositionType.HIT_ONE);
-                            break;
-                        case TWO:
-                            adversaryAttempts.put(position, PositionType.HIT_TWO);
-                            break;
-                        case THREE:
-                            adversaryAttempts.put(position, PositionType.HIT_THREE);
-                            break;
-                        case T_SHAPE:
-                            adversaryAttempts.put(position, PositionType.HIT_T_SHAPE);
-                            break;
-                    }
 
+                    // Set position as HIT
+                    adversaryAttempts.put(position, ship.getHitType());
                     numberOfHits++;
 
                     // Check if all parts of the ship have been destroyed
@@ -120,10 +106,10 @@ public class Board {
     }
 
     public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
-        if (ship < 0 || ship > MAXSHIPS - 1)
+        if (ship < 0 || ship >= shipList.size())
             throw new InvalidShipNumberException();
 
-        return shipList[ship];
+        return shipList.get(ship);
     }
 
     public Ship getShipByPosition(Position position) {
@@ -142,6 +128,8 @@ public class Board {
         boolean isSelected = false;
 
         for (Ship ship : shipList) {
+            if (ship.isDestroyed())
+                continue;
 
             if (ship.getPositionList().contains(position)) {
                 count++;
@@ -176,6 +164,54 @@ public class Board {
         return PositionType.UNKNOWN;
     }
 
+    public PositionType getPositionValidityOnReposition(Position position, Ship currentShip) {
+        int count = 0;
+        boolean isAdjacent = false;
+        boolean isSelected = false;
+
+        for (Ship ship : shipList) {
+            if (ship.getPositionList().contains(position)) {
+                if (ship.isDestroyed() || adversaryAttempts.get(position) != null && adversaryAttempts.get(position).isHit()) {
+                    return PositionType.SHIP;
+                }
+
+                if (ship.hasInvalidPositions()) {
+                    return PositionType.INVALID;
+                }
+
+                if (currentShip != null && ship.equals(currentShip)) {
+                    isSelected = true;
+                } else if (!shipIsIntact(ship)) {
+                    return ship.getHitType();
+                }
+
+                count++;
+            }
+
+            if (!ship.isDestroyed() && !isAdjacent && ship.getAdjacentPositions().contains(position)) {
+                isAdjacent = true;
+            }
+        }
+
+        if (count > 1 || isAdjacent && count == 1) {
+            return PositionType.INVALID;
+        }
+
+        if (!isAdjacent && count == 1) {
+            if (isSelected) {
+                return PositionType.SELECTED;
+            } else {
+                return PositionType.VALID;
+            }
+        }
+
+        if (isAdjacent) {
+            return PositionType.ADJACENT;
+        }
+
+        return PositionType.UNKNOWN;
+    }
+
     public List<Position> getShipPositions(Position position) {
         for (Ship ship : shipList) {
             if (ship.getPositionList().contains(position)) {
@@ -197,7 +233,9 @@ public class Board {
                 }
             }
 
-            positionList.addAll(ship.getPositionList());
+            if (!ship.isDestroyed()) {
+                positionList.addAll(ship.getPositionList());
+            }
         }
 
         return hasDuplicate(positionList);
@@ -238,15 +276,15 @@ public class Board {
             // Clear ship positions
             createShips();
 
-            while (count < MAXSHIPS) {
-                shipList[count].setRandomPosition(availableBoard);
+            while (count < shipList.size()) {
+                shipList.get(count).setRandomPosition(availableBoard);
 
                 positionList = new ArrayList<>();
                 adjacentSet = new HashSet<>();
 
                 for (int i = 0; i <= count; i++) {
-                    positionList.addAll(shipList[i].getPositionList());
-                    adjacentSet.addAll(shipList[i].getAdjacentPositions());
+                    positionList.addAll(shipList.get(i).getPositionList());
+                    adjacentSet.addAll(shipList.get(i).getAdjacentPositions());
                 }
 
                 positionList.addAll(adjacentSet);
@@ -316,5 +354,52 @@ public class Board {
         }
 
         return count;
+    }
+
+    public boolean shipIsIntact(Ship ship) {
+        if (ship == null) {
+            return false;
+        }
+
+        for (Position pos : adversaryAttempts.keySet()) {
+            if (ship.getPositionList().contains(pos) && adversaryAttempts.get(pos) != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Removes MISS attempts except adjacent to HITs
+     */
+    public void removeOldAttempts() {
+        Set<Position> adjacentToHit = new HashSet<>();
+
+        for (Position position : adversaryAttempts.keySet()) {
+            if (adversaryAttempts.get(position).isHit()) {
+                adjacentToHit.addAll(position.getAdjacent());
+            }
+        }
+
+        Iterator<Position> it = adversaryAttempts.keySet().iterator();
+
+        while (it.hasNext()) {
+            Position pos = it.next();
+
+            if (adversaryAttempts.get(pos) == PositionType.MISS && !adjacentToHit.contains(pos)) {
+                it.remove();
+            }
+        }
+    }
+
+    public boolean canRepositionShip() {
+        for (Ship ship : shipList) {
+            if (shipIsIntact(ship)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

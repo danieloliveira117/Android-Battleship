@@ -15,9 +15,9 @@ public interface IGameState {
 
     IGameState placeShip(PlayerType player, Position position, Integer tag);
 
-    IGameState moveShip(PlayerType player, Position oldposition, Position newposition);
+    IGameState moveCurrentShip(PlayerType player, Position newposition);
 
-    IGameState setCurrentShip(PlayerType player, Position position);
+    IGameState setCurrentShipByPosition(PlayerType player, Position position);
 
     IGameState randomizePlacement(PlayerType player);
 
@@ -30,4 +30,6 @@ public interface IGameState {
     IGameState setStartingPlayer(PlayerType type);
 
     IGameState clickPositionRemote(PlayerType type, Position position);
+
+    IGameState setShipOnDragEvent(PlayerType type, Position position);
 }

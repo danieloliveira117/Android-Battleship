@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MatchHistoryActivity">
+    tools:context=".activities.match_history.MatchHistoryActivity">
 
     <fragment
-        android:name="amov.danieloliveira.batalhanaval.activities.MatchHistoryFragment"
+        android:name="amov.danieloliveira.batalhanaval.activities.match_history.MatchHistoryFragment"
         android:id="@+id/log_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

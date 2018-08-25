@@ -24,10 +24,16 @@ public class AwaitShipPlacement extends GameStateAdapter {
     }
 
     @Override
+    public IGameState setShipOnDragEvent(PlayerType type, Position position) {
+        return setCurrentShipByPosition(type, position);
+    }
+
+    @Override
     public IGameState confirmShipPlacement(PlayerType player) {
         gameData.setShipsPlaced(player);
 
         if (gameData.allShipsPlaced()) {
+            gameData.clearCurrentShip(player);
             return new AwaitPlayerMove(gameData);
         }
 
@@ -47,15 +53,14 @@ public class AwaitShipPlacement extends GameStateAdapter {
     }
 
     @Override
-    public IGameState moveShip(PlayerType player, Position old_position, Position new_position) {
-        gameData.setCurrentShipPosition(player, old_position);
+    public IGameState moveCurrentShip(PlayerType player, Position new_position) {
         gameData.setCurrentShipPosition(player, new_position);
 
         return this;
     }
 
     @Override
-    public IGameState setCurrentShip(PlayerType player, Position position) {
+    public IGameState setCurrentShipByPosition(PlayerType player, Position position) {
         gameData.setCurrentShipByPosition(player, position);
 
         return this;

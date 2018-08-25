@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 
 import amov.danieloliveira.batalhanaval.engine.enums.Orientation;
+import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 
@@ -20,7 +21,7 @@ public class Ship {
     private int id;
     private ShipType type;
     private List<Position> positionList = new ArrayList<>();
-    private Set<Position>  adjacentPositions = new HashSet<>();
+    private Set<Position> adjacentPositions = new HashSet<>();
     private Orientation orientation;
     private boolean destroyed;
 
@@ -41,6 +42,10 @@ public class Ship {
 
     public ShipType getType() {
         return type;
+    }
+
+    public PositionType getHitType() {
+        return type.toHit();
     }
 
     public Set<Position> getAdjacentPositions() {
@@ -194,81 +199,7 @@ public class Ship {
         adjacentPositions = new HashSet<>();
 
         for (Position position : positionList) {
-            // TOP LEFT
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.incrementVertical();
-                new_pos.incrementHorizontal();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // TOP
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.incrementVertical();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // TOP RIGHT
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.incrementVertical();
-                new_pos.decrementHorizontal();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // LEFT
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.incrementHorizontal();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // RIGHT
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.decrementHorizontal();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // BOTTOM LEFT
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.decrementVertical();
-                new_pos.incrementHorizontal();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // BOTTOM
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.decrementVertical();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
-
-            // BOTTOM RIGHT
-            try {
-                Position new_pos = new Position(position);
-
-                new_pos.decrementVertical();
-                new_pos.decrementHorizontal();
-
-                adjacentPositions.add(new_pos);
-            } catch (InvalidPositionException ignored) {}
+            adjacentPositions.addAll(position.getAdjacent());
         }
 
         adjacentPositions.removeAll(positionList);
@@ -293,7 +224,7 @@ public class Ship {
 
     public boolean hasInvalidPositions() {
         for (Position position : positionList) {
-            if(position == null || !position.isValid()) {
+            if (position == null || !position.isValid()) {
                 return true;
             }
         }

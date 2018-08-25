@@ -14,6 +14,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitGameStart;
 import amov.danieloliveira.batalhanaval.engine.state.AwaitShipPlacement;
+import amov.danieloliveira.batalhanaval.engine.state.AwaitShipReposition;
 import amov.danieloliveira.batalhanaval.engine.state.IGameState;
 
 public class GameData {
@@ -46,12 +47,12 @@ public class GameData {
         currentState = currentState.confirmShipPlacement(player);
     }
 
-    public void moveShip(PlayerType player, Position oldposition, Position newposition) {
-        currentState = currentState.moveShip(player, oldposition, newposition);
+    public void moveShip(PlayerType player, Position newposition) {
+        currentState = currentState.moveCurrentShip(player, newposition);
     }
 
     public void setCurrentShip(PlayerType player, Position position) {
-        currentState = currentState.setCurrentShip(player, position);
+        currentState = currentState.setCurrentShipByPosition(player, position);
     }
 
     public void randomizePlacement(PlayerType player) {
@@ -76,6 +77,10 @@ public class GameData {
 
     public void clickPositionRemote(PlayerType type, Position position) {
         currentState = currentState.clickPositionRemote(type, position);
+    }
+
+    public void setShipOnDragEvent(PlayerType type, Position position) {
+        currentState = currentState.setShipOnDragEvent(type, position);
     }
 
     /* Update Game Model */
@@ -138,6 +143,9 @@ public class GameData {
         if (currentState instanceof AwaitShipPlacement)
             return gameModel.getPositionValidity(player, position, getCurrentShip(player));
 
+        if (currentState instanceof AwaitShipReposition && currentPlayer == player)
+            return gameModel.getPositionValidityOnReposition(player, position, getCurrentShip(player));
+
         return gameModel.getPositionType(player, position);
     }
 
@@ -146,7 +154,9 @@ public class GameData {
     }
 
     public void setCurrentShipPosition(PlayerType player, Position position) {
-        getCurrentShip(player).updatePosition(position);
+        if (getCurrentShip(player) != null) {
+            getCurrentShip(player).updatePosition(position);
+        }
     }
 
     public void setShipsPlaced(PlayerType player) {
@@ -193,8 +203,8 @@ public class GameData {
         return gameModel.getGameMode();
     }
 
-    public boolean canDragAndDrop() {
-        return currentState instanceof AwaitShipPlacement;
+    public boolean canDragAndDrop(PlayerType type, Position position) {
+        return currentState instanceof AwaitShipPlacement || currentState instanceof AwaitShipReposition && shipIsIntact(type, position);
     }
 
     public boolean isLastSelect() {
@@ -226,7 +236,9 @@ public class GameData {
     }
 
     public void rotateShip(PlayerType player) {
-        gameModel.rotateShip(getCurrentShip(player));
+        if (getCurrentShip(player) != null) {
+            getCurrentShip(player).rotateShip();
+        }
     }
 
     public Board getPlayerBoard(PlayerType type) {
@@ -239,5 +251,34 @@ public class GameData {
 
     public void setCurrentPlayer(PlayerType currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public void clearCurrentShip(PlayerType player) {
+        switch (player) {
+            case PLAYER:
+                currentShip[0] = null;
+            case ADVERSARY:
+                currentShip[1] = null;
+        }
+    }
+
+    public void removeOldAttempts(PlayerType currentPlayer) {
+        gameModel.removeOldAttempts(currentPlayer);
+    }
+
+    public boolean shipIsIntact(PlayerType player, Position position) {
+        return gameModel.shipIsIntact(player, position);
+    }
+
+    public boolean isShipReposition(PlayerType type) {
+        return currentPlayer == type && currentState instanceof AwaitShipReposition;
+    }
+
+    public void removeDestroyedShips(PlayerType player) {
+        // TODO: 25/08/2018 removeDestroyedShips
+    }
+
+    public boolean canRepositionShip(PlayerType player) {
+        return gameModel.canRepositionShip(player);
     }
 }

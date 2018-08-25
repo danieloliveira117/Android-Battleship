@@ -1,4 +1,4 @@
-package amov.danieloliveira.batalhanaval.activities;
+package amov.danieloliveira.batalhanaval.activities.match_history;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
@@ -17,8 +16,6 @@ import amov.danieloliveira.batalhanaval.engine.model.MatchHistory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static amov.danieloliveira.batalhanaval.Consts.VICTORY;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link MatchHistory}

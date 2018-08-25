@@ -1,5 +1,10 @@
 package amov.danieloliveira.batalhanaval.engine.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import amov.danieloliveira.batalhanaval.Consts;
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
@@ -19,7 +24,7 @@ public class Position {
     public Position(Position position) {
         this.letter = position.getLetter();
         this.num = position.getNum();
-        this.valid = true;
+        this.valid = position.isValid();
     }
 
     public Position(String position) throws InvalidPositionException {
@@ -122,6 +127,96 @@ public class Position {
         char temp = (char) (this.letter + 1);
         validatePosition(temp, this.num);
         this.letter = temp;
+    }
+
+    public Set<Position> getAdjacent() {
+        Set<Position> adjacentPositions = new HashSet<>();
+
+        // TOP LEFT
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.incrementVertical();
+            new_pos.incrementHorizontal();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // TOP
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.incrementVertical();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // TOP RIGHT
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.incrementVertical();
+            new_pos.decrementHorizontal();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // LEFT
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.incrementHorizontal();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // RIGHT
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.decrementHorizontal();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // BOTTOM LEFT
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.decrementVertical();
+            new_pos.incrementHorizontal();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // BOTTOM
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.decrementVertical();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        // BOTTOM RIGHT
+        try {
+            Position new_pos = new Position(this);
+
+            new_pos.decrementVertical();
+            new_pos.decrementHorizontal();
+
+            adjacentPositions.add(new_pos);
+        } catch (InvalidPositionException ignored) {
+        }
+
+        return adjacentPositions;
     }
 
     @Override

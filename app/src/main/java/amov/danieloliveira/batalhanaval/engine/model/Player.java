@@ -23,6 +23,14 @@ public class Player {
         this.user = user;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     public boolean allShipsPlaced() {
         return shipsPlaced;
     }
@@ -39,9 +47,19 @@ public class Player {
         return board.processSelectedPositions();
     }
 
+    /* --- Position Type --- */
     public PositionType getPositionType(Position position) {
         return board.getPositionType(position);
     }
+
+    public PositionType getPositionValidity(Position position, Ship currentShip) {
+        return board.getPositionValidity(position, currentShip);
+    }
+
+    public PositionType getPositionValidityOnReposition(Position position, Ship currentShip) {
+        return board.getPositionValidityOnReposition(position, currentShip);
+    }
+    /* --- End Position Type --- */
 
     public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
         return board.getShipByID(ship);
@@ -49,10 +67,6 @@ public class Player {
 
     public Ship getShipByPosition(Position position) {
         return board.getShipByPosition(position);
-    }
-
-    public PositionType getPositionValidity(Position position, Ship currentShip) {
-        return board.getPositionValidity(position, currentShip);
     }
 
     public List<Position> getShipPositions(Position position) {
@@ -83,11 +97,15 @@ public class Player {
         return board.getNumberOfHits();
     }
 
-    public Board getBoard() {
-        return board;
+    public boolean shipIsIntact(Position position) {
+        return board.shipIsIntact(getShipByPosition(position));
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public void removeOldAttempts() {
+        board.removeOldAttempts();
+    }
+
+    public boolean canRepositionShip() {
+        return board.canRepositionShip();
     }
 }

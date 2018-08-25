@@ -35,12 +35,12 @@ public class GameStateAdapter implements IGameState {
     }
 
     @Override
-    public IGameState moveShip(PlayerType player, Position old_position, Position new_position) {
+    public IGameState moveCurrentShip(PlayerType player, Position newposition) {
         return this;
     }
 
     @Override
-    public IGameState setCurrentShip(PlayerType player, Position position) {
+    public IGameState setCurrentShipByPosition(PlayerType player, Position position) {
         return this;
     }
 
@@ -71,6 +71,11 @@ public class GameStateAdapter implements IGameState {
 
     @Override
     public IGameState clickPositionRemote(PlayerType type, Position position) {
+        return this;
+    }
+
+    @Override
+    public IGameState setShipOnDragEvent(PlayerType type, Position position) {
         return this;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.Preferences;
 import amov.danieloliveira.batalhanaval.R;
+import amov.danieloliveira.batalhanaval.activities.match_history.MatchHistoryActivity;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;

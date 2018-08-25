@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.DragEvent;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableLayout;
 
@@ -23,7 +21,6 @@ import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
-import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 
 // TODO change PlayerType.PLAYER to current player in game data????
@@ -118,7 +115,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                     gameObs.placeShip(PlayerType.PLAYER, position, (Integer) view.getTag() - 1);
                     ((GameStartActivity) context).placedViews.add((Integer) view.getTag());
                 } else if (view instanceof BattleShipCellView) {
-                    gameObs.moveShip(PlayerType.PLAYER, (Position) view.getTag(), position);
+                    gameObs.moveShip(PlayerType.PLAYER, position);
                 }
 
                 //Log.d(TAG, "ACTION_DRAG_ENTERED " + view.getTag());
@@ -197,14 +194,8 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     }
 
     @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
-
-    @Override
     public void onClick(View v) {
-        if (!gameObs.canDragAndDrop()) {
+        if (!gameObs.canDragAndDrop(type, position)) {
             gameObs.clickNewPosition(type, position);
         } else {
             gameObs.selectShip(type, position);
@@ -213,13 +204,13 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
     @Override
     public boolean onLongClick(View v) {
-        if (gameObs.canDragAndDrop()) {
+        if (gameObs.canDragAndDrop(type, position)) {
             final TableLayout container = (TableLayout) v.getParent().getParent();
 
             List<Position> positions = gameObs.getShipPositions(type, position);
 
             if (positions != null) {
-                gameObs.selectShip(type, position);
+                gameObs.setShipOnDragEvent(type, position);
 
                 List<BattleShipCellView> viewList = Utils.findViewsWithPositions(container, positions);
 

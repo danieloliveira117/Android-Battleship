@@ -50,7 +50,7 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.MatchHistoryActivity"
+            android:name=".activities.match_history.MatchHistoryActivity"
             android:label="@string/title_activity_match_history"
             android:parentActivityName=".activities.MainActivity">
             <meta-data

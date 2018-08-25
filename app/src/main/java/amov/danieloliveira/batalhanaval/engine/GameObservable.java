@@ -10,6 +10,7 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
+import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.engine.enums.MsgType.CONFIRM_PLACEMENT;
@@ -61,8 +62,8 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
-    public void moveShip(PlayerType player, Position oldposition, Position newposition) {
-        gameData.moveShip(player, oldposition, newposition);
+    public void moveShip(PlayerType player, Position newposition) {
+        gameData.moveShip(player, newposition);
 
         setChanged();
         notifyObservers();
@@ -111,6 +112,25 @@ public class GameObservable extends Observable {
         notifyObservers(board);
     }
 
+    public void sendStartingPlayer() {
+        setChanged();
+        notifyObservers(MsgType.STARTING_PLAYER);
+    }
+
+    public void clickPositionRemote(PlayerType type, Position position) {
+        gameData.clickPositionRemote(type, position);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void setShipOnDragEvent(PlayerType type, Position position) {
+        gameData.setShipOnDragEvent(type, position);
+
+        setChanged();
+        notifyObservers();
+    }
+
     /* --- GETS --- */
 
     public PositionType getPositionType(PlayerType player, Position position) {
@@ -133,8 +153,8 @@ public class GameObservable extends Observable {
         return gameData.getCurrentPlayer();
     }
 
-    public boolean canDragAndDrop() {
-        return gameData.canDragAndDrop();
+    public boolean canDragAndDrop(PlayerType type, Position position) {
+        return gameData.canDragAndDrop(type, position);
     }
 
     public boolean didGameEnd() {
@@ -153,15 +173,11 @@ public class GameObservable extends Observable {
         gameData.setStartingPlayer(type);
     }
 
-    public void sendStartingPlayer() {
-        setChanged();
-        notifyObservers(MsgType.STARTING_PLAYER);
+    public Ship getCurrentShip(PlayerType type) {
+        return gameData.getCurrentShip(type);
     }
 
-    public void clickPositionRemote(PlayerType type, Position position) {
-        gameData.clickPositionRemote(type, position);
-
-        setChanged();
-        notifyObservers();
+    public boolean isShipReposition(PlayerType type) {
+        return gameData.isShipReposition(type);
     }
 }

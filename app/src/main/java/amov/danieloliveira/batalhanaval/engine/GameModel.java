@@ -126,14 +126,6 @@ public class GameModel {
         numPlays++;
     }
 
-    public PlayerType getPlayerType(User user) {
-        if (player1.getUser().equals(user)) {
-            return PlayerType.PLAYER;
-        }
-
-        return PlayerType.ADVERSARY;
-    }
-
     public User getUser(PlayerType player) {
         return getPlayer(player).getUser();
     }
@@ -146,17 +138,27 @@ public class GameModel {
         return getPlayer(player).getShipsDestroyed();
     }
 
-    public void rotateShip(Ship ship) {
-        if (ship != null) {
-            ship.rotateShip();
-        }
-    }
-
     public Board getPlayerBoard(PlayerType type) {
         return getPlayer(type).getBoard();
     }
 
     public void setPlayerBoard(PlayerType type, Board board) {
         getPlayer(type).setBoard(board);
+    }
+
+    public boolean shipIsIntact(PlayerType player, Position position) {
+        return getPlayer(player).shipIsIntact(position);
+    }
+
+    public void removeOldAttempts(PlayerType player) {
+        getPlayer(player).removeOldAttempts();
+    }
+
+    public boolean canRepositionShip(PlayerType player) {
+        return getPlayer(player).canRepositionShip();
+    }
+
+    public PositionType getPositionValidityOnReposition(PlayerType player, Position position, Ship currentShip) {
+        return getPlayer(player).getPositionValidityOnReposition(position, currentShip);
     }
 }

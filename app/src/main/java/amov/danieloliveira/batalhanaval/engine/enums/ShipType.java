@@ -6,8 +6,7 @@ public enum ShipType {
     private int size;
     private int adjacentSize;
 
-    ShipType(int size, int adjacentSize)
-    {
+    ShipType(int size, int adjacentSize) {
         this.size = size;
         this.adjacentSize = adjacentSize;
     }
@@ -18,5 +17,20 @@ public enum ShipType {
 
     public int getAdjacentSize() {
         return this.adjacentSize;
+    }
+
+    public PositionType toHit() {
+        switch (this) {
+            case ONE:
+                return PositionType.HIT_ONE;
+            case TWO:
+                return PositionType.HIT_TWO;
+            case THREE:
+                return PositionType.HIT_THREE;
+            case T_SHAPE:
+                return PositionType.HIT_T_SHAPE;
+            default:
+                return PositionType.HIT;
+        }
     }
 }

@@ -7,7 +7,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Position;
 import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 
 public class AwaitPlayerMove extends GameStateAdapter {
-    public AwaitPlayerMove(GameData gameData) {
+    AwaitPlayerMove(GameData gameData) {
         super(gameData);
     }
 
@@ -25,9 +25,9 @@ public class AwaitPlayerMove extends GameStateAdapter {
                     return new GameEnded(gameData);
                 }
 
-                if (hits == MAXSELECT) {
-                    // TODO Mudar a posição de um barco
-                    //return new AwaitShipReposition(gameData);
+                // Must have one undiscovered ship
+                if (hits == MAXSELECT && gameData.canRepositionShip(player)) {
+                    return new AwaitShipReposition(gameData);
                 }
 
                 gameData.nextPlayer();

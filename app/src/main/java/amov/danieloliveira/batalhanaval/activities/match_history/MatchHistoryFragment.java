@@ -1,4 +1,4 @@
-package amov.danieloliveira.batalhanaval.activities;
+package amov.danieloliveira.batalhanaval.activities.match_history;
 
 import android.app.Activity;
 import android.content.Context;
