@@ -3,10 +3,10 @@ package amov.danieloliveira.batalhanaval.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.TableLayout;
@@ -19,12 +19,12 @@ import java.util.Observer;
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
-import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.BotThread;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.User;
+import amov.danieloliveira.batalhanaval.views.BattleshipBoard;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
@@ -44,8 +44,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     private boolean onCreateRunned = false;
 
-    private TableLayout tbl_player_ships;
-    private TableLayout tbl_adversary_ships;
+    private BattleshipBoard tbl_player_ships;
+    private BattleshipBoard tbl_adversary_ships;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
         onCreateRunned = true;
 
-        // TODO: 20/08/2018 find tbl_adversary_ships
-        // tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
+        tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
         tbl_player_ships = findViewById(R.id.tbl_player_ships);
 
         Intent intent = getIntent();
@@ -69,17 +68,16 @@ public class GameActivity extends AppCompatActivity implements Observer {
         gameObs = app.getObservable();
         gameObs.addObserver(this);
 
-        // TODO: 22/08/2018 adversary
         if (mode == CLIENT) {
             opponent = PlayerType.PLAYER;
             player = PlayerType.ADVERSARY;
             tbl_player_ships.setTag(1);
-            // tbl_adversary_ships.setTag(0);
+            tbl_adversary_ships.setTag(0);
         } else {
             opponent = PlayerType.ADVERSARY;
             player = PlayerType.PLAYER;
             tbl_player_ships.setTag(0);
-            // tbl_adversary_ships.setTag(1);
+            tbl_adversary_ships.setTag(1);
         }
 
         if (!gameObs.validPlacement(opponent)) {

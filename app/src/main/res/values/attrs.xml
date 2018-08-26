@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BattleShipCellView">
+    <declare-styleable name="BattleshipCellView">
         <attr name="position" format="string" />
         <attr name="shipyard" format="boolean" />
     </declare-styleable>

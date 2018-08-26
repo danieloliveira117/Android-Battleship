@@ -1,279 +1,732 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.GameStartActivity">
+    android:layout_height="match_parent">
 
     <TableLayout
-        android:id="@+id/tbl_shipyard"
+        android:id="@+id/tbl_adversary_ships"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:background="@color/MISS"
-        android:gravity="center_vertical"
-        android:padding="10dp"
-        android:stretchColumns="*"
-        app:layout_constraintBottom_toTopOf="@id/btn_rotate_ship"
+        android:stretchColumns="1,2,3,4,5,6,7,8"
+        app:layout_constraintBottom_toTopOf="@+id/tbl_player_ships"
+        app:layout_constraintHeight_max="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tbl_place_ships"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_1"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="1"
-                app:ship_type="ship_type_one" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_2"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="2"
-                app:ship_type="ship_type_one" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_10"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="6"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_11"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="6"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_12"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="6"
-                app:ship_type="ship_type_three" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_3"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="3"
-                app:ship_type="ship_type_two" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_4"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="3"
-                app:ship_type="ship_type_two" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_13"
-                android:background="@drawable/border"
-                app:border_bottom="false"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_6"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="4"
-                app:ship_type="ship_type_two" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_5"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="4"
-                app:ship_type="ship_type_two" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_15"
-                android:background="@drawable/border"
-                app:border_bottom="false"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="false"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_14"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_16"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_9"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="5"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_8"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="false"
-                app:border_top="true"
-                app:ship_number="5"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_7"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="false"
-                app:border_right="true"
-                app:border_top="true"
-                app:ship_number="5"
-                app:ship_type="ship_type_three" />
-
-            <amov.danieloliveira.batalhanaval.views.ShipPartView
-                android:id="@+id/ship_part_17"
-                android:background="@drawable/border"
-                app:border_bottom="true"
-                app:border_left="true"
-                app:border_right="true"
-                app:border_top="false"
-                app:ship_number="7"
-                app:ship_type="ship_type_t_shape" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-            <android.support.v7.widget.AppCompatTextView android:layout_height="match_parent" />
-
-        </TableRow>
-    </TableLayout>
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_rotate_ship"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="end|center_vertical"
-        android:onClick="onRotateShip"
-        android:text="@string/rotate_ship"
-        app:layout_constraintBottom_toTopOf="@id/btn_confirm_placement"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tbl_place_ships"
-        app:layout_constraintTop_toBottomOf="@id/tbl_shipyard" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_confirm_placement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:backgroundTint="@color/colorAccent"
-        android:onClick="onConfirmPlacement"
-        android:padding="@dimen/text_margin"
-        android:text="@string/confirm_placement"
-        android:textColor="@color/light"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tbl_place_ships"
-        app:layout_constraintTop_toBottomOf="@id/btn_rotate_ship" />
-
-    <TableLayout
-        android:id="@+id/tbl_place_ships"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:shrinkColumns="1"
-        android:stretchColumns="*"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/btn_confirm_placement"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/info_adversary"
+        app:layout_constraintWidth_max="150dp">
+
         <!-- Colunas -->
         <TableRow>
 
-            <android.support.v7.widget.AppCompatTextView android:layout_weight="1" />
+            <android.support.v7.widget.AppCompatTextView />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/a"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/b"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/c"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/d"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/e"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/f"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/g"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/h"
+                android:textAlignment="center"
+                android:textColor="@color/light" />
+        </TableRow>
+
+        <!-- Linha 1 -->
+        <TableRow
+            android:id="@+id/adv_row1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/one"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G1" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H1" />
+        </TableRow>
+
+        <!-- Linha 2 -->
+        <TableRow
+            android:id="@+id/adv_row2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/two"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G2" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H2" />
+        </TableRow>
+
+        <!-- Linha 3 -->
+        <TableRow
+            android:id="@+id/adv_row3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/three"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G3" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H3" />
+        </TableRow>
+
+        <!-- Linha 4 -->
+        <TableRow
+            android:id="@+id/adv_row4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/four"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G4" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H4" />
+        </TableRow>
+
+        <!-- Linha 5 -->
+        <TableRow
+            android:id="@+id/adv_row5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/five"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G5" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H5" />
+        </TableRow>
+
+        <!-- Linha 6 -->
+        <TableRow
+            android:id="@+id/adv_row6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/six"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G6" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H6" />
+        </TableRow>
+
+        <!-- Linha 7 -->
+        <TableRow
+            android:id="@+id/adv_row7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/seven"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G7" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H7" />
+        </TableRow>
+
+        <!-- Linha 8 -->
+        <TableRow
+            android:id="@+id/adv_row8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:paddingEnd="5dp"
+                android:text="@string/eight"
+                android:textColor="@color/light" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellA8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="A8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellB8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="B8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellC8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="C8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellD8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="D8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellE8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="E8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellF8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="F8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellG8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="G8" />
+
+            <amov.danieloliveira.batalhanaval.views.BattleshipCellView
+                android:id="@+id/adv_cellH8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                app:position="H8" />
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tbl_player_ships"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1,2,3,4,5,6,7,8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbl_adversary_ships"
+        app:layout_constraintWidth_max="250dp">
+
+        <!-- Colunas -->
+        <TableRow>
+
+            <android.support.v7.widget.AppCompatTextView />
 
             <android.support.v7.widget.AppCompatTextView
                 android:text="@string/a"
@@ -321,7 +774,6 @@
             android:id="@+id/row1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
             android:layout_weight="1"
             android:paddingBottom="2dp">
 
@@ -330,7 +782,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/one"
                 android:textColor="@color/light" />
 
@@ -404,7 +855,6 @@
             android:id="@+id/row2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
             android:layout_weight="1"
             android:paddingBottom="2dp">
 
@@ -413,7 +863,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/two"
                 android:textColor="@color/light" />
 
@@ -495,7 +944,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/three"
                 android:textColor="@color/light" />
 
@@ -577,7 +1025,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/four"
                 android:textColor="@color/light" />
 
@@ -659,7 +1106,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/five"
                 android:textColor="@color/light" />
 
@@ -741,7 +1187,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/six"
                 android:textColor="@color/light" />
 
@@ -823,7 +1268,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/seven"
                 android:textColor="@color/light" />
 
@@ -905,7 +1349,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:paddingEnd="5dp"
-                android:paddingStart="0dp"
                 android:text="@string/eight"
                 android:textColor="@color/light" />
 
@@ -973,5 +1416,6 @@
                 android:layout_weight="1"
                 app:position="H8" />
         </TableRow>
+
     </TableLayout>
 </android.support.constraint.ConstraintLayout>

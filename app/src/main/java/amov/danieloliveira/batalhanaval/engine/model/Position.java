@@ -77,11 +77,13 @@ public class Position {
     }
 
     public int getColor() {
-        if ((letter + num) % 2 == 0) {
+        return R.color.cellColorPrimary;
+
+        /*if ((letter + num) % 2 == 0) {
             return R.color.cellColorPrimary;
         } else {
             return R.color.cellColorAlternative;
-        }
+        }*/
     }
 
     public int getLetterAsInt() {

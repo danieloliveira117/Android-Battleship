@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.widget.TableRow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -25,11 +22,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
-import amov.danieloliveira.batalhanaval.views.BattleShipCellView;
+import amov.danieloliveira.batalhanaval.views.BattleshipCellView;
 
 import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
 
@@ -112,8 +108,8 @@ public class Utils {
         return views;
     }
 
-    public static List<BattleShipCellView> findViewsWithPositions(TableLayout parent, List<Position> positions) {
-        List<BattleShipCellView> list = new ArrayList<>();
+    public static List<BattleshipCellView> findViewsWithPositions(TableLayout parent, List<Position> positions) {
+        List<BattleshipCellView> list = new ArrayList<>();
 
         for (int i = 0; i < parent.getChildCount(); i++) {
             TableRow row = (TableRow) parent.getChildAt(i);
@@ -121,9 +117,9 @@ public class Utils {
             for (int j = 0; j < row.getChildCount(); j++) {
                 View v = row.getChildAt(j);
 
-                if (v instanceof BattleShipCellView && v.getTag() != null
+                if (v instanceof BattleshipCellView && v.getTag() != null
                         && positions.contains((Position) v.getTag())) {
-                    list.add((BattleShipCellView) v);
+                    list.add((BattleshipCellView) v);
                 }
             }
         }

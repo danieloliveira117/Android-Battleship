@@ -26,6 +26,7 @@ import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.User;
+import amov.danieloliveira.batalhanaval.views.BattleshipBoard;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SERVER;
@@ -40,7 +41,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
 
     private int mode = SINGLEPLAYER;
     private PlayerType type;
-    private TableLayout tbl_place_ships;
+    private BattleshipBoard tbl_place_ships;
 
     public SerializableHashSet<Integer> placedViews = new SerializableHashSet<>();
 

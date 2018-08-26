@@ -4,10 +4,17 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 
 import java.util.List;
@@ -23,23 +30,44 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 
+import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
+
 // TODO change PlayerType.PLAYER to current player in game data????
-public class BattleShipCellView extends AppCompatTextView implements Observer, View.OnDragListener, View.OnClickListener, View.OnLongClickListener {
+public class BattleshipCellView extends AppCompatImageButton implements Observer, View.OnDragListener, View.OnClickListener, View.OnLongClickListener {
     private static final String TAG = "BattleShipCellView";
     private GameObservable gameObs;
     private Position position;
     private Context context;
     private PlayerType type = null;
-    private TableLayout container;
+    private BattleshipBoard container;
 
-    public BattleShipCellView(Context context, @Nullable AttributeSet attrs) {
+    public BattleshipCellView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public BattleShipCellView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BattleshipCellView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
+    }
+
+    public BattleshipCellView(Context context, int i, int j) {
+        super(context);
+        init(context, i, j);
+    }
+
+    private void init(Context context, int i, int j) {
+        this.context = context;
+
+        try {
+            position = new Position(i, j);
+
+            this.setTag(position.toString());
+
+            this.setBackgroundResource(position.getColor());
+        } catch (InvalidPositionException e) {
+            e.printStackTrace();
+        }
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -49,18 +77,20 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
             gameObs = Utils.getObservable(context);
             gameObs.addObserver(this);
 
-            this.setOnDragListener(this);
-            this.setOnClickListener(this);
-            this.setOnLongClickListener(this);
+            if (getId() != R.id.tbl_adversary_ships) {
+                this.setOnDragListener(this);
+                this.setOnClickListener(this);
+                this.setOnLongClickListener(this);
+            }
         }
 
         try {
             TypedArray a = context.getTheme().obtainStyledAttributes(
                     attrs,
-                    R.styleable.BattleShipCellView,
+                    R.styleable.BattleshipCellView,
                     0, 0);
 
-            position = new Position(a.getString(R.styleable.BattleShipCellView_position));
+            position = new Position(a.getString(R.styleable.BattleshipCellView_position));
 
             this.setTag(position);
 
@@ -70,12 +100,59 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         }
     }
 
+    public void prepareListeners() {
+        if (isInEditMode())
+            return;
+
+        ViewParent view = this.getParent();
+
+        while (true) {
+            if ((view = view.getParent()) instanceof BattleshipBoard) {
+                break;
+            }
+        }
+
+        this.container = (BattleshipBoard) view;
+
+        gameObs = Utils.getObservable(context);
+        gameObs.addObserver(this);
+
+        if (container.getId() != R.id.tbl_adversary_ships) {
+            this.setOnDragListener(this);
+            this.setOnClickListener(this);
+            this.setOnLongClickListener(this);
+        }
+
+        final ViewTreeObserver viewTreeObserver = this.getViewTreeObserver();
+
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    int viewWidth = container.getWidth();
+                    //int viewHeight = container.getHeight();
+
+                    setMaxSize(viewWidth / MAXCOLUMNS);
+                }
+            });
+        }
+    }
+
+    private void setMaxSize(int size) {
+        Log.i(TAG, "" + size);
+
+        ViewGroup.LayoutParams params = this.getLayoutParams();
+        params.height = size;
+        params.width = size;
+        this.setLayoutParams(params);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof GameMode) {
-            this.container = (TableLayout) getParent().getParent();
-
-            if (container.getTag() == null) {
+            if (container == null || container.getTag() == null) {
                 return;
             } else if (container.getTag() instanceof Integer) {
                 if ((Integer) container.getTag() == 0) {
@@ -89,7 +166,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         updateColor();
     }
 
-    /* Square */
+    /* Square *
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -97,7 +174,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         final int size = getMeasuredWidth();
 
         setMeasuredDimension(size, size);
-    }
+    }*/
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
@@ -114,7 +191,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                 if (view instanceof ShipPartView) {
                     gameObs.placeShip(PlayerType.PLAYER, position, (Integer) view.getTag() - 1);
                     ((GameStartActivity) context).placedViews.add((Integer) view.getTag());
-                } else if (view instanceof BattleShipCellView) {
+                } else if (view instanceof BattleshipCellView) {
                     gameObs.moveShip(PlayerType.PLAYER, position);
                 }
 
@@ -128,7 +205,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                     for (View invView : views) {
                         invView.setVisibility(View.VISIBLE);
                     }
-                } else if (view instanceof BattleShipCellView) {
+                } else if (view instanceof BattleshipCellView) {
                     updateColor();
                 }
 
@@ -212,7 +289,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
             if (positions != null) {
                 gameObs.setShipOnDragEvent(type, position);
 
-                List<BattleShipCellView> viewList = Utils.findViewsWithPositions(container, positions);
+                List<BattleshipCellView> viewList = Utils.findViewsWithPositions(container, positions);
 
                 for (View view : viewList) {
                     view.setBackgroundResource(R.color.MOVED);
