@@ -9,7 +9,6 @@
     tools:context=".activities.MainActivity">
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_one_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -20,7 +19,6 @@
         android:textColor="@color/colorAccent" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_join_server"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -31,7 +29,6 @@
         android:textColor="@color/colorAccent" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_create_server"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -42,7 +39,6 @@
         android:textColor="@color/colorAccent" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_match_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -52,7 +48,6 @@
         android:text="@string/match_history" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_config_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

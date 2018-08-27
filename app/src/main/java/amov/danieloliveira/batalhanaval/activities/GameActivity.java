@@ -55,7 +55,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         onCreateRunned = true;
 
         // TODO: 20/08/2018 find tbl_adversary_ships
-        // tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
+        tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
         tbl_player_ships = findViewById(R.id.tbl_player_ships);
 
         Intent intent = getIntent();
@@ -74,12 +74,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
             opponent = PlayerType.PLAYER;
             player = PlayerType.ADVERSARY;
             tbl_player_ships.setTag(1);
-            // tbl_adversary_ships.setTag(0);
+            tbl_adversary_ships.setTag(0);
         } else {
             opponent = PlayerType.ADVERSARY;
             player = PlayerType.PLAYER;
             tbl_player_ships.setTag(0);
-            // tbl_adversary_ships.setTag(1);
+            tbl_adversary_ships.setTag(1);
         }
 
         if (!gameObs.validPlacement(opponent)) {

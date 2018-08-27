@@ -25,7 +25,6 @@
     <string name="username">Username</string>
     <string name="save_user">Save User</string>
     <string name="take_picture">Take Picture</string>
-    <string name="permission_denied">You need to grant the permission to use the camera feature</string>
     <string name="config_changed">Configuration changed</string>
     <string name="username_min_length">The username needs to be at least 3 characters</string>
     <string name="error_image">There has been an error getting your picture</string>
@@ -45,7 +44,6 @@
     <string name="match_history">Match History</string>
     <string name="change_user">Change User</string>
 
-    <string name="shipyard">Shipyard</string>
     <string name="confirm_placement">Confirm Placement</string>
     <string name="randomize_placement">Randomize Placement</string>
     <string name="change_mode">Change to Single-Player</string>

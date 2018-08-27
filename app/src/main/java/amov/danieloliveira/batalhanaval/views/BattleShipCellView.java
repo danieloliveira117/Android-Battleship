@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.TableLayout;
@@ -23,14 +24,12 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidPositionException;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 
-// TODO change PlayerType.PLAYER to current player in game data????
 public class BattleShipCellView extends AppCompatTextView implements Observer, View.OnDragListener, View.OnClickListener, View.OnLongClickListener {
     private static final String TAG = "BattleShipCellView";
     private GameObservable gameObs;
     private Position position;
     private Context context;
     private PlayerType type = null;
-    private TableLayout container;
 
     public BattleShipCellView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -66,14 +65,14 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
             this.setBackgroundResource(position.getColor());
         } catch (InvalidPositionException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Invalid Position", e);
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof GameMode) {
-            this.container = (TableLayout) getParent().getParent();
+            TableLayout container = (TableLayout) getParent().getParent();
 
             if (container.getTag() == null) {
                 return;
@@ -94,7 +93,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int size = getMeasuredWidth();
+        final int size = Math.max(getMeasuredWidth(), getMeasuredHeight());
 
         setMeasuredDimension(size, size);
     }

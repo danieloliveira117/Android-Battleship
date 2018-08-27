@@ -6,7 +6,6 @@
     <string name="username">Nome de Utilizador</string>
     <string name="save_user">Guardar Utilizador</string>
     <string name="take_picture">Tirar Fotografia</string>
-    <string name="permission_denied">É necessário garantir a permissão para utilizar a funcionalidade da camera</string>
     <string name="config_changed">A configuração foi alterada</string>
     <string name="username_min_length">O nome de utilizador tem de ter pelo menos 3 caracteres</string>
     <string name="error_image">Ocorreu um erro ao tirar a fotografia</string>
@@ -24,7 +23,6 @@
     <string name="play_create_server">Criar um Servidor</string>
     <string name="match_history">Histórico de Jogos</string>
     <string name="change_user">Alterar Utilizador</string>
-    <string name="shipyard">Porto</string>
     <string name="confirm_placement">Confirmar Posição Inicial</string>
     <string name="randomize_placement">Posição inicial aleatória</string>
     <string name="change_mode">Mudar para um jogador</string>
