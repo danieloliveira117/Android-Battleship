@@ -8,5 +8,5 @@
         android:pathData="M0,0h64v64h-64z" />
     <path
         android:fillColor="@color/hit_foreground"
-        android:pathData="M20,52.2v-6.6h9.7V19.9l-8.5,4.9l-2.3,-6.1L31,12.1h6v33.5h8.4v6.6H20z" />
+        android:pathData="M35.7,18.5v33.6h-7.3V18.5H17.9v-6.3h28.2v6.3H35.7z" />
 </vector>

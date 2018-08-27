@@ -17,10 +17,13 @@
     <color name="ship_three">#ffffba</color>
     <color name="ship_t_shape">#baffc9</color>
 
-    <color name="MISS">#1ca3ec</color>
-    <color name="SELECTED">#ffdfba</color>
-    <color name="INVALID">#b71c1c</color>
-    <color name="VALID">#00c853</color>
-    <color name="MOVED">#333333</color>
-    <color name="ADJACENT">#576b58</color>
+    <color name="miss">#1ca3ec</color>
+    <color name="selected">#ffdfba</color>
+    <color name="invalid">#b71c1c</color>
+    <color name="valid">#00c853</color>
+    <color name="moved">#333333</color>
+    <color name="adjacent">#576b58</color>
+
+    <color name="hit_background">#C4D7ED</color>
+    <color name="hit_foreground">#C74343</color>
 </resources>

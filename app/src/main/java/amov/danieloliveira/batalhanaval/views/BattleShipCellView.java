@@ -93,7 +93,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int size = Math.max(getMeasuredWidth(), getMeasuredHeight());
+        final int size = getMeasuredWidth();
 
         setMeasuredDimension(size, size);
     }
@@ -155,22 +155,22 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
         switch (gameObs.getPositionType(type, position)) {
             case ADJACENT:
-                this.setBackgroundResource(R.color.ADJACENT);
+                this.setBackgroundResource(R.color.adjacent);
                 break;
             case VALID:
-                this.setBackgroundResource(R.color.VALID);
+                this.setBackgroundResource(R.color.valid);
                 break;
             case INVALID:
-                this.setBackgroundResource(R.color.INVALID);
+                this.setBackgroundResource(R.color.invalid);
                 break;
             case UNKNOWN:
                 this.setBackgroundResource(position.getColor());
                 break;
             case SELECTED:
-                this.setBackgroundResource(R.color.SELECTED);
+                this.setBackgroundResource(R.color.selected);
                 break;
             case MISS:
-                this.setBackgroundResource(R.color.MISS);
+                this.setBackgroundResource(R.color.miss);
                 break;
             case HIT_ONE:
                 this.setBackgroundResource(R.drawable.ic_one);
@@ -182,7 +182,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                 this.setBackgroundResource(R.drawable.ic_three);
                 break;
             case HIT_T_SHAPE:
-                this.setBackgroundResource(R.drawable.ic_tshape);
+                this.setBackgroundResource(R.drawable.ic_tshaped);
                 break;
             case SHIP:
                 this.setBackgroundResource(R.drawable.ic_cross);
@@ -214,7 +214,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
                 List<BattleShipCellView> viewList = Utils.findViewsWithPositions(container, positions);
 
                 for (View view : viewList) {
-                    view.setBackgroundResource(R.color.MOVED);
+                    view.setBackgroundResource(R.color.moved);
                 }
 
                 ClipData data = ClipData.newPlainText("", "");

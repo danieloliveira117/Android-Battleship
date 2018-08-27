@@ -63,8 +63,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_three" />
-                            <entry key="sourceFile" value="C:\Users\danie\Desktop\3.svg" />
+                            <entry key="outputName" value="ic_t_shaped" />
+                            <entry key="sourceFile" value="C:\Users\danie\Desktop\Android\board\t_shaped.svg" />
                           </map>
                         </option>
                       </PersistentState>

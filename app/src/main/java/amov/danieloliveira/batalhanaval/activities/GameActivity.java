@@ -19,7 +19,6 @@ import java.util.Observer;
 import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.GameCommunication;
 import amov.danieloliveira.batalhanaval.R;
-import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.BotThread;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
@@ -54,7 +53,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
         onCreateRunned = true;
 
-        // TODO: 20/08/2018 find tbl_adversary_ships
         tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
         tbl_player_ships = findViewById(R.id.tbl_player_ships);
 
@@ -69,7 +67,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
         gameObs = app.getObservable();
         gameObs.addObserver(this);
 
-        // TODO: 22/08/2018 adversary
         if (mode == CLIENT) {
             opponent = PlayerType.PLAYER;
             player = PlayerType.ADVERSARY;
@@ -167,6 +164,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
                 end_game_message.setText(String.format(getResources().getString(R.string.end_game_message), gameObs.getCurrentUser().getUsername()));
                 end_game_message.setVisibility(View.VISIBLE);
+
+                gameObs.deleteObserver(this);
             }
         }
     }
@@ -183,7 +182,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
             other = findViewById(R.id.info_player);
         }
 
-        current.setBackgroundResource(R.color.MISS);
+        current.setBackgroundResource(R.color.miss);
         other.setBackgroundResource(R.color.colorPrimaryDark);
     }
 

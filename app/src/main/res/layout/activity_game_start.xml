@@ -11,7 +11,7 @@
         android:id="@+id/tbl_shipyard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/MISS"
+        android:background="@color/miss"
         android:padding="10dp"
         android:stretchColumns="*"
         app:layout_constraintBottom_toTopOf="@+id/relative_place_ships"

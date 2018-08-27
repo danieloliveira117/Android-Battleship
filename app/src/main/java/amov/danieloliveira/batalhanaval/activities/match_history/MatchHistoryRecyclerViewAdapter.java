@@ -51,7 +51,7 @@ public class MatchHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MatchH
 
         if (matchHistory.didPlayerWin()) {
             holder.tv_game_result.setText(activity.getResources().getString(R.string.victory));
-            holder.tv_game_result.setTextColor(activity.getResources().getColor(R.color.VALID));
+            holder.tv_game_result.setTextColor(activity.getResources().getColor(R.color.valid));
         } else {
             holder.tv_game_result.setText(activity.getResources().getString(R.string.defeat));
             holder.tv_game_result.setTextColor(activity.getResources().getColor(R.color.colorRed));
