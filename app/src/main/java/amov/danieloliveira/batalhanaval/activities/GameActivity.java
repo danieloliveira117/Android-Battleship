@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -43,8 +45,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     private boolean onCreateRunned = false;
 
-    private TableLayout tbl_player_ships;
-    private TableLayout tbl_adversary_ships;
+    private RelativeLayout rel_adversary_ships;
+    private ConstraintLayout rel_reposition_buttons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
         onCreateRunned = true;
 
-        tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
-        tbl_player_ships = findViewById(R.id.tbl_player_ships);
+        rel_adversary_ships = findViewById(R.id.relative_adversary_ships);
+        rel_reposition_buttons = findViewById(R.id.rel_reposition_buttons);
+
+        TableLayout tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
+        TableLayout tbl_player_ships = findViewById(R.id.tbl_player_ships);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -166,6 +171,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 end_game_message.setVisibility(View.VISIBLE);
 
                 gameObs.deleteObserver(this);
+            } else if (gameObs.isShipReposition(player)) {
+                if (rel_adversary_ships.getVisibility() != View.GONE) {
+                    rel_adversary_ships.setVisibility(View.GONE);
+                    rel_reposition_buttons.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -212,5 +222,24 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
 
         tv_player_username.setText(player.getUsername());
+    }
+
+    public void onConfirmPlacement(View view) {
+        gameObs.confirmPlacement(player);
+
+        if (gameObs.validPlacement(player)) {
+            rel_adversary_ships.setVisibility(View.VISIBLE);
+            rel_reposition_buttons.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(this, R.string.ships_not_placed_correctly, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onRotateShip(View view) {
+        gameObs.rotateCurrentShip(player);
+    }
+
+    public void onRestorePosition(View view) {
+        gameObs.restorePosition(player);
     }
 }

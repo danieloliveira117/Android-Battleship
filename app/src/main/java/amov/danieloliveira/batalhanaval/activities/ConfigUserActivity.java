@@ -43,6 +43,7 @@ public class ConfigUserActivity extends AppCompatActivity {
 
             TextInputEditText text_input = findViewById(R.id.edit_username);
             text_input.setText(user.getUsername());
+            text_input.setSelection(text_input.getText().length()); // set the cursor to the end of the EditText
         }
     }
 

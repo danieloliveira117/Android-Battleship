@@ -87,4 +87,18 @@ public class AwaitShipReposition extends GameStateAdapter {
 
         return this;
     }
+
+    @Override
+    public IGameState restorePosition(PlayerType player) {
+        if (gameData.getCurrentPlayer() == player && originalPosition != null && originalOrientation != null) {
+            Ship ship = gameData.getCurrentShip(player);
+
+            if (ship != null) {
+                ship.updatePosition(originalPosition);
+                ship.setOrientation(originalOrientation);
+            }
+        }
+
+        return this;
+    }
 }

@@ -149,20 +149,6 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
 
     }
 
-    public void onConfirmPlacement(View view) {
-        gameObs.confirmPlacement(type);
-
-        if (gameObs.validPlacement(type)) {
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("mode", mode);
-            startActivity(intent);
-
-            finish();
-        } else {
-            Toast.makeText(this, R.string.ships_not_placed_correctly, Toast.LENGTH_LONG).show();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -228,6 +214,20 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
                     }
                 }
             }
+        }
+    }
+
+    public void onConfirmPlacement(View view) {
+        gameObs.confirmPlacement(type);
+
+        if (gameObs.validPlacement(type)) {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("mode", mode);
+            startActivity(intent);
+
+            finish();
+        } else {
+            Toast.makeText(this, R.string.ships_not_placed_correctly, Toast.LENGTH_LONG).show();
         }
     }
 

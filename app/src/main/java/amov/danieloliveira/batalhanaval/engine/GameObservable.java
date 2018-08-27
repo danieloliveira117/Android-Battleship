@@ -62,8 +62,8 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
-    public void moveShip(PlayerType player, Position newposition) {
-        gameData.moveShip(player, newposition);
+    public void moveShip(PlayerType player, Position new_position) {
+        gameData.moveShip(player, new_position);
 
         setChanged();
         notifyObservers();
@@ -124,8 +124,22 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
+    public void setStartingPlayerRemote(PlayerType type) {
+        gameData.setStartingPlayer(type);
+
+        setChanged();
+        notifyObservers();
+    }
+
     public void setShipOnDragEvent(PlayerType type, Position position) {
         gameData.setShipOnDragEvent(type, position);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void restorePosition(PlayerType player) {
+        gameData.restorePosition(player);
 
         setChanged();
         notifyObservers();
@@ -167,10 +181,6 @@ public class GameObservable extends Observable {
 
     public Board getPlayerBoard(PlayerType type) {
         return gameData.getPlayerBoard(type);
-    }
-
-    public void setStartingPlayerRemote(PlayerType type) {
-        gameData.setStartingPlayer(type);
     }
 
     public Ship getCurrentShip(PlayerType type) {

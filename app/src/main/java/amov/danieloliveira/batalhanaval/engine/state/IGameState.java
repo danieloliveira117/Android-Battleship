@@ -32,4 +32,6 @@ public interface IGameState {
     IGameState clickPositionRemote(PlayerType type, Position position);
 
     IGameState setShipOnDragEvent(PlayerType type, Position position);
+
+    IGameState restorePosition(PlayerType player);
 }

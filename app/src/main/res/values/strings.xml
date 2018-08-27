@@ -36,7 +36,7 @@
     <string name="serverip">Server IP</string>
     <string name="confirm">Confirm</string>
     <string name="game_finished">The game was finished</string>
-    <string name="ships_not_placed_correctly">This starting placement is not valid</string>
+    <string name="ships_not_placed_correctly">Your ship placement is not valid</string>
 
     <string name="play_one_player">One Player</string>
     <string name="play_join_server">Join Server</string>
@@ -60,4 +60,5 @@
     <string name="rotate_ship">Rotate Ship</string>
     <string name="waiting_for_opponent_msg">Waiting for opponent to place their ships…</string>
     <string name="player_greeting">Hi %1$s!</string>
+    <string name="restore_position">Restore Position</string>
 </resources>

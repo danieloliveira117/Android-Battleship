@@ -83,6 +83,10 @@ public class GameData {
         currentState = currentState.setShipOnDragEvent(type, position);
     }
 
+    public void restorePosition(PlayerType player) {
+        currentState = currentState.restorePosition(player);
+    }
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);

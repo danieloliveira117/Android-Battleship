@@ -78,4 +78,9 @@ public class GameStateAdapter implements IGameState {
     public IGameState setShipOnDragEvent(PlayerType type, Position position) {
         return this;
     }
+
+    @Override
+    public IGameState restorePosition(PlayerType player) {
+        return this;
+    }
 }
