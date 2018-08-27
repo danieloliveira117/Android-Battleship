@@ -13,7 +13,7 @@
         android:background="@color/MISS"
         android:padding="10dp"
         android:stretchColumns="*"
-        app:layout_constraintBottom_toTopOf="@+id/cv_place_ships"
+        app:layout_constraintBottom_toTopOf="@+id/tbl_place_ships"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -231,25 +231,16 @@
         </TableRow>
     </TableLayout>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv_place_ships"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
+    <amov.danieloliveira.batalhanaval.views.BattleshipBoard
+        android:id="@+id/tbl_place_ships"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/transparent"
-        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/btn_confirm_placement"
+        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbl_shipyard">
-
-        <amov.danieloliveira.batalhanaval.views.BattleshipBoard
-            android:id="@+id/tbl_place_ships"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black" />
-
-    </android.support.v7.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@+id/tbl_shipyard" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_rotate_ship"

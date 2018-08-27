@@ -1,68 +1,101 @@
 package amov.danieloliveira.batalhanaval.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import amov.danieloliveira.batalhanaval.R;
+
 import static amov.danieloliveira.batalhanaval.Consts.MAXROWS;
 import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
 
-public class BattleshipBoard extends LinearLayout {
+public class BattleshipBoard extends TableLayout {
+
     public BattleshipBoard(Context context) {
-        this(context, null, 0);
+        this(context, null);
     }
 
     public BattleshipBoard(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BattleshipBoard(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         init(context);
     }
 
+    @SuppressLint("SetTextI18n")
     private void init(Context context) {
         this.removeAllViews();
 
-        TableLayout table = new TableLayout(context);
-        table.removeAllViews();
-        table.invalidate();
-        table.refreshDrawableState();
+        this.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT));
 
-        this.addView(table);
-
-        table.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        table.setStretchAllColumns(true);
-        table.setOrientation(LinearLayout.VERTICAL);
-
-        for (int i = 1; i <= MAXROWS; i++) {
+        for (int i = 0; i <= MAXROWS; i++) {
             TableRow row = new TableRow(context);
 
-            row.removeAllViews();
-            row.invalidate();
+            this.addView(row);
+
+            row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1f));
             row.refreshDrawableState();
 
-            table.addView(row);
+            if (i == 0) {
+                // Column Label
+                row.addView(new AppCompatTextView(context));
 
-            row.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                for (int j = 1; j <= MAXCOLUMNS; j++) {
+                    AppCompatTextView textView = new AppCompatTextView(context);
 
-            for (int j = 1; j <= MAXCOLUMNS; j++) {
-                //final RelativeLayout placeLayout = new RelativeLayout(context);
+                    textView.setLayoutParams(new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
 
-                BattleshipCellView cell = new BattleshipCellView(context, i, j);
+                    char letter = (char) ('A' + (j - 1));
 
-                //placeLayout.setLayoutParams(new TableRow.LayoutParams(
-                //        TableRow.LayoutParams.MATCH_PARENT / 8,
-                //        TableRow.LayoutParams.WRAP_CONTENT));
+                    textView.setText("" + letter);
+                    textView.setTextColor(getResources().getColor(R.color.light));
+                    textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
-                //placeLayout.addView(cell, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-                row.addView(cell);
+                    row.addView(textView);
+                }
+            } else {
+                row.setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.table_label_padding_bottom));
+                this.setColumnStretchable(i, true);
 
-                cell.prepareListeners();
+                for (int j = 1; j <= MAXCOLUMNS; j++) {
+                    // Row Label
+                    if (j == 1) {
+                        AppCompatTextView textView = new AppCompatTextView(context);
+
+                        textView.setLayoutParams(new ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                        textView.setText("" + i);
+                        textView.setTextColor(getResources().getColor(R.color.light));
+                        textView.setPaddingRelative(0, 0, getResources().getDimensionPixelSize(R.dimen.table_label_padding_end), 0);
+                        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
+
+                        row.addView(textView);
+                    }
+
+                    BattleshipCellView cell = new BattleshipCellView(context, i, j);
+
+                    LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+                    params.setMarginEnd(getResources().getDimensionPixelSize(R.dimen.table_label_padding_end));
+                    cell.setLayoutParams(params);
+                    cell.setAdjustViewBounds(true);
+
+                    row.addView(cell);
+
+                    cell.prepareListeners();
+                }
             }
         }
+
+        this.invalidate();
+        this.requestLayout();
     }
 }

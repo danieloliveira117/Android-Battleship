@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -32,8 +33,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Position;
 
 import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
 
-// TODO change PlayerType.PLAYER to current player in game data????
-public class BattleshipCellView extends AppCompatImageButton implements Observer, View.OnDragListener, View.OnClickListener, View.OnLongClickListener {
+public class BattleshipCellView extends AppCompatImageView implements Observer, View.OnDragListener, View.OnClickListener, View.OnLongClickListener {
     private static final String TAG = "BattleShipCellView";
     private GameObservable gameObs;
     private Position position;
@@ -123,7 +123,7 @@ public class BattleshipCellView extends AppCompatImageButton implements Observer
             this.setOnLongClickListener(this);
         }
 
-        final ViewTreeObserver viewTreeObserver = this.getViewTreeObserver();
+        /*final ViewTreeObserver viewTreeObserver = this.getViewTreeObserver();
 
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -137,17 +137,17 @@ public class BattleshipCellView extends AppCompatImageButton implements Observer
                     setMaxSize(viewWidth / MAXCOLUMNS);
                 }
             });
-        }
+        }*/
     }
 
-    private void setMaxSize(int size) {
+/*    private void setMaxSize(int size) {
         Log.i(TAG, "" + size);
 
         ViewGroup.LayoutParams params = this.getLayoutParams();
         params.height = size;
         params.width = size;
         this.setLayoutParams(params);
-    }
+    }*/
 
     @Override
     public void update(Observable o, Object arg) {
@@ -166,15 +166,15 @@ public class BattleshipCellView extends AppCompatImageButton implements Observer
         updateColor();
     }
 
-    /* Square *
+    /* Square View */
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    public void onMeasure(int widthSpec, int heightSpec) {
+        super.onMeasure(widthSpec, heightSpec);
 
-        final int size = getMeasuredWidth();
+        int size = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
         setMeasuredDimension(size, size);
-    }*/
+    }
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
@@ -198,9 +198,14 @@ public class BattleshipCellView extends AppCompatImageButton implements Observer
                 //Log.d(TAG, "ACTION_DRAG_ENTERED " + view.getTag());
                 break;
             case DragEvent.ACTION_DRAG_ENDED:
-                // TODO: 14/08/2018 Handle BattleShipCellView moves 
                 if (view instanceof ShipPartView && !((GameStartActivity) context).placedViews.contains((Integer) view.getTag())) {
-                    List<View> views = Utils.findViewsWithTag((TableLayout) view.getParent().getParent(), view.getTag());
+                    TableLayout tableLayout = Utils.getTableLayout(view);
+
+                    if (tableLayout == null) {
+                        return false;
+                    }
+
+                    List<View> views = Utils.findViewsWithTag(tableLayout, view.getTag());
 
                     for (View invView : views) {
                         invView.setVisibility(View.VISIBLE);
@@ -282,14 +287,17 @@ public class BattleshipCellView extends AppCompatImageButton implements Observer
     @Override
     public boolean onLongClick(View v) {
         if (gameObs.canDragAndDrop(type, position)) {
-            final TableLayout container = (TableLayout) v.getParent().getParent();
+            final TableLayout tableLayout = Utils.getTableLayout(v);
+
+            if (tableLayout == null)
+                return false;
 
             List<Position> positions = gameObs.getShipPositions(type, position);
 
             if (positions != null) {
                 gameObs.setShipOnDragEvent(type, position);
 
-                List<BattleshipCellView> viewList = Utils.findViewsWithPositions(container, positions);
+                List<BattleshipCellView> viewList = Utils.findViewsWithPositions(tableLayout, positions);
 
                 for (View view : viewList) {
                     view.setBackgroundResource(R.color.MOVED);

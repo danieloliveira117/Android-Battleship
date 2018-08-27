@@ -25,6 +25,7 @@ import java.util.List;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.User;
+import amov.danieloliveira.batalhanaval.views.BattleshipBoard;
 import amov.danieloliveira.batalhanaval.views.BattleshipCellView;
 
 import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
@@ -64,6 +65,18 @@ public class Utils {
         }
 
         return image;
+    }
+
+    public static TableLayout getTableLayout(View view) {
+        while (true) {
+            if (view == null || view instanceof TableLayout) {
+                break;
+            }
+
+            view = (View) view.getParent();
+        }
+
+        return (TableLayout) view;
     }
 
     public static String getLocalIpAddress() {

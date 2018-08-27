@@ -796,7 +796,7 @@
             <amov.danieloliveira.batalhanaval.views.BattleshipCellView
                 android:id="@+id/cellB1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 app:position="B1" />
@@ -1258,7 +1258,7 @@
         <!-- Linha 7 -->
         <TableRow
             android:id="@+id/row7"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingBottom="2dp">
