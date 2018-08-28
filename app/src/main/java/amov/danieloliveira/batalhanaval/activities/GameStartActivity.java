@@ -41,6 +41,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
     private int mode = SINGLEPLAYER;
     private PlayerType type;
     private TableLayout tbl_place_ships;
+    private TableLayout tbl_shipyard;
 
     public SerializableHashSet<Integer> placedViews = new SerializableHashSet<>();
 
@@ -80,6 +81,7 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_game_start);
 
         tbl_place_ships = findViewById(R.id.tbl_place_ships);
+        tbl_shipyard = findViewById(R.id.tbl_shipyard);
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
 
@@ -94,9 +96,11 @@ public class GameStartActivity extends AppCompatActivity implements Observer {
         if (mode == CLIENT) {
             type = PlayerType.ADVERSARY;
             tbl_place_ships.setTag(1);
+            tbl_shipyard.setTag(1);
         } else {
             type = PlayerType.PLAYER;
             tbl_place_ships.setTag(0);
+            tbl_shipyard.setTag(0);
         }
 
         if (savedInstanceState == null || savedInstanceState.getSerializable("placedViews") == null) {

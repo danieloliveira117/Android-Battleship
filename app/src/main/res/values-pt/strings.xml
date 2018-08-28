@@ -39,4 +39,5 @@
     <string name="rotate_ship">Rodar Navio</string>
     <string name="waiting_for_opponent_msg">À espera que o adversário coloque os seus navios...</string>
     <string name="restore_position">Restaurar Posicionamento</string>
+    <string name="waiting_ship_reposition">À espera que o adversário reposicione um navio</string>
 </resources>

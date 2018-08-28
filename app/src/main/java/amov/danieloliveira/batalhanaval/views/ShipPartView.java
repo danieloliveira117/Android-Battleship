@@ -17,11 +17,10 @@ import java.util.Observer;
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
-import amov.danieloliveira.batalhanaval.engine.enums.ShipType;
+import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 
-class ShipPartView extends View implements Observer, View.OnTouchListener {
+class ShipPartView extends View implements View.OnTouchListener {
     private GameObservable obs;
-    private ShipType type;
     private int number;
 
     public ShipPartView(Context context, AttributeSet attrs) {
@@ -35,11 +34,6 @@ class ShipPartView extends View implements Observer, View.OnTouchListener {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        if (!this.isInEditMode()) {
-            obs = Utils.getObservable(context);
-            obs.addObserver(this);
-        }
-
         readShipAttrs(context, attrs);
 
         this.setOnTouchListener(this);
@@ -74,20 +68,16 @@ class ShipPartView extends View implements Observer, View.OnTouchListener {
             switch (a.getInt(R.styleable.ShipPartView_ship_type, 0)) {
                 case 1: {
                     drawable = new BorderDrawable(getResources().getDrawable(R.drawable.ship_one));
-                    this.type = ShipType.ONE;
                 }
                 break;
                 case 2:
                     drawable = new BorderDrawable(getResources().getDrawable(R.drawable.ship_two));
-                    this.type = ShipType.TWO;
                     break;
                 case 3:
                     drawable = new BorderDrawable(getResources().getDrawable(R.drawable.ship_three));
-                    this.type = ShipType.THREE;
                     break;
                 case 4:
                     drawable = new BorderDrawable(getResources().getDrawable(R.drawable.ship_t_shape));
-                    this.type = ShipType.T_SHAPE;
                     break;
             }
 
@@ -142,11 +132,6 @@ class ShipPartView extends View implements Observer, View.OnTouchListener {
             default:
                 return false;
         }
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
     }
 
     /* Square */

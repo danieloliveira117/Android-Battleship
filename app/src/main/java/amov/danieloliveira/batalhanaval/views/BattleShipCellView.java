@@ -17,7 +17,6 @@ import java.util.Observer;
 
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
-import amov.danieloliveira.batalhanaval.activities.GameActivity;
 import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
@@ -120,16 +119,15 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
 
                 // Update ship position
                 if (view instanceof ShipPartView) {
-                    gameObs.placeShip(PlayerType.PLAYER, position, (Integer) view.getTag() - 1);
+                    gameObs.placeShip(type, position, (Integer) view.getTag() - 1);
                     ((GameStartActivity) context).placedViews.add((Integer) view.getTag());
                 } else if (view instanceof BattleShipCellView) {
-                    gameObs.moveShip(PlayerType.PLAYER, position);
+                    gameObs.moveShip(type, position);
                 }
 
                 //Log.d(TAG, "ACTION_DRAG_ENTERED " + view.getTag());
                 break;
             case DragEvent.ACTION_DRAG_ENDED:
-                // TODO: 14/08/2018 Handle BattleShipCellView moves 
                 if (view instanceof ShipPartView && !((GameStartActivity) context).placedViews.contains((Integer) view.getTag())) {
                     List<View> views = Utils.findViewsWithTag((TableLayout) view.getParent().getParent(), view.getTag());
 

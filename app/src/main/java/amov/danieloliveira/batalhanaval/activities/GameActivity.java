@@ -178,11 +178,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 end_game_message.setVisibility(View.VISIBLE);
 
                 gameObs.deleteObserver(this);
-            } else if (gameObs.isShipReposition(player) && rel_adversary_ships.getVisibility() == View.VISIBLE) {
-                if (gameObs.getCurrentPlayer() == player) {
+            } else if (rel_adversary_ships.getVisibility() == View.VISIBLE) {
+                if (gameObs.isShipReposition(player)) {
                     rel_adversary_ships.setVisibility(View.GONE);
                     rel_reposition_buttons.setVisibility(View.VISIBLE);
-                } else {
+                } else if (gameObs.isShipReposition(opponent)) {
                     rel_adversary_ships.setVisibility(View.INVISIBLE);
                     tv_reposition_msg.setVisibility(View.VISIBLE);
                 }
