@@ -28,7 +28,6 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
-import static amov.danieloliveira.batalhanaval.Consts.SERVER;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
 // TODO: 19/08/2018 Check if PlayerType remains the same when mode changes to single player!!!

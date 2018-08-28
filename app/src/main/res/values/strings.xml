@@ -62,4 +62,6 @@
     <string name="player_greeting">Hi %1$s!</string>
     <string name="restore_position">Restore Position</string>
     <string name="waiting_ship_reposition">Waiting for opponent to reposition a ship</string>
+    <string name="change_flash_mode">Change flash Mode</string>
+    <string name="switch_camera">Switch camera</string>
 </resources>

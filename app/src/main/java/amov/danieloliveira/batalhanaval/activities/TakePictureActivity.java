@@ -21,17 +21,17 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -57,6 +57,9 @@ public class TakePictureActivity extends AppCompatActivity {
     private static final String TAG = "TakePictureActivity";
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 200;
+    private static final int FLASH_AUTO = 0;
+    private static final int FLASH_ON = 1;
+    private static final int FLASH_OFF = 2;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -75,6 +78,18 @@ public class TakePictureActivity extends AppCompatActivity {
     private ImageReader imageReader;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+
+    public static final String CAMERA_BACK = "0";
+    public static final String CAMERA_FRONT = "1";
+
+    private String cameraId = CAMERA_BACK;
+
+    private int maxCameras = 1;
+    private int flashMode = FLASH_AUTO;
+    private boolean isFlashSupported = false;
+
+    private MenuItem menuSwitchFlash;
+    private MenuItem menuSwitchCamera;
 
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -96,6 +111,7 @@ public class TakePictureActivity extends AppCompatActivity {
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
     };
+
     private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
@@ -117,6 +133,8 @@ public class TakePictureActivity extends AppCompatActivity {
                 cameraDevice = null;
             }
         }
+
+
     };
 
     @Override
@@ -124,6 +142,26 @@ public class TakePictureActivity extends AppCompatActivity {
         closeCamera();
         finish();
         return true;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.take_picture_menu, menu);
+
+        menuSwitchFlash = menu.findItem(R.id.switch_flash);
+        menuSwitchCamera = menu.findItem(R.id.switch_camera);
+
+        if (!isFlashSupported) {
+            menuSwitchFlash.setVisible(false);
+        }
+
+        if (maxCameras == 1) {
+            menuSwitchCamera.setVisible(false);
+        }
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -152,6 +190,20 @@ public class TakePictureActivity extends AppCompatActivity {
                 takePicture();
             }
         });
+
+        try {
+            CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
+            assert manager != null;
+
+            maxCameras = manager.getCameraIdList().length;
+
+            CameraCharacteristics chars = manager.getCameraCharacteristics(cameraId);
+            Boolean available = chars.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+            isFlashSupported = available == null ? false : available;
+
+        } catch (CameraAccessException ignored) {
+        }
     }
 
     protected void startBackgroundThread() {
@@ -201,6 +253,8 @@ public class TakePictureActivity extends AppCompatActivity {
             final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+
+            setFlash();
 
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
@@ -291,6 +345,13 @@ public class TakePictureActivity extends AppCompatActivity {
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
                     Toast.makeText(TakePictureActivity.this, getResources().getText(R.string.config_changed), Toast.LENGTH_SHORT).show();
                 }
+
+                @Override
+                public void onClosed(@NonNull CameraCaptureSession session) {
+                    if (cameraCaptureSessions != null && cameraCaptureSessions.equals(session)) {
+                        cameraCaptureSessions = null;
+                    }
+                }
             }, null);
 
         } catch (CameraAccessException e) {
@@ -305,7 +366,6 @@ public class TakePictureActivity extends AppCompatActivity {
         try {
             assert manager != null;
 
-            String cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
 
@@ -323,7 +383,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
             Log.d(TAG, "openCamera X");
             manager.openCamera(cameraId, stateCallback, null);
-        } catch (CameraAccessException|SecurityException e) {
+        } catch (CameraAccessException | SecurityException e) {
             e.printStackTrace();
             Toast.makeText(this, R.string.error_opening_camera, Toast.LENGTH_SHORT).show();
             finish();
@@ -336,6 +396,8 @@ public class TakePictureActivity extends AppCompatActivity {
         }
 
         captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+
+        setFlash();
 
         try {
             cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
@@ -384,8 +446,86 @@ public class TakePictureActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause");
-        //closeCamera();
+        closeCamera();
         stopBackgroundThread();
         super.onPause();
+    }
+
+    public void onSwitchCamera(MenuItem item) {
+        if (maxCameras > 1) {
+            if (cameraId.equals(CAMERA_BACK)) {
+                /*if (flashMode != FLASH_OFF) {
+                    flashMode = FLASH_OFF;
+                    setFlash();
+                }
+
+                menuSwitchFlash.setVisible(false);*/
+
+                cameraId = CAMERA_FRONT;
+            } else {
+                cameraId = CAMERA_BACK;
+
+                /*if (isFlashSupported) {
+                    menuSwitchFlash.setVisible(true);
+                }*/
+            }
+
+            closeCamera();
+
+            // Reopen Camera
+            if (textureView.isAvailable()) {
+                openCamera();
+            } else {
+                textureView.setSurfaceTextureListener(textureListener);
+            }
+        }
+    }
+
+    private void setFlash() {
+        if (isFlashSupported) {
+            switch (flashMode) {
+                case FLASH_AUTO:
+                    captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                    captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_OFF);
+                    menuSwitchFlash.setIcon(R.drawable.ic_baseline_flash_auto_24px);
+                    break;
+                case FLASH_ON:
+                    captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
+                    captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_SINGLE);
+                    menuSwitchFlash.setIcon(R.drawable.ic_baseline_flash_on_24px);
+                    break;
+                case FLASH_OFF:
+                    captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON);
+                    captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_OFF);
+                    menuSwitchFlash.setIcon(R.drawable.ic_baseline_flash_off_24px);
+                    break;
+            }
+        }
+    }
+
+    public void onSwitchFlash(MenuItem item) {
+        if (cameraId.equals(CAMERA_BACK)) {
+            switch (flashMode) {
+                case FLASH_AUTO:
+                    flashMode = FLASH_ON;
+                    break;
+                case FLASH_ON:
+                    flashMode = FLASH_OFF;
+                    break;
+                case FLASH_OFF:
+                    flashMode = FLASH_AUTO;
+                    break;
+            }
+
+            setFlash();
+
+            try {
+                if (cameraCaptureSessions != null) {
+                    cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
+                }
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

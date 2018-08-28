@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.TakePictureActivity">
+
+    <item
+        android:id="@+id/switch_flash"
+        android:icon="@drawable/ic_baseline_flash_auto_24px"
+        android:onClick="onSwitchFlash"
+        android:title="@string/change_flash_mode"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/switch_camera"
+        android:icon="@drawable/ic_baseline_switch_camera_24px"
+        android:onClick="onSwitchCamera"
+        android:title="@string/switch_camera"
+        app:showAsAction="ifRoom" />
+</menu>
