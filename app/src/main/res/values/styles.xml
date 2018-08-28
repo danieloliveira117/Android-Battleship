@@ -33,14 +33,12 @@
 
     <!-- thanks to: https://stackoverflow.com/questions/2486936/android-shadow-on-text -->
     <style name="WinText">
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textSize">12sp</item>
         <item name="android:shadowColor">#000000</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowDx">8</item>
+        <item name="android:shadowDy">8</item>
+        <item name="android:shadowRadius">5</item>
     </style>
 
 </resources>

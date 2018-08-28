@@ -1,22 +1,27 @@
 package amov.danieloliveira.batalhanaval.engine;
 
 import android.os.Handler;
+import android.util.Log;
 
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 
 public class BotThread extends Thread {
+    private static final String TAG = "BotThread";
+
     private GameObservable gameObs;
     private Handler handler;
+    private boolean terminateThread;
 
     public BotThread(Handler handler, GameObservable gameObs) {
         this.gameObs = gameObs;
         this.handler = handler;
+        this.terminateThread = false;
     }
 
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()) {
-            if(gameObs.getCurrentPlayer() == PlayerType.ADVERSARY) {
+        while (!terminateThread) {
+            if (gameObs.getCurrentPlayer() == PlayerType.ADVERSARY) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -27,7 +32,14 @@ public class BotThread extends Thread {
 
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
         }
+
+        Log.d(TAG, "Thread has been interrupted.");
+    }
+
+    public void terminateThread() {
+        this.terminateThread = true;
     }
 }

@@ -150,6 +150,8 @@ public class GameCommunication implements Observer {
                     }
                 });
             }
+
+            Log.d(TAG, "Communication thread has been interrupted.");
         }
     });
 
@@ -282,7 +284,7 @@ public class GameCommunication implements Observer {
     @SuppressLint("SetTextI18n")
     private void clientDlg() {
         final EditText edtIP = new EditText(activity);
-        edtIP.setText("192.168.1.101"); // emulator's default ip 10.0.2.2
+        edtIP.setText("192.168.1.116"); // emulator's default ip 10.0.2.2
 
         AlertDialog ad = new AlertDialog.Builder(activity).setTitle(activity.getString(R.string.clientdlg_msg))
                 .setMessage(activity.getString(R.string.serverip)).setView(edtIP)

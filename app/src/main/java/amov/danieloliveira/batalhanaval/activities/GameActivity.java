@@ -43,20 +43,22 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private Handler handler;
     private ProgressDialog pd;
 
-    private boolean onCreateRunned = false;
+    private boolean onCreateHasRun = false;
 
     private RelativeLayout rel_adversary_ships;
     private ConstraintLayout rel_reposition_buttons;
+    private AppCompatTextView tv_reposition_msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        onCreateRunned = true;
+        onCreateHasRun = true;
 
         rel_adversary_ships = findViewById(R.id.relative_adversary_ships);
         rel_reposition_buttons = findViewById(R.id.rel_reposition_buttons);
+        tv_reposition_msg = findViewById(R.id.tv_reposition_msg);
 
         TableLayout tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
         TableLayout tbl_player_ships = findViewById(R.id.tbl_player_ships);
@@ -117,19 +119,17 @@ public class GameActivity extends AppCompatActivity implements Observer {
     protected void onResume() {
         super.onResume();
 
-        if (!onCreateRunned) {
+        if (!onCreateHasRun) {
             if (mode != SINGLEPLAYER) {
                 finish();
             } else {
                 // TODO: 15/08/2018 restore game ??
                 prepareBoard();
-                handler = new Handler();
-                botThread = new BotThread(handler, gameObs);
-                botThread.start();
+                startBot();
             }
         }
 
-        onCreateRunned = false;
+        onCreateHasRun = false;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         }
 
         if (botThread != null) {
-            botThread.interrupt();
+            botThread.terminateThread();
             botThread = null;
         }
     }
@@ -151,14 +151,21 @@ public class GameActivity extends AppCompatActivity implements Observer {
         updatePlayer(gameObs.getPlayerUser(PlayerType.PLAYER));
         updateAdversary(gameObs.getPlayerUser(PlayerType.ADVERSARY));
 
+        rel_adversary_ships.setVisibility(View.VISIBLE);
+        rel_reposition_buttons.setVisibility(View.GONE);
+        tv_reposition_msg.setVisibility(View.GONE);
+
         gameObs.refreshData();
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Board) {
-            if (gameObs.validPlacement(opponent) && pd != null) {
-                pd.dismiss();
+            if (gameObs.validPlacement(opponent)) {
+                if (pd != null) {
+                    pd.dismiss();
+                }
+
                 prepareBoard();
             }
         } else {
@@ -171,10 +178,13 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 end_game_message.setVisibility(View.VISIBLE);
 
                 gameObs.deleteObserver(this);
-            } else if (gameObs.isShipReposition(player)) {
-                if (rel_adversary_ships.getVisibility() != View.GONE) {
+            } else if (gameObs.isShipReposition(player) && rel_adversary_ships.getVisibility() == View.VISIBLE) {
+                if (gameObs.getCurrentPlayer() == player) {
                     rel_adversary_ships.setVisibility(View.GONE);
                     rel_reposition_buttons.setVisibility(View.VISIBLE);
+                } else {
+                    rel_adversary_ships.setVisibility(View.INVISIBLE);
+                    tv_reposition_msg.setVisibility(View.VISIBLE);
                 }
             }
         }

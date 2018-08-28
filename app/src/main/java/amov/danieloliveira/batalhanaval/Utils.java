@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
 
+import android.view.ViewParent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -50,6 +51,24 @@ public class Utils {
         BattleshipApplication app = (BattleshipApplication) ((Activity) context).getApplication();
 
         return app.getUser();
+    }
+
+    public static boolean parentHasID(View view, int id) {
+        while (true) {
+            ViewParent temp = view.getParent();
+
+            if (temp instanceof View) {
+                view = (View) temp;
+
+                if (view.getId() == id) {
+                    return true;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return false;
     }
 
     public static User getUser(Activity activity) {

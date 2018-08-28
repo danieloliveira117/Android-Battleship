@@ -17,6 +17,7 @@ import java.util.Observer;
 
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
+import amov.danieloliveira.batalhanaval.activities.GameActivity;
 import amov.danieloliveira.batalhanaval.activities.GameStartActivity;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
@@ -44,13 +45,10 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private void init(Context context, AttributeSet attrs) {
         this.context = context;
 
-        if (!this.isInEditMode()) {
+        if (!isInEditMode()) {
             gameObs = Utils.getObservable(context);
             gameObs.addObserver(this);
 
-            this.setOnDragListener(this);
-            this.setOnClickListener(this);
-            this.setOnLongClickListener(this);
         }
 
         try {
@@ -86,6 +84,17 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         }
 
         updateColor();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        if (!Utils.parentHasID(this, R.id.tbl_adversary_ships)) {
+            this.setOnDragListener(this);
+            this.setOnClickListener(this);
+            this.setOnLongClickListener(this);
+        }
     }
 
     /* Square */
