@@ -3,10 +3,9 @@ package amov.danieloliveira.batalhanaval.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -28,6 +27,7 @@ import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
+import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
 // TODO clear game data on back / game end / lost connection / on Pause????
@@ -35,12 +35,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "GameActivity";
     private GameObservable gameObs;
     private GameCommunication gameCommunication;
-    private int mode;
+    private BotThread botThread;
 
+    private int mode;
     private PlayerType player;
     private PlayerType opponent;
-    private BotThread botThread;
-    private Handler handler;
     private ProgressDialog pd;
 
     private boolean onCreateHasRun = false;
@@ -64,12 +63,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
         TableLayout tbl_player_ships = findViewById(R.id.tbl_player_ships);
 
         Intent intent = getIntent();
-        if (intent != null) {
-            mode = intent.getIntExtra("mode", SINGLEPLAYER);
-        }
+        mode = intent.getIntExtra("mode", SINGLEPLAYER);
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
         gameCommunication = app.getGameCommunication();
+        gameCommunication.setActivity(this);
 
         gameObs = app.getObservable();
         gameObs.addObserver(this);
@@ -110,8 +108,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     private void startBot() {
-        handler = new Handler();
-        botThread = new BotThread(handler, gameObs);
+        botThread = new BotThread(gameObs);
         botThread.start();
     }
 
@@ -123,7 +120,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
             if (mode != SINGLEPLAYER) {
                 finish();
             } else {
-                // TODO: 15/08/2018 restore game ??
                 prepareBoard();
                 startBot();
             }
@@ -136,14 +132,22 @@ public class GameActivity extends AppCompatActivity implements Observer {
     protected void onPause() {
         super.onPause();
 
-        if (gameCommunication != null) {
-            gameCommunication.endCommunication();
-            gameCommunication = null;
-        }
-
         if (botThread != null) {
             botThread.terminateThread();
             botThread = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Terminar ligação se estiver em multiplayer
+        if (!isChangingConfigurations()
+                && mode != SINGLEPLAYER
+                && gameCommunication != null) {
+            gameCommunication.endCommunication();
+            gameCommunication = null;
         }
     }
 
@@ -168,24 +172,26 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
                 prepareBoard();
             }
-        } else {
-            setCurrentPlayerTurn(gameObs.getCurrentPlayer());
+        }
 
-            if (gameObs.didGameEnd()) {
-                AppCompatTextView end_game_message = findViewById(R.id.end_game_message);
+        setCurrentPlayerTurn(gameObs.getCurrentPlayer());
 
-                end_game_message.setText(String.format(getResources().getString(R.string.end_game_message), gameObs.getCurrentUser().getUsername()));
-                end_game_message.setVisibility(View.VISIBLE);
+        if (gameObs.didGameEnd()) {
+            AppCompatTextView end_game_message = findViewById(R.id.end_game_message);
 
-                gameObs.deleteObserver(this);
-            } else if (rel_adversary_ships.getVisibility() == View.VISIBLE) {
-                if (gameObs.isShipReposition(player)) {
-                    rel_adversary_ships.setVisibility(View.GONE);
-                    rel_reposition_buttons.setVisibility(View.VISIBLE);
-                } else if (gameObs.isShipReposition(opponent)) {
-                    rel_adversary_ships.setVisibility(View.INVISIBLE);
-                    tv_reposition_msg.setVisibility(View.VISIBLE);
-                }
+            end_game_message.setText(String.format(getResources().getString(R.string.end_game_message), gameObs.getCurrentUser().getUsername()));
+            end_game_message.setVisibility(View.VISIBLE);
+
+            gameObs.deleteObserver(this);
+        } else if (rel_adversary_ships.getVisibility() == View.VISIBLE) {
+            if (gameObs.isShipReposition(player)) {
+                Toast.makeText(this, String.format(getString(R.string.player_reposition_msg), MAXSELECT), Toast.LENGTH_LONG).show();
+                rel_adversary_ships.setVisibility(View.GONE);
+                rel_reposition_buttons.setVisibility(View.VISIBLE);
+            } else if (gameObs.isShipReposition(opponent)) {
+                Toast.makeText(this, String.format(getString(R.string.opponent_reposition_msg), MAXSELECT), Toast.LENGTH_LONG).show();
+                rel_adversary_ships.setVisibility(View.INVISIBLE);
+                tv_reposition_msg.setVisibility(View.VISIBLE);
             }
         }
     }

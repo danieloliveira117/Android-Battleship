@@ -30,17 +30,16 @@ import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
 // TODO Check if PlayerType remains the same when mode changes to single player!!!
-// TODO clear game data on back / game end / lost connection / on Pause????
 public class GameStartActivity extends AppCompatActivity {
     private static final String TAG = "GameStartActivity";
-    public static final String KEY_LAST_ORIENTATION = "last_orientation";
     public static final String KEY_PLACED_VIEWS = "placed_views";
 
     private GameObservable gameObs;
     private GameCommunication gameCommunication;
 
-    private int mode = SINGLEPLAYER;
+    private int mode;
     private PlayerType type;
+
     private TableLayout tbl_place_ships;
     private TableLayout tbl_shipyard;
     private MenuItem menu_action_change_mode;
@@ -67,8 +66,10 @@ public class GameStartActivity extends AppCompatActivity {
         super.onStop();
 
         // Terminar ligação se estiver em multiplayer
-        if (!startingGame && !isChangingConfigurations()
-                && mode != SINGLEPLAYER && gameCommunication != null) {
+        if (!startingGame
+                && !isChangingConfigurations()
+                && mode != SINGLEPLAYER
+                && gameCommunication != null) {
             gameCommunication.endCommunication();
             gameCommunication = null;
         }
@@ -150,9 +151,7 @@ public class GameStartActivity extends AppCompatActivity {
         gameObs = app.getObservable();
 
         Intent intent = getIntent();
-        if (intent != null) {
-            mode = intent.getIntExtra("mode", SINGLEPLAYER);
-        }
+        mode = intent.getIntExtra("mode", SINGLEPLAYER);
 
         if (mode == CLIENT) {
             type = PlayerType.ADVERSARY;

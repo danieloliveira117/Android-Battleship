@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Observable;
@@ -30,6 +31,8 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private Position position;
     private Context context;
     private PlayerType type = null;
+
+    private static Toast notCurrentPlayerToast;
 
     public BattleShipCellView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -202,7 +205,17 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     @Override
     public void onClick(View v) {
         if (!gameObs.canDragAndDrop(type, position)) {
-            gameObs.clickNewPosition(type, position);
+            if (gameObs.getCurrentPlayer() == type) {
+                gameObs.clickNewPosition(type, position);
+
+            } else {
+                if (notCurrentPlayerToast != null) {
+                    notCurrentPlayerToast.cancel();
+                }
+
+                notCurrentPlayerToast = Toast.makeText(context, R.string.not_your_turn, Toast.LENGTH_SHORT);
+                notCurrentPlayerToast.show();
+            }
         } else {
             gameObs.selectShip(type, position);
         }

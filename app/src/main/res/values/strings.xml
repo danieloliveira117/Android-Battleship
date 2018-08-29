@@ -66,4 +66,7 @@
     <string name="switch_camera">Switch camera</string>
     <string name="clientdlg_connecting">Trying to connect to the server</string>
     <string name="could_not_connect_to_server">Couldn\'t connect to server</string>
+    <string name="opponent_reposition_msg">Opponent hit all %d chances</string>
+    <string name="not_your_turn">It\'s not your turn to play!</string>
+    <string name="player_reposition_msg">You hit all %d chances, you can reposition a ship</string>
 </resources>

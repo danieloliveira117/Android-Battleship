@@ -1,6 +1,7 @@
 package amov.danieloliveira.batalhanaval;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -24,6 +25,7 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
+import amov.danieloliveira.batalhanaval.activities.GameActivity;
 import amov.danieloliveira.batalhanaval.engine.GameObservable;
 import amov.danieloliveira.batalhanaval.engine.JsonMessage;
 import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
@@ -45,7 +47,7 @@ public class GameCommunication implements Observer {
     private PlayerType playerType;
     private PlayerType opponentType;
     private GameObservable gameObs;
-    private GameStartActivity activity;
+    private Activity activity;
     private Handler procMsg;
     private ProgressDialog pd = null;
     private ServerSocket serverSocket = null;
@@ -54,7 +56,7 @@ public class GameCommunication implements Observer {
     private PrintWriter output;
     private int mode;
 
-    GameCommunication(GameObservable gameObs, GameStartActivity activity, int mode) {
+    GameCommunication(GameObservable gameObs, Activity activity, int mode) {
         this.gameObs = gameObs;
         this.activity = activity;
         this.procMsg = new Handler();
@@ -69,6 +71,10 @@ public class GameCommunication implements Observer {
         }
 
         gameObs.addObserver(this);
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     public void startCommunication() {

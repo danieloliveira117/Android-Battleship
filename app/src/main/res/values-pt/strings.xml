@@ -26,8 +26,8 @@
     <string name="confirm_placement">Confirmar Posição Inicial</string>
     <string name="randomize_placement">Posição inicial aleatória</string>
     <string name="change_mode">Mudar para um jogador</string>
-    <string name="camera_permission_required">É necessário dar a permissão da camera para utilizar esta aplicação</string>
-    <string name="error_opening_camera">Ocorreu um erro ao abrir a camera, por favor tente novamente ou verifique as permissões desta aplicação.</string>
+    <string name="camera_permission_required">É necessário dar a permissão da câmara para utilizar esta aplicação</string>
+    <string name="error_opening_camera">Ocorreu um erro ao abrir a câmara, por favor tente novamente ou verifique as permissões desta aplicação.</string>
     <string name="end_game_message">%1$s\n GANHOU!!!</string>
     <string name="player_greeting">Olá %1$s!</string>
     <string name="vs_ai">vs IA</string>
@@ -37,11 +37,14 @@
     <string name="num_hits_label">Disparos bem sucedidos</string>
     <string name="num_ships_destroyed">Navios Afundados</string>
     <string name="rotate_ship">Rodar Navio</string>
-    <string name="waiting_for_opponent_msg">À espera que o adversário coloque os seus navios...</string>
+    <string name="waiting_for_opponent_msg">À espera que o adversário coloque os seus navios…</string>
     <string name="restore_position">Restaurar Posicionamento</string>
     <string name="waiting_ship_reposition">À espera que o adversário reposicione um navio</string>
     <string name="change_flash_mode">Alterar o modo do Flash</string>
     <string name="switch_camera">Mudar de Camera</string>
     <string name="clientdlg_connecting">A tentar establecer uma ligação ao servidor</string>
     <string name="could_not_connect_to_server">Não foi possível establecer a ligação ao servidor</string>
+    <string name="player_reposition_msg">Atingiste as %d chances, reposiciona um navio</string>
+    <string name="opponent_reposition_msg">O adversário atingiu as %d chances.</string>
+    <string name="not_your_turn">Não é a tua vez a jogar</string>
 </resources>

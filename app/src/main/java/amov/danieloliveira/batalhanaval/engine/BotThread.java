@@ -12,9 +12,9 @@ public class BotThread extends Thread {
     private Handler handler;
     private boolean terminateThread;
 
-    public BotThread(Handler handler, GameObservable gameObs) {
+    public BotThread(GameObservable gameObs) {
         this.gameObs = gameObs;
-        this.handler = handler;
+        this.handler = new Handler();
         this.terminateThread = false;
     }
 
