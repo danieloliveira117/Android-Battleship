@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval.engine.state;
 import amov.danieloliveira.batalhanaval.engine.GameData;
 import amov.danieloliveira.batalhanaval.engine.enums.Orientation;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
+import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 
@@ -65,6 +66,23 @@ public class AwaitShipReposition extends GameStateAdapter {
             if (gameData.allShipsPlaced(player)) {
                 gameData.removeDestroyedShips(player); // TODO: 25/08/2018 removeDestroyedShips
                 gameData.removeOldAttempts(player);
+                gameData.nextPlayer();
+
+                return new AwaitPlayerMove(gameData);
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public IGameState confirmShipPlacementRemote(PlayerType type, Board board) {
+        if (gameData.getCurrentPlayer() == type) {
+            gameData.setPlayerBoard(type, board);
+
+            gameData.setShipsPlaced(type);
+
+            if (gameData.allShipsPlaced(type)) {
                 gameData.nextPlayer();
 
                 return new AwaitPlayerMove(gameData);

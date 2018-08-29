@@ -115,16 +115,23 @@ public class GameCommunication implements Observer {
     private <T> void SendMessage(T obj, MsgType type) {
         Gson gson = new Gson();
 
-        JsonMessage<T> jsonMessage = new JsonMessage<>(obj, type);
-        final String json = gson.toJson(jsonMessage, JsonMessage.class);
+        Log.d(TAG, "Sending " + type);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                output.println(json);
-                output.flush();
-            }
-        }).start();
+        try {
+            JsonMessage<T> jsonMessage = new JsonMessage<>(obj, type);
+
+            final String json = gson.toJson(jsonMessage, JsonMessage.class);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    output.println(json);
+                    output.flush();
+                }
+            }).start();
+        } catch (Exception e) {
+            Log.e(TAG, "SendMessage", e);
+        }
     }
 
     private Thread commThread = new Thread(new Runnable() {
@@ -145,7 +152,7 @@ public class GameCommunication implements Observer {
                     HandleMessage(read);
                 }
             } catch (Exception e) {
-                //Log.e(TAG, "HandleMessage", e);
+                Log.e(TAG, "HandleMessage", e);
                 procMsg.post(new Runnable() {
                     @Override
                     public void run() {

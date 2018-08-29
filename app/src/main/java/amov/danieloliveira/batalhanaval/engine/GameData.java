@@ -47,8 +47,8 @@ public class GameData {
         currentState = currentState.confirmShipPlacement(player);
     }
 
-    public void moveShip(PlayerType player, Position newposition) {
-        currentState = currentState.moveCurrentShip(player, newposition);
+    public void moveShip(PlayerType player, Position new_position) {
+        currentState = currentState.moveCurrentShip(player, new_position);
     }
 
     public void setCurrentShip(PlayerType player, Position position) {
