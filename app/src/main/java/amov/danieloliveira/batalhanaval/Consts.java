@@ -3,6 +3,7 @@ package amov.danieloliveira.batalhanaval;
 public class Consts {
 
     public static final String IMAGE_NAME = "/image.jpg";
+    public static final String BOT_NAME = "BotTron2000";
 
     public static final int SERVER = 0;
     public static final int CLIENT = 1;

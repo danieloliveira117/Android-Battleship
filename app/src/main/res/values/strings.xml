@@ -64,4 +64,6 @@
     <string name="waiting_ship_reposition">Waiting for opponent to reposition a ship</string>
     <string name="change_flash_mode">Change flash Mode</string>
     <string name="switch_camera">Switch camera</string>
+    <string name="clientdlg_connecting">Trying to connect to the server</string>
+    <string name="could_not_connect_to_server">Couldn\'t connect to server</string>
 </resources>

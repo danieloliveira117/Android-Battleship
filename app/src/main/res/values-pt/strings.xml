@@ -40,4 +40,8 @@
     <string name="waiting_for_opponent_msg">À espera que o adversário coloque os seus navios...</string>
     <string name="restore_position">Restaurar Posicionamento</string>
     <string name="waiting_ship_reposition">À espera que o adversário reposicione um navio</string>
+    <string name="change_flash_mode">Alterar o modo do Flash</string>
+    <string name="switch_camera">Mudar de Camera</string>
+    <string name="clientdlg_connecting">A tentar establecer uma ligação ao servidor</string>
+    <string name="could_not_connect_to_server">Não foi possível establecer a ligação ao servidor</string>
 </resources>

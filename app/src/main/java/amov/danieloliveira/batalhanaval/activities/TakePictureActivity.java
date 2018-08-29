@@ -56,6 +56,7 @@ import static amov.danieloliveira.batalhanaval.Consts.IMAGE_NAME;
 public class TakePictureActivity extends AppCompatActivity {
     private static final String TAG = "TakePictureActivity";
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    private static final SparseIntArray ORIENTATIONS_FRONT = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private static final int FLASH_AUTO = 0;
     private static final int FLASH_ON = 1;
@@ -66,6 +67,11 @@ public class TakePictureActivity extends AppCompatActivity {
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
+
+        ORIENTATIONS_FRONT.append(Surface.ROTATION_0, 270);
+        ORIENTATIONS_FRONT.append(Surface.ROTATION_90, 180);
+        ORIENTATIONS_FRONT.append(Surface.ROTATION_180, 90);
+        ORIENTATIONS_FRONT.append(Surface.ROTATION_270, 0);
     }
 
     protected CameraDevice cameraDevice;
@@ -123,7 +129,10 @@ public class TakePictureActivity extends AppCompatActivity {
 
         @Override
         public void onDisconnected(@NonNull CameraDevice camera) {
-            cameraDevice.close();
+            if (cameraDevice != null) {
+                cameraDevice.close();
+                cameraDevice = null;
+            }
         }
 
         @Override
@@ -134,7 +143,12 @@ public class TakePictureActivity extends AppCompatActivity {
             }
         }
 
+        @Override
+        public void onClosed(@NonNull CameraDevice camera) {
+            super.onClosed(camera);
 
+            cameraDevice = null;
+        }
     };
 
     @Override
@@ -224,7 +238,7 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     protected void takePicture() {
-        if (null == cameraDevice) {
+        if (cameraDevice == null) {
             Log.e(TAG, "cameraDevice is null");
             return;
         }
@@ -258,7 +272,12 @@ public class TakePictureActivity extends AppCompatActivity {
 
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+
+            if (cameraId.equals(CAMERA_BACK)) {
+                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+            } else {
+                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS_FRONT.get(rotation));
+            }
 
             ContextWrapper c = new ContextWrapper(this);
             file = new File(c.getFilesDir().getPath() + "/" + IMAGE_NAME);

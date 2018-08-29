@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
 
             if (savedInstanceState == null) {
-                Toast.makeText(this, String.format(getResources().getString(R.string.player_greeting), user.getUsername()), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, String.format(getResources().getString(R.string.player_greeting), user.getUsername()), Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -135,7 +135,8 @@ public class GameCommunication implements Observer {
                 SendMessage(userBase64, MsgType.USER64);
 
                 while (!Thread.currentThread().isInterrupted()) {
-                    HandleMessage(input.readLine());
+                    String read = input.readLine();
+                    HandleMessage(read);
                 }
             } catch (Exception e) {
                 //Log.e(TAG, "HandleMessage", e);
@@ -156,8 +157,6 @@ public class GameCommunication implements Observer {
     });
 
     private void HandleMessage(String input) {
-        if (input == null) return;
-
         final JsonParser parser = new JsonParser();
         final JsonElement mJson = parser.parse(input);
 
@@ -304,27 +303,51 @@ public class GameCommunication implements Observer {
     }
 
     private void client(final String strIP, final int Port) {
-        Thread t = new Thread(new Runnable() {
+        final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Log.d(TAG, "Connecting to the server  " + strIP);
+                    procMsg.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.show();
+                        }
+                    });
+
                     socketGame = new Socket(strIP, Port);
                 } catch (Exception e) {
                     socketGame = null;
                 }
+
+                pd.dismiss();
 
                 if (socketGame == null) {
                     procMsg.post(new Runnable() {
                         @Override
                         public void run() {
                             activity.finish();
+                            Toast.makeText(activity.getApplicationContext(), R.string.could_not_connect_to_server, Toast.LENGTH_SHORT).show();
                         }
                     });
+
                     return;
                 }
 
                 commThread.start();
+            }
+        });
+
+        pd = new ProgressDialog(activity);
+        pd.setMessage(activity.getString(R.string.clientdlg_connecting) + "\n(IP: " + strIP + ":" + Port + ")");
+        pd.setTitle(R.string.clientdlg_msg);
+
+        pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                activity.finish();
+                t.interrupt();
+                socketGame = null;
             }
         });
 
