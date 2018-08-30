@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -26,6 +29,7 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
+import static amov.danieloliveira.batalhanaval.Consts.BOT_NAME;
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
@@ -48,6 +52,17 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private ConstraintLayout rel_reposition_buttons;
     private AppCompatTextView tv_reposition_msg;
 
+    private TableLayout tbl_adversary_ships;
+    private TableLayout tbl_player_ships;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,15 +74,17 @@ public class GameActivity extends AppCompatActivity implements Observer {
         rel_reposition_buttons = findViewById(R.id.rel_reposition_buttons);
         tv_reposition_msg = findViewById(R.id.tv_reposition_msg);
 
-        TableLayout tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
-        TableLayout tbl_player_ships = findViewById(R.id.tbl_player_ships);
+        tbl_adversary_ships = findViewById(R.id.tbl_adversary_ships);
+        tbl_player_ships = findViewById(R.id.tbl_player_ships);
 
         Intent intent = getIntent();
         mode = intent.getIntExtra("mode", SINGLEPLAYER);
 
         BattleshipApplication app = (BattleshipApplication) this.getApplication();
         gameCommunication = app.getGameCommunication();
-        gameCommunication.setActivity(this);
+        if (gameCommunication != null) {
+            gameCommunication.setActivity(this);
+        }
 
         gameObs = app.getObservable();
         gameObs.addObserver(this);
@@ -108,7 +125,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     private void startBot() {
-        botThread = new BotThread(gameObs);
+        botThread = new BotThread(gameObs, opponent);
         botThread.start();
     }
 
@@ -172,6 +189,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
                 prepareBoard();
             }
+        } else if (arg == BOT_NAME) {
+            mode = SINGLEPLAYER;
+            gameObs.setUser(opponent, new User(BOT_NAME, null));
+            prepareBoard();
+            startBot();
         }
 
         setCurrentPlayerTurn(gameObs.getCurrentPlayer());
@@ -257,5 +279,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     public void onRestorePosition(View view) {
         gameObs.restorePosition(player);
+    }
+
+    public void onChangeToSinglePlayer(MenuItem item) {
+        if (!gameObs.didGameEnd()) {
+            gameCommunication.endCommunication();
+        }
     }
 }

@@ -87,6 +87,14 @@ public class GameData {
         currentState = currentState.restorePosition(player);
     }
 
+    public void setUser(PlayerType opponent, User user) {
+        currentState = currentState.setUser(opponent, user);
+    }
+
+    public void changeToSinglePlayerMode(PlayerType player) {
+        currentState = currentState.changeToSinglePlayerMode(player);
+    }
+
     /* Update Game Model */
     public void prepareGame(GameMode mode) {
         gameModel.setMode(mode);
@@ -223,8 +231,8 @@ public class GameData {
         return gameModel.didGameEnd(currentPlayer);
     }
 
-    public void playRandomly() {
-        clickNewPosition(PlayerType.ADVERSARY, gameModel.getRandomPlayPosition(currentPlayer));
+    public void playRandomly(PlayerType type) {
+        clickNewPosition(type, gameModel.getRandomPlayPosition(currentPlayer));
     }
 
     public User getCurrentUser() {
@@ -278,11 +286,15 @@ public class GameData {
         return currentPlayer == type && currentState instanceof AwaitShipReposition;
     }
 
-    public void removeDestroyedShips(PlayerType player) {
-        // TODO: 25/08/2018 removeDestroyedShips
+    public void hideDestroyedShips(PlayerType player) {
+        gameModel.hideDestroyedShips(player);
     }
 
     public boolean canRepositionShip(PlayerType player) {
         return gameModel.canRepositionShip(player);
+    }
+
+    public void setGameMode(GameMode mode) {
+        gameModel.setMode(mode);
     }
 }

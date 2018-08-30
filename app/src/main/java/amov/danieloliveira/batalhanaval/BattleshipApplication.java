@@ -68,4 +68,9 @@ public class BattleshipApplication extends Application {
         this.matchHistory.add(new MatchHistory(gameModel, user));
         Preferences.saveMatchHistoryListPreferences(this);
     }
+
+    public void clearMatchHistory() {
+        matchHistory = new ArrayList<>();
+        Preferences.clearMatchHistoryListPreferences(this);
+    }
 }

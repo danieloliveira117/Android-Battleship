@@ -108,4 +108,8 @@ public class Player {
     public boolean canRepositionShip() {
         return board.canRepositionShip();
     }
+
+    public void hideDestroyedShips() {
+        board.hideDestroyedShips();
+    }
 }

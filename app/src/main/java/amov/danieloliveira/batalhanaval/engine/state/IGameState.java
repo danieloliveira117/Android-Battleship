@@ -34,4 +34,8 @@ public interface IGameState {
     IGameState setShipOnDragEvent(PlayerType type, Position position);
 
     IGameState restorePosition(PlayerType player);
+
+    IGameState setUser(PlayerType opponent, User user);
+
+    IGameState changeToSinglePlayerMode(PlayerType player);
 }

@@ -32,8 +32,9 @@ public class MatchHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MatchH
         this.activity = activity;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_matchhistory, parent, false);
         return new ViewHolder(view);
@@ -57,8 +58,8 @@ public class MatchHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MatchH
             holder.tv_game_result.setTextColor(activity.getResources().getColor(R.color.colorRed));
         }
 
-        holder.tv_player_name.setText(matchHistory.getPlayer());
-        holder.tv_adversary_name.setText(matchHistory.getOpponent());
+        holder.tv_player_name.setText(matchHistory.getPlayerName());
+        holder.tv_adversary_name.setText(matchHistory.getOpponentName());
 
         holder.tv_num_hits_player.setText("" + matchHistory.getNumHitsPlayer());
         holder.tv_num_hits_adversary.setText("" + matchHistory.getNumHitsOpponent());

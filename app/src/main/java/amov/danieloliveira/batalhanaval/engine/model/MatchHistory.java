@@ -12,35 +12,42 @@ public class MatchHistory {
     private int numHitsOpponent;
     private int shipsDestroyedPlayer;
     private int shipsDestroyedOpponent;
+    private int numPlays;
     private boolean playerWon;
 
     public MatchHistory(GameModel model, User user) {
-        PlayerType player = model.getUser(PlayerType.PLAYER).equals(user) ? PlayerType.PLAYER : PlayerType.ADVERSARY;
-        PlayerType opponent = player == PlayerType.PLAYER ? PlayerType.ADVERSARY : PlayerType.PLAYER;
+        PlayerType playerType = model.getUser(PlayerType.PLAYER).equals(user) ? PlayerType.PLAYER : PlayerType.ADVERSARY;
+        PlayerType opponentType = playerType == PlayerType.PLAYER ? PlayerType.ADVERSARY : PlayerType.PLAYER;
 
         this.gameMode = model.getGameMode();
 
-        this.player = model.getUser(PlayerType.PLAYER).getUsername();
-        this.opponent = model.getUser(PlayerType.ADVERSARY).getUsername();
+        this.numPlays = model.getNumPlays();
 
-        this.numHitsPlayer = model.getNumberOfHits(player);
-        this.shipsDestroyedPlayer = model.getShipsDestroyed(opponent);
+        this.player = model.getUser(playerType).getUsername();
+        this.opponent = model.getUser(opponentType).getUsername();
 
-        this.numHitsOpponent = model.getNumberOfHits(opponent);
-        this.shipsDestroyedOpponent = model.getShipsDestroyed(player);
+        this.numHitsPlayer = model.getNumberOfHits(playerType);
+        this.shipsDestroyedPlayer = model.getShipsDestroyed(opponentType);
 
-        this.playerWon = model.didGameEnd(player);
+        this.numHitsOpponent = model.getNumberOfHits(opponentType);
+        this.shipsDestroyedOpponent = model.getShipsDestroyed(playerType);
+
+        this.playerWon = model.didGameEnd(playerType);
+    }
+
+    public int getNumPlays() {
+        return numPlays;
     }
 
     public GameMode getGameMode() {
         return gameMode;
     }
 
-    public String getPlayer() {
+    public String getPlayerName() {
         return player;
     }
 
-    public String getOpponent() {
+    public String getOpponentName() {
         return opponent;
     }
 

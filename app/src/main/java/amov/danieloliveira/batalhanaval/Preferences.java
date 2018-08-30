@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -52,9 +53,10 @@ public class Preferences {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(app);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 
-        final Type type = new TypeToken<List<MatchHistory>>() {}.getType();
+        final Type type = new TypeToken<List<MatchHistory>>() {
+        }.getType();
 
         String json = gson.toJson(app.getMatchHistory(), type);
         editor.putString("MatchHistory", json);
@@ -64,15 +66,25 @@ public class Preferences {
     public static void loadMatchHistoryListPreferences(Activity activity) {
         BattleshipApplication app = (BattleshipApplication) activity.getApplication();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(app);
-        Gson gson = new Gson();
 
-        final Type type = new TypeToken<List<MatchHistory>>() {}.getType();
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 
-        String json = sharedPref.getString("MatchHistory", "");
+        final Type type = new TypeToken<List<MatchHistory>>() {
+        }.getType();
+
+        String json = sharedPref.getString("MatchHistory", null);
         List<MatchHistory> list = gson.fromJson(json, type);
 
-        if(list != null) {
+        if (list != null) {
             app.setMatchHistoryList(list);
         }
+    }
+
+    public static void clearMatchHistoryListPreferences(BattleshipApplication app) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(app);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.remove("MatchHistory");
+        editor.apply();
     }
 }

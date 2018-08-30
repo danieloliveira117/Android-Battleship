@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -113,7 +114,7 @@ public class GameCommunication implements Observer {
     }
 
     private <T> void SendMessage(T obj, MsgType type) {
-        Gson gson = new Gson();
+        final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 
         Log.d(TAG, "Sending " + type);
 
@@ -152,17 +153,28 @@ public class GameCommunication implements Observer {
                     HandleMessage(read);
                 }
             } catch (Exception e) {
-                Log.e(TAG, "HandleMessage", e);
-                procMsg.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.finish();
+                //Log.e(TAG, "HandleMessage", e);
 
-                        Toast.makeText(activity.getApplicationContext(),
-                                R.string.game_finished, Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
+                if (!gameObs.didGameEnd()) {
+                    procMsg.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (activity instanceof GameActivity) {
+                                gameObs.changeToSinglePlayerMode(playerType);
+
+                                Toast.makeText(activity.getApplicationContext(),
+                                        R.string.game_mode_changed, Toast.LENGTH_LONG)
+                                        .show();
+                            } else {
+                                activity.finish();
+
+                                Toast.makeText(activity.getApplicationContext(),
+                                        R.string.game_finished, Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        }
+                    });
+                }
             }
 
             Log.d(TAG, "Communication thread has been interrupted.");
@@ -173,7 +185,7 @@ public class GameCommunication implements Observer {
         final JsonParser parser = new JsonParser();
         final JsonElement mJson = parser.parse(input);
 
-        final Gson gson = new Gson();
+        final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
         final JsonMessage tempMessage = gson.fromJson(mJson, JsonMessage.class);
 
         procMsg.post(new Runnable() {

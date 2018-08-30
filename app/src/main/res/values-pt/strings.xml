@@ -47,4 +47,7 @@
     <string name="player_reposition_msg">Atingiste as %d chances, reposiciona um navio</string>
     <string name="opponent_reposition_msg">O adversário atingiu as %d chances.</string>
     <string name="not_your_turn">Não é a tua vez a jogar</string>
+    <string name="clear_match_history">Limpar o Histórico de Jogos</string>
+    <string name="empty_match_history">Ainda não fizeste nenhum jogo, o histórico de jogos está vazio!</string>
+    <string name="game_mode_changed">O jogo foi alterado para o modo de Um jogador</string>
 </resources>

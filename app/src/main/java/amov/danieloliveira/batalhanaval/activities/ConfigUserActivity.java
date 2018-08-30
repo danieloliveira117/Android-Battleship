@@ -53,6 +53,7 @@ public class ConfigUserActivity extends AppCompatActivity {
 
         if(username.length() < 3) {
             Toast.makeText(this, getResources().getString(R.string.username_min_length), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         Bitmap image = Utils.getUserImage(this);

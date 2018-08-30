@@ -5,8 +5,4 @@
     <item android:id="@+id/action_randomize_placement"
         android:title="@string/randomize_placement"
         app:showAsAction="never"/>
-
-    <item android:id="@+id/action_change_mode"
-        android:title="@string/change_mode"
-        app:showAsAction="never"/>
 </menu>

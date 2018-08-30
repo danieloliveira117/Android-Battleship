@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.match_history.MatchHistoryActivity">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/fab_margin"
+        android:text="@string/empty_match_history"
+        android:textAlignment="center"
+        android:textColor="@color/light"
+        android:textSize="22sp" />
 
     <fragment
         android:name="amov.danieloliveira.batalhanaval.activities.match_history.MatchHistoryFragment"
@@ -12,4 +20,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

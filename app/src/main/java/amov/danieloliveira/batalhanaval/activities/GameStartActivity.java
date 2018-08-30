@@ -40,10 +40,6 @@ public class GameStartActivity extends AppCompatActivity {
     private int mode;
     private PlayerType type;
 
-    private TableLayout tbl_place_ships;
-    private TableLayout tbl_shipyard;
-    private MenuItem menu_action_change_mode;
-
     public SerializableHashSet<Integer> placedViews = new SerializableHashSet<>();
     private boolean isFirstStart;
     private boolean startingGame;
@@ -143,8 +139,8 @@ public class GameStartActivity extends AppCompatActivity {
             isFirstStart = true;
         }
 
-        tbl_place_ships = findViewById(R.id.tbl_place_ships);
-        tbl_shipyard = findViewById(R.id.tbl_shipyard);
+        TableLayout tbl_place_ships = findViewById(R.id.tbl_place_ships);
+        TableLayout tbl_shipyard = findViewById(R.id.tbl_shipyard);
 
         BattleshipApplication app = (BattleshipApplication) getApplication();
 
@@ -169,25 +165,12 @@ public class GameStartActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_start_menu, menu);
 
-        menu_action_change_mode = menu.findItem(R.id.action_change_mode);
-
-        if (mode == SINGLEPLAYER) {
-            menu_action_change_mode.setVisible(false);
-        } else {
-            menu_action_change_mode.setVisible(true);
-        }
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_change_mode: {
-                // TODO: 15/08/2018 Change mode to single player
-                menu_action_change_mode.setVisible(false);
-            }
-            break;
             case R.id.action_randomize_placement: {
                 hideAllShipsInShipyard();
                 gameObs.randomizePlacement(type);

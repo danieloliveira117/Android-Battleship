@@ -1,11 +1,13 @@
 package amov.danieloliveira.batalhanaval.engine.state;
 
 import amov.danieloliveira.batalhanaval.engine.GameData;
+import amov.danieloliveira.batalhanaval.engine.enums.GameMode;
 import amov.danieloliveira.batalhanaval.engine.enums.Orientation;
 import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
+import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class AwaitShipReposition extends GameStateAdapter {
     private Position originalPosition = null;
@@ -64,7 +66,7 @@ public class AwaitShipReposition extends GameStateAdapter {
             gameData.setShipsPlaced(player);
 
             if (gameData.allShipsPlaced(player)) {
-                gameData.removeDestroyedShips(player); // TODO: 25/08/2018 removeDestroyedShips
+                gameData.hideDestroyedShips(player);
                 gameData.removeOldAttempts(player);
                 gameData.nextPlayer();
 
@@ -117,6 +119,18 @@ public class AwaitShipReposition extends GameStateAdapter {
             }
         }
 
+        return this;
+    }
+
+    @Override
+    public IGameState setUser(PlayerType opponent, User user) {
+        gameData.updatePlayerData(opponent, user);
+        return this;
+    }
+
+    @Override
+    public IGameState changeToSinglePlayerMode(PlayerType player) {
+        gameData.setGameMode(GameMode.vsAI);
         return this;
     }
 }

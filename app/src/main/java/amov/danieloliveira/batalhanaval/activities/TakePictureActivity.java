@@ -300,6 +300,10 @@ public class TakePictureActivity extends AppCompatActivity {
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
 
+                    if (cameraDevice == null) {
+                        return;
+                    }
+
                     createCameraPreview();
                 }
             };
@@ -345,16 +349,25 @@ public class TakePictureActivity extends AppCompatActivity {
 
             Surface surface = new Surface(texture);
 
+            if (cameraDevice == null) {
+                return;
+            }
+
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(surface);
+
+            if (cameraDevice == null) {
+                return;
+            }
 
             cameraDevice.createCaptureSession(Collections.singletonList(surface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                     //The camera is already closed
-                    if (null == cameraDevice) {
+                    if (cameraDevice == null) {
                         return;
                     }
+
                     // When the session is ready, we start displaying the preview.
                     cameraCaptureSessions = cameraCaptureSession;
                     updatePreview();
@@ -420,13 +433,19 @@ public class TakePictureActivity extends AppCompatActivity {
 
         try {
             cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
-        } catch (CameraAccessException e) {
+        } catch (CameraAccessException | IllegalStateException e) {
             e.printStackTrace();
         }
     }
 
     private void closeCamera() {
         if (cameraDevice != null) {
+            try {
+                cameraCaptureSessions.stopRepeating();
+                cameraCaptureSessions.abortCaptures();
+            } catch (CameraAccessException ignored) {
+            }
+
             cameraDevice.close();
             cameraDevice = null;
         }
@@ -465,6 +484,7 @@ public class TakePictureActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause");
+
         closeCamera();
         stopBackgroundThread();
         super.onPause();

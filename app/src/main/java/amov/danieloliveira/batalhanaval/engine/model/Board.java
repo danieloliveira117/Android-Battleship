@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -344,6 +345,12 @@ public class Board {
             }
         }
 
+        for (Ship ship : oldShips) {
+            if (ship.isDestroyed()) {
+                count++;
+            }
+        }
+
         return count;
     }
 
@@ -407,5 +414,18 @@ public class Board {
         }
 
         return false;
+    }
+
+    public void hideDestroyedShips() {
+        ListIterator<Ship> it = shipList.listIterator();
+
+        while (it.hasNext()) {
+            Ship ship = it.next();
+
+            if (ship.isDestroyed()) {
+                oldShips.add(ship);
+                it.remove();
+            }
+        }
     }
 }

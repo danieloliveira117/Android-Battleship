@@ -69,4 +69,7 @@
     <string name="opponent_reposition_msg">Opponent hit all %d chances</string>
     <string name="not_your_turn">It\'s not your turn to play!</string>
     <string name="player_reposition_msg">You hit all %d chances, you can reposition a ship</string>
+    <string name="clear_match_history">Clear Match History</string>
+    <string name="empty_match_history">Your match history is empty, you need to play a game first!</string>
+    <string name="game_mode_changed">Changed game mode to Single-Player</string>
 </resources>

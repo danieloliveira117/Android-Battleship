@@ -13,6 +13,8 @@ import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
+import static amov.danieloliveira.batalhanaval.Consts.BOT_NAME;
+import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 import static amov.danieloliveira.batalhanaval.engine.enums.MsgType.CONFIRM_PLACEMENT;
 
 public class GameObservable extends Observable {
@@ -45,7 +47,7 @@ public class GameObservable extends Observable {
         gameData.setAdversary(user);
 
         setChanged();
-        notifyObservers(user);
+        notifyObservers();
     }
 
     public void clickNewPosition(PlayerType player, Position position) {
@@ -91,8 +93,8 @@ public class GameObservable extends Observable {
     }
 
 
-    public void playRandomly() {
-        gameData.playRandomly();
+    public void playRandomly(PlayerType type) {
+        gameData.playRandomly(type);
 
         setChanged();
         notifyObservers();
@@ -145,6 +147,13 @@ public class GameObservable extends Observable {
         notifyObservers();
     }
 
+    public void changeToSinglePlayerMode(PlayerType player) {
+        gameData.changeToSinglePlayerMode(player);
+
+        setChanged();
+        notifyObservers(BOT_NAME);
+    }
+
     /* --- GETS --- */
 
     public PositionType getPositionType(PlayerType player, Position position) {
@@ -189,5 +198,12 @@ public class GameObservable extends Observable {
 
     public boolean isShipReposition(PlayerType type) {
         return gameData.isShipReposition(type);
+    }
+
+    public void setUser(PlayerType opponent, User user) {
+        gameData.setUser(opponent, user);
+
+        setChanged();
+        notifyObservers();
     }
 }

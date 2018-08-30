@@ -16,7 +16,4 @@ public class Consts {
     public static final int MAXROWS = 8;
     public static final int MAXCOLUMNS = 8;
     public static final int MAXSELECT = 3;
-
-    public static final int VICTORY = 0;
-    public static final int DEFEAT = 1;
 }

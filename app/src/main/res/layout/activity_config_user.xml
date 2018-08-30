@@ -33,7 +33,7 @@
                 app:civ_shadow_color="@color/colorAccent"
                 app:civ_shadow_radius="10" />
 
-            <android.support.v7.widget.AppCompatButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="bottom|end"

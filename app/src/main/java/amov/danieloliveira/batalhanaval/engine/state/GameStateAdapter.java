@@ -83,4 +83,14 @@ public class GameStateAdapter implements IGameState {
     public IGameState restorePosition(PlayerType player) {
         return this;
     }
+
+    @Override
+    public IGameState setUser(PlayerType opponent, User user) {
+        return this;
+    }
+
+    @Override
+    public IGameState changeToSinglePlayerMode(PlayerType player) {
+        return this;
+    }
 }

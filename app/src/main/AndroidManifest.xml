@@ -31,8 +31,8 @@
         <activity
             android:name=".activities.TakePictureActivity"
             android:label="@string/take_picture"
-            android:parentActivityName=".activities.ConfigUserActivity"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".activities.ConfigUserActivity">
+            <!--android:screenOrientation="portrait">-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ConfigUserActivity" />
@@ -47,7 +47,6 @@
         </activity>
         <activity
             android:name=".activities.GameActivity">
-            <!--android:configChanges="keyboardHidden|keyboard|orientation|screenSize">-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />

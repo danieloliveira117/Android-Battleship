@@ -55,7 +55,7 @@ public class GameModel {
             return player1;
     }
 
-    Player getPlayer(PlayerType type) {
+    public Player getPlayer(PlayerType type) {
         if (type == PlayerType.PLAYER)
             return player1;
         else
@@ -160,5 +160,9 @@ public class GameModel {
 
     public PositionType getPositionValidityOnReposition(PlayerType player, Position position, Ship currentShip) {
         return getPlayer(player).getPositionValidityOnReposition(position, currentShip);
+    }
+
+    public void hideDestroyedShips(PlayerType player) {
+        getPlayer(player).hideDestroyedShips();
     }
 }
