@@ -440,12 +440,6 @@ public class TakePictureActivity extends AppCompatActivity {
 
     private void closeCamera() {
         if (cameraDevice != null) {
-            try {
-                cameraCaptureSessions.stopRepeating();
-                cameraCaptureSessions.abortCaptures();
-            } catch (CameraAccessException ignored) {
-            }
-
             cameraDevice.close();
             cameraDevice = null;
         }

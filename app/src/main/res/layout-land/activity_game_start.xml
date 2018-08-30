@@ -10,10 +10,10 @@
         android:id="@+id/relative_shipyard"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/fab_margin"
         android:background="@drawable/transparent"
-        android:layout_marginBottom="@dimen/fab_margin"
-        app:layout_constraintDimensionRatio="W,6:4"
         app:layout_constraintBottom_toTopOf="@id/btn_rotate_ship"
+        app:layout_constraintDimensionRatio="W,6:4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/relative_place_ships"
         app:layout_constraintTop_toTopOf="@id/relative_place_ships">
@@ -258,7 +258,6 @@
         android:background="@drawable/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="W,1:1"
-        app:layout_constraintLeft_toRightOf="@id/btn_confirm_placement"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
