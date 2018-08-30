@@ -34,7 +34,6 @@ import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
-// TODO clear game data on back / game end / lost connection / on Pause????
 public class GameActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "GameActivity";
     private GameObservable gameObs;

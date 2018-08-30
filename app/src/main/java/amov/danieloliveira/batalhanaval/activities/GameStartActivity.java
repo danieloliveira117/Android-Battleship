@@ -29,7 +29,6 @@ import static amov.danieloliveira.batalhanaval.Consts.BOT_NAME;
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
 
-// TODO Check if PlayerType remains the same when mode changes to single player!!!
 public class GameStartActivity extends AppCompatActivity {
     private static final String TAG = "GameStartActivity";
     public static final String KEY_PLACED_VIEWS = "placed_views";

@@ -22,10 +22,7 @@ import amov.danieloliveira.batalhanaval.R;
  * interface.
  */
 public class MatchHistoryFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     //private OnListFragmentInteractionListener mListener;
 
@@ -36,7 +33,6 @@ public class MatchHistoryFragment extends Fragment {
     public MatchHistoryFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static MatchHistoryFragment newInstance(int columnCount) {
         MatchHistoryFragment fragment = new MatchHistoryFragment();
@@ -73,7 +69,7 @@ public class MatchHistoryFragment extends Fragment {
 
             Activity activity = getActivity();
 
-            if(activity != null) {
+            if (activity != null) {
                 BattleshipApplication app = (BattleshipApplication) activity.getApplication();
                 recyclerView.setAdapter(new MatchHistoryRecyclerViewAdapter(app.getMatchHistory(), activity));
             }
@@ -109,8 +105,8 @@ public class MatchHistoryFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      *
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(MatchHistory item);
-    }*/
+     public interface OnListFragmentInteractionListener {
+
+     void onListFragmentInteraction(MatchHistory item);
+     }*/
 }
