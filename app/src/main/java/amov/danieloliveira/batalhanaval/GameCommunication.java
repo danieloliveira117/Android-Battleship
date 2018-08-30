@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -150,16 +151,17 @@ public class GameCommunication implements Observer {
 
                 while (!Thread.currentThread().isInterrupted()) {
                     String read = input.readLine();
+
                     HandleMessage(read);
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //Log.e(TAG, "HandleMessage", e);
 
                 if (!gameObs.didGameEnd()) {
                     procMsg.post(new Runnable() {
                         @Override
                         public void run() {
-                            if (activity instanceof GameActivity) {
+                            if (!(e instanceof SocketException) && activity instanceof GameActivity) {
                                 gameObs.changeToSinglePlayerMode(playerType);
 
                                 Toast.makeText(activity.getApplicationContext(),
