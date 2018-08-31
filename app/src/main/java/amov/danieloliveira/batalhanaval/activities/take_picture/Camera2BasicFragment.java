@@ -307,7 +307,7 @@ public class Camera2BasicFragment extends Fragment
                     if (afState == null) {
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
-                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
+                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState || CaptureResult.CONTROL_AF_STATE_INACTIVE == afState) {
                         // CONTROL_AE_STATE can be null on some devices
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                         if (aeState == null ||
@@ -863,11 +863,10 @@ public class Camera2BasicFragment extends Fragment
 
             CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
 
-            CameraCharacteristics cameraCharacteristics = manager.getCameraCharacteristics(mCameraDevice.getId());
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(mCameraDevice.getId());
 
             // Orientation
-            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getJpegOrientation(cameraCharacteristics, rotation));
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getCameraDisplayOrientation(activity, currentCamera, characteristics));
 
             CameraCaptureSession.CaptureCallback CaptureCallback
                     = new CameraCaptureSession.CaptureCallback() {
@@ -894,23 +893,11 @@ public class Camera2BasicFragment extends Fragment
         }
     }
 
-    /*private int getOrientation(int rotation) {
-        // Sensor orientation is 90 for most devices, or 270 for some devices (eg. Nexus 5X)
-        // We have to take that into account and rotate JPEG properly.
-        // For devices with orientation of 90, we simply return our mapping from ORIENTATIONS.
-        // For devices with orientation of 270, we need to rotate the JPEG 180 degrees.
+    private int getOrientation(int rotation) {
         return (ORIENTATIONS.get(rotation) + mSensorOrientation + 270) % 360;
-    }*/
+    }
 
     // https://medium.com/@kenodoggy/solving-image-rotation-on-android-using-camera2-api-7b3ed3518ab6
-
-    /**
-     * Retrieves the JPEG orientation from the specified screen rotation.
-     *
-     * @param c                 CameraCharacteristics
-     * @param deviceOrientation The device orientation.
-     * @return The JPEG orientation (one of 0, 90, 270, and 360)
-     */
     private int getJpegOrientation(CameraCharacteristics c, int deviceOrientation) {
         if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN)
             return 0;
@@ -927,6 +914,38 @@ public class Camera2BasicFragment extends Fragment
         // the image upright relative to the device orientation
 
         return (sensorOrientation + deviceOrientation + 360) % 360;
+    }
+
+    // https://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation(int)
+    public static int getCameraDisplayOrientation(Activity activity, int cameraId, CameraCharacteristics c) {
+        int sensorOrientation = c.get(CameraCharacteristics.SENSOR_ORIENTATION);
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (cameraId == CameraCharacteristics.LENS_FACING_FRONT) {
+            result = (sensorOrientation + degrees) % 360;
+            //result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (sensorOrientation - degrees + 360) % 360;
+        }
+
+        return result;
     }
 
     /**
@@ -1015,7 +1034,6 @@ public class Camera2BasicFragment extends Fragment
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             FileOutputStream output = null;
-            Intent returnIntent = new Intent();
 
             try {
                 output = new FileOutputStream(mFile);

@@ -177,6 +177,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     private void prepareBoard() {
+        Log.d(TAG, "prepareBoard");
+
         updatePlayer(gameObs.getPlayerUser(PlayerType.PLAYER));
         updateAdversary(gameObs.getPlayerUser(PlayerType.ADVERSARY));
 

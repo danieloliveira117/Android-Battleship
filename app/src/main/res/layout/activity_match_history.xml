@@ -6,6 +6,7 @@
     tools:context=".activities.match_history.MatchHistoryActivity">
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_empty_match_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/fab_margin"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,7 +71,9 @@ public class MatchHistoryFragment extends Fragment {
             Activity activity = getActivity();
 
             if (activity != null) {
+
                 BattleshipApplication app = (BattleshipApplication) activity.getApplication();
+
                 recyclerView.setAdapter(new MatchHistoryRecyclerViewAdapter(app.getMatchHistory(), activity));
             }
         }

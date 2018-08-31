@@ -222,7 +222,9 @@ public class GameCommunication implements Observer {
                         gameObs.setAdversaryUser(adversary);
 
                         // Start Game
+                        pd.dismiss();
                         gameObs.startGame(GameMode.vsPLAYER, player, mode == CLIENT);
+                        Log.d(TAG, "Game Started");
 
                         if (mode == SERVER) {
                             gameObs.sendStartingPlayer();
@@ -301,8 +303,8 @@ public class GameCommunication implements Observer {
                 procMsg.post(new Runnable() {
                     @Override
                     public void run() {
-                        pd.dismiss();
                         if (socketGame == null) {
+                            pd.dismiss();
                             activity.finish();
                         }
                     }
@@ -353,14 +355,15 @@ public class GameCommunication implements Observer {
                     socketGame = null;
                 }
 
-                pd.dismiss();
-
                 if (socketGame == null) {
                     procMsg.post(new Runnable() {
                         @Override
                         public void run() {
+                            pd.dismiss();
                             activity.finish();
-                            Toast.makeText(activity.getApplicationContext(), R.string.could_not_connect_to_server, Toast.LENGTH_SHORT).show();
+                            if (!Thread.currentThread().isInterrupted()) {
+                                Toast.makeText(activity.getApplicationContext(), R.string.could_not_connect_to_server, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
 

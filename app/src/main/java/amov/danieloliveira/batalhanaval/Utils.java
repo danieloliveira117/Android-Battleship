@@ -62,6 +62,8 @@ public class Utils {
 
                 if (view.getId() == id) {
                     return true;
+                } else if (view instanceof TableLayout) {
+                    return false;
                 }
             } else {
                 break;
@@ -82,8 +84,16 @@ public class Utils {
         File file = new File(c.getFilesDir().getPath() + "/" + IMAGE_NAME);
         Bitmap image = null;
 
+        long lenght = file.length();
+
         if (file.exists()) {
-            image = BitmapFactory.decodeFile(file.getAbsolutePath());
+            // https://stackoverflow.com/questions/19678665/bitmapfactory-decodefile-out-of-memory-with-images-2400x2400
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inDither = true;
+
+            image = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
         }
 
         return image;

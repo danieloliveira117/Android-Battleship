@@ -92,7 +92,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        isOpponentView = Utils.parentHasID(this, R.id.tbl_adversary_ships);
+        isOpponentView = !(getContext() instanceof GameStartActivity) && Utils.parentHasID(this, R.id.tbl_adversary_ships);
 
         if (!isOpponentView) {
             this.setOnDragListener(this);
