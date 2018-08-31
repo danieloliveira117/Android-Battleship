@@ -29,10 +29,9 @@
             android:label="@string/change_user" />
 
         <activity
-            android:name=".activities.TakePictureActivity"
+            android:name=".activities.take_picture.CameraActivity"
             android:label="@string/take_picture"
             android:parentActivityName=".activities.ConfigUserActivity">
-            <!--android:screenOrientation="portrait">-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ConfigUserActivity" />
@@ -45,8 +44,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-        <activity
-            android:name=".activities.GameActivity">
+        <activity android:name=".activities.GameActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />

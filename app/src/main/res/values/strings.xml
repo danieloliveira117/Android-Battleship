@@ -72,4 +72,5 @@
     <string name="clear_match_history">Clear Match History</string>
     <string name="empty_match_history">Your match history is empty, you need to play a game first!</string>
     <string name="game_mode_changed">Changed game mode to Single-Player</string>
+    <string name="camera_error" translatable="false">This device doesn\'t support Camera2 API.</string>
 </resources>
