@@ -156,8 +156,8 @@ public class GameObservable extends Observable {
 
     /* --- GETS --- */
 
-    public PositionType getPositionType(PlayerType player, Position position) {
-        return gameData.getPositionType(player, position);
+    public PositionType getPositionType(PlayerType player, Position position, boolean isOpponentView) {
+        return gameData.getPositionType(player, position, isOpponentView);
     }
 
     public List<Position> getShipPositions(PlayerType player, Position position) {

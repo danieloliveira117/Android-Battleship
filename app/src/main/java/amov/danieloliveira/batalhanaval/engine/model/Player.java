@@ -48,7 +48,11 @@ public class Player {
     }
 
     /* --- Position Type --- */
-    public PositionType getPositionType(Position position) {
+    public PositionType getPositionType(Position position, boolean isOpponentView) {
+        if(isOpponentView) {
+            return board.getPositionTypeOnOpponentView(position);
+        }
+
         return board.getPositionType(position);
     }
 

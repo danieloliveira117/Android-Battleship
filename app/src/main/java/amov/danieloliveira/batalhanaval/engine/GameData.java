@@ -148,7 +148,7 @@ public class GameData {
         gameModel.addNewAttempt(currentPlayer, position);
     }
 
-    public PositionType getPositionType(PlayerType player, Position position) {
+    public PositionType getPositionType(PlayerType player, Position position, boolean isOpponentView) {
         if (currentState instanceof AwaitGameStart)
             return PositionType.UNKNOWN;
 
@@ -158,7 +158,7 @@ public class GameData {
         if (currentState instanceof AwaitShipReposition && currentPlayer == player)
             return gameModel.getPositionValidityOnReposition(player, position, getCurrentShip(player));
 
-        return gameModel.getPositionType(player, position);
+        return gameModel.getPositionType(player, position, isOpponentView);
     }
 
     public void setRandomPlacement(PlayerType player) {

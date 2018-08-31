@@ -93,7 +93,9 @@ public class GameCommunication implements Observer {
     public void endCommunication() {
         try {
             gameObs.deleteObserver(this);
-            commThread.interrupt();
+            if (!commThread.isInterrupted()) {
+                commThread.interrupt();
+            }
 
             if (socketGame != null) {
                 socketGame.close();
@@ -162,12 +164,16 @@ public class GameCommunication implements Observer {
                         @Override
                         public void run() {
                             if (!(e instanceof SocketException) && activity instanceof GameActivity) {
+                                Log.d(TAG, "Changed game mode to Single-Player");
+
                                 gameObs.changeToSinglePlayerMode(playerType);
 
                                 Toast.makeText(activity.getApplicationContext(),
                                         R.string.game_mode_changed, Toast.LENGTH_LONG)
                                         .show();
                             } else {
+                                Log.d(TAG, "Activity finish");
+
                                 activity.finish();
 
                                 Toast.makeText(activity.getApplicationContext(),

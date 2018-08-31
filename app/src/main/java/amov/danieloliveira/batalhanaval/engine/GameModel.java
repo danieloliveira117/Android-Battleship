@@ -66,8 +66,8 @@ public class GameModel {
         getOpponent(player).addNewAttempt(position);
     }
 
-    public PositionType getPositionType(PlayerType player, Position position) {
-        return getOpponent(player).getPositionType(position);
+    public PositionType getPositionType(PlayerType player, Position position, boolean isOpponentView) {
+        return getOpponent(player).getPositionType(position, isOpponentView);
     }
 
     public Ship getPlayerShip(PlayerType player, Integer ship) throws InvalidShipNumberException {

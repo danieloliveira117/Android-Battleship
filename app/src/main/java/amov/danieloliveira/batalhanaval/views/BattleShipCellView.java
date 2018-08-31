@@ -31,6 +31,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     private Position position;
     private Context context;
     private PlayerType type = null;
+    private boolean isOpponentView = false;
 
     private static Toast notCurrentPlayerToast;
 
@@ -50,7 +51,6 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         if (!isInEditMode()) {
             gameObs = Utils.getObservable(context);
             gameObs.addObserver(this);
-
         }
 
         try {
@@ -92,11 +92,15 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        if (!Utils.parentHasID(this, R.id.tbl_adversary_ships)) {
+        isOpponentView = Utils.parentHasID(this, R.id.tbl_adversary_ships);
+
+        if (!isOpponentView) {
             this.setOnDragListener(this);
             this.setOnClickListener(this);
             this.setOnLongClickListener(this);
         }
+
+        updateColor();
     }
 
     /* Square */
@@ -163,7 +167,7 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         if (type == null)
             return;
 
-        switch (gameObs.getPositionType(type, position)) {
+        switch (gameObs.getPositionType(type, position, isOpponentView)) {
             case ADJACENT:
                 this.setBackgroundResource(R.color.adjacent);
                 break;

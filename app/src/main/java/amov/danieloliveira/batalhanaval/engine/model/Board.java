@@ -99,14 +99,6 @@ public class Board {
         return numberOfHits;
     }
 
-    public PositionType getPositionType(Position position) {
-        if (adversaryAttempts.containsKey(position)) {
-            return adversaryAttempts.get(position);
-        }
-
-        return PositionType.UNKNOWN;
-    }
-
     public Ship getShipByID(Integer ship) throws InvalidShipNumberException {
         if (ship < 0 || ship >= shipList.size())
             throw new InvalidShipNumberException();
@@ -122,6 +114,35 @@ public class Board {
         }
 
         return null;
+    }
+
+    public PositionType getPositionType(Position position) {
+        if (adversaryAttempts.containsKey(position)) {
+            return adversaryAttempts.get(position);
+        }
+
+        return PositionType.UNKNOWN;
+    }
+
+    public PositionType getPositionTypeOnOpponentView(Position position) {
+        PositionType positionType = adversaryAttempts.get(position);
+
+        for (Ship ship : shipList) {
+            if (ship.getPositionList().contains(position)) {
+                if (positionType != null && positionType.isHit()) {
+                    return ship.getHitType();
+                }
+
+                if (positionType == null) {
+                    return PositionType.VALID;
+                }
+            }
+        }
+
+        if (positionType != null)
+            return positionType;
+
+        return PositionType.UNKNOWN;
     }
 
     public PositionType getPositionValidity(Position position, Ship currentShip) {

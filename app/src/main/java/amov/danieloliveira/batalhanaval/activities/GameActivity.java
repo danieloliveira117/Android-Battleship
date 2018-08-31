@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -124,6 +125,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     private void startBot() {
+        if (botThread != null) {
+            botThread.terminateThread();
+        }
+
         botThread = new BotThread(gameObs, opponent);
         botThread.start();
     }
@@ -131,6 +136,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.d(TAG, "onResume");
 
         if (!onCreateHasRun) {
             if (mode != SINGLEPLAYER) {
@@ -147,6 +154,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onPause() {
         super.onPause();
+
+        Log.d(TAG, "onPause");
 
         if (botThread != null) {
             botThread.terminateThread();
@@ -188,7 +197,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
                 prepareBoard();
             }
-        } else if (arg == BOT_NAME) {
+        } else if (arg == BOT_NAME && mode != SINGLEPLAYER) {
+            Log.d(TAG, "Changed game mode to Single-Player");
             mode = SINGLEPLAYER;
             gameObs.setUser(opponent, new User(BOT_NAME, null));
             prepareBoard();
@@ -198,6 +208,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         setCurrentPlayerTurn(gameObs.getCurrentPlayer());
 
         if (gameObs.didGameEnd()) {
+            Log.d(TAG, "Game ended");
             AppCompatTextView end_game_message = findViewById(R.id.end_game_message);
 
             end_game_message.setText(String.format(getResources().getString(R.string.end_game_message), gameObs.getCurrentUser().getUsername()));
