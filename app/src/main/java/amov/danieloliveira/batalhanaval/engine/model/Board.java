@@ -252,6 +252,7 @@ public class Board {
 
     public boolean hasInvalidShipPositions() {
         List<Position> positionList = new ArrayList<>();
+        Set<Position> adjacentSet = new HashSet<>();
 
         for (Ship ship : shipList) {
             // Only valid positions
@@ -263,8 +264,11 @@ public class Board {
 
             if (!ship.isDestroyed()) {
                 positionList.addAll(ship.getPositionList());
+                adjacentSet.addAll(ship.getAdjacentPositions());
             }
         }
+
+        positionList.addAll(adjacentSet);
 
         return hasDuplicate(positionList);
     }

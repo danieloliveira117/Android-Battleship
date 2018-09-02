@@ -211,7 +211,6 @@ public class BattleShipCellView extends AppCompatTextView implements Observer, V
         if (!gameObs.canDragAndDrop(type, position)) {
             if (gameObs.getCurrentPlayer() == type) {
                 gameObs.clickNewPosition(type, position);
-
             } else {
                 if (notCurrentPlayerToast != null) {
                     notCurrentPlayerToast.cancel();
