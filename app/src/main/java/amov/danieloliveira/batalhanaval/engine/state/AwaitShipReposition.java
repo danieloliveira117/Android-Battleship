@@ -20,25 +20,53 @@ public class AwaitShipReposition extends GameStateAdapter {
         gameData.hideDestroyedShips(gameData.getCurrentPlayer());
     }
 
+    private void trySelectShip(PlayerType player, Position position) {
+        if (gameData.shipIsIntact(player, position)) { // Select new ship to reposition
+            gameData.setCurrentShipByPosition(player, position);
+
+            Ship ship = gameData.getCurrentShip(player);
+
+            originalPosition = new Position(ship.getPositionList().get(0));
+            originalOrientation = ship.getOrientation();
+        }
+    }
+
     @Override
     public IGameState setCurrentShipByPosition(PlayerType player, Position position) {
         if (gameData.getCurrentPlayer() == player) {
-            if (gameData.getCurrentShip(player) == null && gameData.shipIsIntact(player, position)) { // Select new ship to reposition
-                gameData.setCurrentShipByPosition(player, position);
+            Ship ship = gameData.getCurrentShip(player);
 
-                Ship ship = gameData.getCurrentShip(player);
-
-                originalPosition = new Position(ship.getPositionList().get(0));
-                originalOrientation = ship.getOrientation();
-            } else if (gameData.getCurrentShip(player) != null) { // Clear selected ship
-                Ship ship = gameData.getCurrentShip(player);
-
-                if (gameData.allShipsPlaced(player) &&
-                        ship.getPositionList().get(0).equals(originalPosition)
-                        && ship.getOrientation().equals(originalOrientation)) {
-
+            if (ship != null) {
+                // If current ship is in its original position / orientation
+                if (ship.getPositionList().get(0).equals(originalPosition) && ship.getOrientation().equals(originalOrientation)) {
                     gameData.clearCurrentShip(player);
+
+                    if (!gameData.currentShipContainsPosition(player, position)) {
+                        trySelectShip(player, position);
+                    }
                 }
+            } else {
+                trySelectShip(player, position);
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public IGameState setShipOnDragEvent(PlayerType player, Position position) {
+        if (gameData.getCurrentPlayer() == player) {
+            Ship ship = gameData.getCurrentShip(player);
+
+            if (ship != null) {
+                // If current ship is in its original position / orientation
+                if (ship.getPositionList().get(0).equals(originalPosition) && ship.getOrientation().equals(originalOrientation)) {
+                    if (!gameData.currentShipContainsPosition(player, position)) {
+                        trySelectShip(player, position);
+                    }
+                }
+            } else {
+                trySelectShip(player, position);
             }
         }
 
@@ -95,20 +123,6 @@ public class AwaitShipReposition extends GameStateAdapter {
     }
 
     @Override
-    public IGameState setShipOnDragEvent(PlayerType player, Position position) {
-        if (gameData.getCurrentPlayer() == player && gameData.getCurrentShip(player) == null && gameData.shipIsIntact(player, position)) { // Select new ship to reposition
-            gameData.setCurrentShipByPosition(player, position);
-
-            Ship ship = gameData.getCurrentShip(player);
-
-            originalPosition = new Position(ship.getPositionList().get(0));
-            originalOrientation = ship.getOrientation();
-        }
-
-        return this;
-    }
-
-    @Override
     public IGameState restorePosition(PlayerType player) {
         if (gameData.getCurrentPlayer() == player && originalPosition != null && originalOrientation != null) {
             Ship ship = gameData.getCurrentShip(player);
@@ -132,5 +146,21 @@ public class AwaitShipReposition extends GameStateAdapter {
     public IGameState changeToSinglePlayerMode(PlayerType player) {
         gameData.setGameMode(GameMode.vsAI);
         return this;
+    }
+
+    public boolean canDragAndDrop(PlayerType type, Position position) {
+        if (gameData.getCurrentPlayer().equals(type)) {
+            Ship ship = gameData.getCurrentShip(type);
+
+            if (ship != null) {
+                // Is CurrentShip or CurrentShip is in original position
+                return gameData.currentShipContainsPosition(type, position) ||
+                        ship.getPositionList().get(0).equals(originalPosition) && ship.getOrientation().equals(originalOrientation);
+            } else {
+                return gameData.shipIsIntact(type, position);
+            }
+        }
+
+        return false;
     }
 }

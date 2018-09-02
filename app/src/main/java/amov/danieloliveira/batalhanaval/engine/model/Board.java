@@ -400,7 +400,7 @@ public class Board {
         }
 
         for (Position pos : adversaryAttempts.keySet()) {
-            if (ship.getPositionList().contains(pos) && adversaryAttempts.get(pos) != null) {
+            if (ship.getPositionList().contains(pos) && adversaryAttempts.get(pos) != null && adversaryAttempts.get(pos).isHit()) {
                 return false;
             }
         }

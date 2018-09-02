@@ -9,6 +9,7 @@ import amov.danieloliveira.batalhanaval.engine.enums.PlayerType;
 import amov.danieloliveira.batalhanaval.engine.enums.PositionType;
 import amov.danieloliveira.batalhanaval.engine.exceptions.InvalidShipNumberException;
 import amov.danieloliveira.batalhanaval.engine.model.Board;
+import amov.danieloliveira.batalhanaval.engine.model.Player;
 import amov.danieloliveira.batalhanaval.engine.model.Position;
 import amov.danieloliveira.batalhanaval.engine.model.Ship;
 import amov.danieloliveira.batalhanaval.engine.model.User;
@@ -216,7 +217,19 @@ public class GameData {
     }
 
     public boolean canDragAndDrop(PlayerType type, Position position) {
-        return currentState instanceof AwaitShipPlacement || currentState instanceof AwaitShipReposition && shipIsIntact(type, position);
+        if(currentState instanceof AwaitShipReposition) {
+            AwaitShipReposition temp = (AwaitShipReposition) currentState;
+
+            return temp.canDragAndDrop(type, position);
+        }
+
+        return currentState instanceof AwaitShipPlacement;
+    }
+
+    public boolean currentShipContainsPosition(PlayerType type, Position position) {
+        Ship ship = getCurrentShip(type);
+
+        return ship != null && ship.getPositionList().contains(position);
     }
 
     public boolean isLastSelect() {
