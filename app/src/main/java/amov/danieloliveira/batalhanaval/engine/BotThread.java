@@ -28,7 +28,7 @@ public class BotThread extends Thread {
         } catch (InterruptedException ignored) {
         }
 
-        while (!terminateThread) {
+        while (!terminateThread && !gameObs.didGameEnd()) {
             if (gameObs.getCurrentPlayer() == type) {
                 if (gameObs.isShipReposition(type)) {
                     handler.post(new Runnable() {

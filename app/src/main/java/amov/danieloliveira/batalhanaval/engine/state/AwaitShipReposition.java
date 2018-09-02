@@ -17,6 +17,7 @@ public class AwaitShipReposition extends GameStateAdapter {
         super(gameData);
 
         gameData.clearCurrentShip(gameData.getCurrentPlayer());
+        gameData.hideDestroyedShips(gameData.getCurrentPlayer());
     }
 
     @Override
@@ -66,7 +67,6 @@ public class AwaitShipReposition extends GameStateAdapter {
             gameData.setShipsPlaced(player);
 
             if (gameData.allShipsPlaced(player)) {
-                gameData.hideDestroyedShips(player);
                 gameData.removeOldAttempts(player);
                 gameData.nextPlayer();
 

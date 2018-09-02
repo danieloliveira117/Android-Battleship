@@ -34,6 +34,7 @@ import static amov.danieloliveira.batalhanaval.Consts.BOT_NAME;
 import static amov.danieloliveira.batalhanaval.Consts.CLIENT;
 import static amov.danieloliveira.batalhanaval.Consts.MAXSELECT;
 import static amov.danieloliveira.batalhanaval.Consts.SINGLEPLAYER;
+import static amov.danieloliveira.batalhanaval.engine.enums.MsgType.CONFIRM_PLACEMENT;
 
 public class GameActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "GameActivity";
@@ -54,11 +55,15 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     private TableLayout tbl_adversary_ships;
     private TableLayout tbl_player_ships;
+    private MenuItem action_single_player_mode;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
+
+        action_single_player_mode = menu.findItem(R.id.action_single_player_mode);
+        action_single_player_mode.setVisible(mode != SINGLEPLAYER);
 
         return true;
     }
@@ -202,9 +207,14 @@ public class GameActivity extends AppCompatActivity implements Observer {
         } else if (arg == BOT_NAME && mode != SINGLEPLAYER) {
             Log.d(TAG, "Changed game mode to Single-Player");
             mode = SINGLEPLAYER;
+            action_single_player_mode.setVisible(false);
             gameObs.setUser(opponent, new User(BOT_NAME, null));
             prepareBoard();
             startBot();
+        } else if (arg == CONFIRM_PLACEMENT) {
+            rel_adversary_ships.setVisibility(View.VISIBLE);
+            rel_reposition_buttons.setVisibility(View.GONE);
+            tv_reposition_msg.setVisibility(View.GONE);
         }
 
         setCurrentPlayerTurn(gameObs.getCurrentPlayer());

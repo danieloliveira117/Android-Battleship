@@ -444,6 +444,7 @@ public class Board {
             Ship ship = it.next();
 
             if (ship.isDestroyed()) {
+                adversaryAttempts.keySet().removeAll(ship.getPositionList());
                 oldShips.add(ship);
                 it.remove();
             }
