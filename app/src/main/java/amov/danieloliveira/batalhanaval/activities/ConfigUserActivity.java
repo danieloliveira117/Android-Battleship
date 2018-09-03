@@ -16,7 +16,7 @@ import amov.danieloliveira.batalhanaval.BattleshipApplication;
 import amov.danieloliveira.batalhanaval.Preferences;
 import amov.danieloliveira.batalhanaval.R;
 import amov.danieloliveira.batalhanaval.Utils;
-import amov.danieloliveira.batalhanaval.activities.take_picture.CameraActivity;
+import amov.danieloliveira.batalhanaval.activities.camera.CameraActivity;
 import amov.danieloliveira.batalhanaval.engine.model.User;
 
 public class ConfigUserActivity extends AppCompatActivity {

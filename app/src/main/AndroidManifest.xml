@@ -29,7 +29,7 @@
             android:label="@string/change_user" />
 
         <activity
-            android:name=".activities.take_picture.CameraActivity"
+            android:name=".activities.camera.CameraActivity"
             android:label="@string/take_picture"
             android:parentActivityName=".activities.ConfigUserActivity">
             <meta-data

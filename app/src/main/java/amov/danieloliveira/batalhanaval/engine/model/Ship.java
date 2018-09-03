@@ -17,7 +17,7 @@ import static amov.danieloliveira.batalhanaval.Consts.MAXCOLUMNS;
 import static amov.danieloliveira.batalhanaval.Consts.MAXROWS;
 
 public class Ship {
-    public static int shipCount = 0;
+    private static int shipCount = 0;
     private int id;
     private ShipType type;
     private List<Position> positionList = new ArrayList<>();

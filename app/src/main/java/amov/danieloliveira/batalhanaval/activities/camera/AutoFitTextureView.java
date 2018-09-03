@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package amov.danieloliveira.batalhanaval.activities.take_picture;
+package amov.danieloliveira.batalhanaval.activities.camera;
 
 import android.content.Context;
 import android.util.AttributeSet;
